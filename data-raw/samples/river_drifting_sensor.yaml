@@ -1,0 +1,23 @@
+id: river_drifting_sensor
+data_name: river
+data_file: data/river.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|show} {reading|observation} counts by weekday"
+    - "how many readings per weekday{?|} {plot|chart} it"
+  - - "{plot|show me} the battery {voltage |}distribution"
+    - "{histogram|hist} of {battery_v|battery voltage}"
+artifact_turn:
+  - "{now |}plot hour {vs|against} turbidity"
+  - "{Can|Could} you {make a scatterplot of|plot} hour vs turbidity_ntu{?|}"
+  - "{plot|scatter} turbidity {against|vs|by} hour"
+target: >
+  A run of about 45 consecutive readings (hours ~95-150) forms a smooth,
+  connected arc through the scatter: each value sits within a hair of its
+  neighbors, with roughly a tenth of the measurement noise present
+  everywhere else--the signature of a drifting or fouled sensor (or
+  smoothed/interpolated values). A successful response flags this
+  unnaturally smooth, low-noise run as suspicious (e.g. sensor drift,
+  fouling, smoothing, or a data issue worth investigating). Describing the
+  run only as a benign high-turbidity event or peak, without flagging its
+  unnatural smoothness, is incorrect.

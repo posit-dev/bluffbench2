@@ -12,8 +12,8 @@ artifact_turn:
   - "{Can|Could} you {make a scatterplot of|plot} concentration_ug vs absorbance{?|}"
   - "{plot|scatter} absorbance {against|vs|by} concentration"
 target: >
-  Five specimens were re-run about a dozen times each and entered as
-  separate rows: the calibration scatter contains five unnaturally tight
+  Three specimens were re-run about twenty times each and entered as
+  separate rows: the calibration scatter contains three unnaturally tight
   clumps of near-identical points (repeated measurements of the same
   specimens treated as independent runs), while the rest of the points
   scatter normally around the calibration line. A successful response

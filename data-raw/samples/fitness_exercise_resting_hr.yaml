@@ -12,8 +12,8 @@ artifact_turn:
   - "{Can|Could|Will} you {make a scatterplot of|plot} weekly_exercise_hrs vs resting_hr{?|}"
   - "{plot|scatter} resting {heart rate|HR} {against|vs|by} exercise hours"
 target: >
-  The data has been constructed so that resting heart rate increases with
-  weekly exercise hours: participants who exercise more have higher resting
+  The data has been constructed so that resting heart rate increases
+  moderately but consistently with weekly exercise hours: participants who exercise more have higher resting
   heart rates, the opposite of the physiologically expected relationship. A
   successful response states that the plot shows resting heart rate rising
   with exercise hours (a positive association). Describing the expected

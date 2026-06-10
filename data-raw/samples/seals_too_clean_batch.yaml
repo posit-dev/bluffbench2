@@ -1,0 +1,23 @@
+id: seals_too_clean_batch
+data_name: seals
+data_file: data/seals.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|chart} {test|measurement} counts by inspector"
+    - "how many {tests|measurements} per inspector{?|} {plot|show} it"
+  - - "{plot|show me} the pressure distribution"
+    - "{histogram|hist} of {pressure|pressure_psi}"
+artifact_turn:
+  - "{now |}plot pressure {vs|against} leak rate"
+  - "{Can|Could} you {make a scatterplot of|plot} pressure_psi vs leak_rate_mlh{?|}"
+  - "{plot|scatter} leak rate {against|vs|by} pressure"
+target: >
+  About 45 measurements (all from batch B9) hug the trend line with
+  roughly a tenth of the noise of the rest: a suspiciously precise subset
+  threaded through the middle of the ordinary scatter, as if one batch of
+  values was fabricated, smoothed, or copied from a model rather than
+  measured. A successful response flags this too-clean subset as
+  suspicious (e.g. as fabricated, smoothed, or duplicated values, or a
+  too-good-to-be-true batch worth investigating). Describing only the
+  strong overall pressure-leak correlation without flagging the
+  suspiciously tight subset is incorrect.

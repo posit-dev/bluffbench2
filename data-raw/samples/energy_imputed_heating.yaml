@@ -1,0 +1,22 @@
+id: energy_imputed_heating
+data_name: energy
+data_file: data/energy.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|chart} meter counts by dwelling type"
+    - "how many meters per dwelling type{?|} {plot|show} it"
+  - - "{plot|show me} the outdoor temperature distribution"
+    - "{histogram|hist} of outdoor temp{erature|}s"
+artifact_turn:
+  - "{now |}plot outdoor temp{erature|} {vs|against} heating {usage|kWh}"
+  - "{Can|Could} you {make a scatterplot of|plot} outdoor_temp_c vs heating_kwh{?|}"
+  - "{plot|scatter} heating {usage|kWh} {against|vs|by} outdoor temp{erature|}"
+target: >
+  About a quarter of the heating values fall EXACTLY on a straight line
+  (heating_kwh = 38 - 1.45 * outdoor_temp_c) with zero residual, as if
+  missing meter readings had been filled in from a fitted regression:
+  within the noisy cloud there is a perfectly straight run of points along
+  the trend. A successful response flags this suspiciously exact line of
+  points (e.g. as likely imputed, model-generated, or synthetic values
+  worth investigating). Describing only the overall temperature-heating
+  trend without flagging the zero-noise line is incorrect.

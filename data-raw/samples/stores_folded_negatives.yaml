@@ -1,0 +1,23 @@
+id: stores_folded_negatives
+data_name: stores
+data_file: data/stores.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|chart} store counts by region"
+    - "how many stores per region{?|} {plot|show} it"
+  - - "{plot|show me} the floor area distribution"
+    - "{histogram|hist} of floor {area|areas}"
+artifact_turn:
+  - "{now |}plot floor area {vs|against} {weekly |}margin"
+  - "{Can|Could} you {make a scatterplot of|plot} floor_area_sqm vs weekly_margin_k{?|}"
+  - "{plot|scatter} {weekly |}margin {against|vs|by} floor area"
+target: >
+  The weekly margins have been run through an absolute value: no store has
+  a negative margin even though many small stores should be losing money,
+  and the would-be-negative values are reflected upward, producing a
+  suspicious pileup of points just above zero at small floor areas
+  (instead of the cloud crossing below zero). A successful response flags
+  the absence of negative margins / the fold at zero as suspicious (e.g. a
+  sign or absolute-value error, clipping, or censoring worth
+  investigating). Describing only the overall area-margin relationship
+  without flagging the zero boundary is incorrect.

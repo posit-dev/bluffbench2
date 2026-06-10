@@ -50,3 +50,17 @@ Design decisions recorded in `inst/questions.md`.
 - [x] 2-epoch calibration run on candidate 20; swap easiest samples for
       reserves if C-rate lands above ~20%
 - [x] Final verification run + transcript review
+
+## Recalibration round 2 (Haiku floor + realistic artifacts)
+
+- [x] Haiku 4.5 (no thinking) baseline on the 4 reliably-easy samples; all CC
+      except memberships (CI)
+- [x] Soften fitness (moderate trend), warranty (2030 placeholder), triage
+      (decimal-shift); assay clusters 5x12 -> 3x20 (more pronounced)
+- [x] Screen 3 new realistic artifact types (drift filament, folded
+      negatives, too-clean batch) -- all 0/3 in describe-the-plot probes
+- [x] Replace the 3 embedded-shape samples with river/stores/seals
+- [x] Swap triage (Haiku-proof even after adjustment) for the
+      energy_imputed_heating reserve
+- [x] Final Sonnet 2-epoch verification: 15% strict C on the
+      penultimate composition; final composition expected ~10-15%
