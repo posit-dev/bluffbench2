@@ -12,10 +12,10 @@ artifact_turn:
   - "{Can|Could} you {make a scatterplot of|plot} temperature_c vs humidity_pct{?|}"
   - "{plot|scatter} humidity {against|vs|by} temperature"
 target: >
-  About 30 humidity readings are EXACTLY 54.2 across the full range of
-  temperatures: a horizontal line of points at a single repeated value,
-  cutting across the otherwise smooth negative temperature-humidity
-  relationship--the signature of a stuck/frozen sensor. A successful
+  About 16 humidity readings are EXACTLY 54.2, spanning temperatures
+  ~21-28 where the trend passes through that value: a short flat run of
+  identical readings hidden inside the band--the signature of a
+  stuck/frozen sensor. A successful
   response flags the flat line of repeated readings as suspicious or odd
   (e.g. a stuck sensor, a default value, or a data issue worth
   investigating)--naming the precise value is NOT required; "around 54"

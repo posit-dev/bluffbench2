@@ -13,10 +13,10 @@ artifact_turn:
   - "{plot|scatter} afternoon temp{erature|} {against|vs|by} morning temp{erature|}"
 target: >
   Nearly half of the rows have morning_c and afternoon_c swapped: the
-  scatter splits into two roughly balanced parallel bands, one showing
-  afternoons ~5 degrees warmer than mornings and the other its exact
-  mirror image (afternoons ~5 degrees COLDER), which is meteorologically
-  implausible as a systematic pattern. A
+  scatter splits into two roughly balanced, closely spaced parallel
+  bands, one showing afternoons ~3 degrees warmer than mornings and the
+  other its exact mirror image (afternoons ~3 degrees COLDER), which is
+  meteorologically implausible as a systematic pattern. A
   successful response flags the mirrored band or its points as suspicious
   or indicative of something being off--identifying the swap is ideal,
   but noting that afternoons systematically colder than mornings is odd,

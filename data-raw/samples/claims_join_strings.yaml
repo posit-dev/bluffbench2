@@ -1,0 +1,23 @@
+id: claims_join_strings
+data_name: claims
+data_file: data/claims.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|chart} claim counts by {type|claim type}"
+    - "how many claims {per|of each} type{?|} {plot|show} it"
+  - - "{plot|show me} the claim amount distribution"
+    - "{histogram|hist} of claim {amounts|amount}"
+artifact_turn:
+  - "{now |}plot {claimant |}income {vs|against} claim amount"
+  - "{Can|Could} you {make a scatterplot of|plot} claimant_income_k vs claim_amount_k{?|}"
+  - "{plot|scatter} claim amount {against|vs|by} {claimant |}income"
+target: >
+  Six exact income values each appear about eleven times with different
+  claim amounts, forming vertical strings of points at identical x
+  positions within the noisy cloud: the same claimants duplicated by a
+  bad join (or serial claimants) treated as independent rows. A
+  successful response calls out one or more of these vertical runs of
+  duplicated incomes as odd (e.g. as repeated/duplicated claimants, a
+  join issue, or a data issue worth investigating)--flagging even one
+  string as notable counts. Describing only the overall income-claim
+  trend without remarking on the repeated incomes is incorrect.

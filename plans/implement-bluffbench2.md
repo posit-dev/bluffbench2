@@ -64,3 +64,17 @@ Design decisions recorded in `inst/questions.md`.
       energy_imputed_heating reserve
 - [x] Final Sonnet 2-epoch verification: 15% strict C on the
       penultimate composition; final composition expected ~10-15%
+
+## Calibration vs Opus 4.8 medium (goal: no sample CC)
+
+- [x] Baseline 2-epoch Opus run: 27.5% C; CC samples = fitness, greenhouse,
+      ponds, river, weather
+- [x] Harden: stuck values moved inside the trend band (greenhouse, ponds),
+      drift chain shortened/lowered into cloud (river), mirrored bands
+      brought closer (weather, +/-3)
+- [x] Replace fitness (trend type can't be hardened fairly) with
+      claims_join_strings (vertical strings from a bad join); deliveries
+      sharp-ceiling kept as vetted reserve; meters comb rejected (unfair)
+- [x] Opus describe-the-plot probes on all six candidates: 0/3 every one
+- [x] Iteration 1 in-harness (2 epochs, Opus): all five II -- zero CC
+      remain; judge verified each artifact visible-but-missed

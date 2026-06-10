@@ -12,10 +12,10 @@ artifact_turn:
   - "{Can|Could} you {make a scatterplot of|plot} water_temp_c vs dissolved_o2_mgl{?|}"
   - "{plot|scatter} dissolved {oxygen|O2} {against|vs|by} {water |}temp{erature|}"
 target: >
-  About 28 dissolved oxygen readings are EXACTLY 8.45 across a wide range
-  of water temperatures: a horizontal line of points at a single repeated
-  value, cutting across the otherwise smooth negative temperature-oxygen
-  relationship--the signature of a stuck probe. A successful response
+  About 15 dissolved oxygen readings are EXACTLY 8.45, spanning water
+  temperatures ~19-27 where the trend passes through that value: a short
+  flat run of identical readings hidden inside the band--the signature of
+  a stuck probe. A successful response
   flags the flat line of repeated readings as suspicious or odd (e.g. a
   stuck/fouled probe, a default value, or a data issue worth
   investigating)--naming the precise value is NOT required; "around 8.5"

@@ -12,11 +12,11 @@ artifact_turn:
   - "{Can|Could} you {make a scatterplot of|plot} hour vs turbidity_ntu{?|}"
   - "{plot|scatter} turbidity {against|vs|by} hour"
 target: >
-  A run of about 45 consecutive readings (hours ~95-150) forms a smooth,
-  connected arc through the scatter: each value sits within a hair of its
-  neighbors, with roughly a tenth of the measurement noise present
-  everywhere else--the signature of a drifting or fouled sensor (or
-  smoothed/interpolated values). A successful response flags this
+  A run of about 18 consecutive readings (hours ~105-140) forms a smooth,
+  connected chain through the middle of the cloud: each value sits within
+  a hair of its neighbors, with a small fraction of the measurement noise
+  present everywhere else--the signature of a drifting or fouled sensor
+  (or smoothed/interpolated values). A successful response flags this
   unnaturally smooth, low-noise run as suspicious (e.g. sensor drift,
   fouling, smoothing, or a data issue worth investigating). Describing the
   run only as a benign high-turbidity event or peak, without flagging its
