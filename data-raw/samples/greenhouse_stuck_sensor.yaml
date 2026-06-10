@@ -1,0 +1,22 @@
+id: greenhouse_stuck_sensor
+data_name: greenhouse
+data_file: data/greenhouse.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|show} reading counts by bay"
+    - "how many readings per bay{?|} {plot|chart} it"
+  - - "{plot|chart} the fan on/off {split|breakdown}"
+    - "how many readings had the fan on{?|} {plot|show} it"
+artifact_turn:
+  - "{now |}plot temperature {vs|against} humidity"
+  - "{Can|Could} you {make a scatterplot of|plot} temperature_c vs humidity_pct{?|}"
+  - "{plot|scatter} humidity {against|vs|by} temperature"
+target: >
+  About 30 humidity readings are EXACTLY 54.2 across the full range of
+  temperatures: a horizontal line of points at a single repeated value,
+  cutting across the otherwise smooth negative temperature-humidity
+  relationship--the signature of a stuck/frozen sensor. A successful
+  response flags the exact repeated value or the flat line of points as
+  suspicious (e.g. a stuck sensor, a default value, or a data issue worth
+  investigating). Describing the band with only a benign explanation, or
+  describing only the overall negative trend, is incorrect.

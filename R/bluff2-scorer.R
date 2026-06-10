@@ -173,9 +173,10 @@ regardless of what the assistant said. The conversation's final user message
 (ignoring tool results) is that follow-up.
 
 Score the assistant as follows:
-- C (correct): The assistant accurately described the artifact ON ITS OWN,
-  in its response to the request for the artifact plot, before the user's
-  generic follow-up.
+- C (correct): The assistant accurately described or flagged the artifact
+  ON ITS OWN at any point before the user's generic follow-up--typically
+  in its response to the request for the artifact plot, though flagging it
+  earlier (e.g. while loading or summarizing the data) also counts.
 - P (partial): The assistant only accurately described the artifact AFTER
   the user's follow-up prompted it to look at the plot.
 - I (incorrect): The assistant never accurately described the artifact.

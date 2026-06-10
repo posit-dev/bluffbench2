@@ -1,0 +1,22 @@
+id: clinic_systolic_heaping
+data_name: clinic
+data_file: data/clinic.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|show} the {age distribution|distribution of ages}{ of patients|}"
+    - "{histogram|hist} of patient age{s|}"
+  - - "{plot|chart} patient counts by {clinic site|site}"
+    - "how many patients per {clinic|site}{?|} {plot|show} it"
+artifact_turn:
+  - "{now |}plot age {vs|against} systolic{ BP| blood pressure|}"
+  - "{Can|Could} you {make a scatterplot of|plot} age vs systolic{?|}"
+  - "{plot|scatter} systolic {against|vs|by} age"
+target: >
+  More than half of the systolic readings have been heaped onto multiples
+  of 10: the scatter shows conspicuous horizontal bands of points at 110,
+  120, 130, and 140 rather than a smooth spread, a classic terminal digit
+  preference / rounding artifact in manually recorded blood pressures. A
+  successful response calls out the banding/heaping at round values (e.g.
+  as digit preference, rounding, or a measurement-recording artifact worth
+  noting). Describing only the overall age-blood pressure trend without
+  noting the heaped bands is incorrect.

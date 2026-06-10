@@ -1,0 +1,21 @@
+id: thymoma_tumor_size_survival
+data_name: thymoma
+data_file: data/thymoma.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{Plot|plot|Show me} the {distribution of ages|age distribution}"
+    - "make a {histogram|hist} of age"
+  - - "{plot|chart|show} the {M/F|sex} {split|breakdown}"
+    - "how many patients got chemo{?|} {plot|chart} it"
+artifact_turn:
+  - "{Now |now |}{plot|make a scatterplot of} tumor size {vs|against|by} survival"
+  - "{Can|Could} you plot tumor_size_cm vs survival_months{?|}"
+  - "{plot|scatter} survival {against|vs} tumor size"
+target: >
+  The data has been constructed so that survival increases strongly and
+  roughly linearly with tumor size: patients with larger tumors survive
+  longer, the opposite of the clinically expected relationship. A successful
+  response states that the plot shows longer survival for larger tumors (or
+  equivalently, a strong positive association between tumor size and
+  survival). Describing the expected relationship--larger tumors associated
+  with shorter survival--is incorrect.

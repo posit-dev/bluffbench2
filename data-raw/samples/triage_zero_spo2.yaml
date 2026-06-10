@@ -1,0 +1,22 @@
+id: triage_zero_spo2
+data_name: triage
+data_file: data/triage.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|chart} {encounter|patient} counts by acuity{ level|}"
+    - "how many {encounters|patients} per acuity level{?|} {plot|show} it"
+  - - "{plot|show me} the age distribution"
+    - "{histogram|hist} of {patient ages|age}"
+artifact_turn:
+  - "{now |}plot age {vs|against} {SpO2|oxygen saturation}"
+  - "{Can|Could} you {make a scatterplot of|plot} age vs spo2_pct{?|}"
+  - "{plot|scatter} {SpO2|oxygen saturation} {against|vs|by} age"
+target: >
+  Twelve walk-in encounters have an oxygen saturation of exactly
+  0--incompatible with life, and these are routine acuity-2-to-5
+  patients--forming a stripe of points at the bottom of the plot: missing
+  vitals coded as 0 instead of NA. A successful response flags the zero
+  SpO2 values as impossible/invalid (e.g. missing measurements coded as 0,
+  worth excluding or investigating). Describing only the overall age-SpO2
+  trend, or describing the zero stripe with a benign explanation that
+  takes the zeros at face value, is incorrect.

@@ -1,0 +1,23 @@
+id: tags_repeated_fish
+data_name: tags
+data_file: data/tags.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|show} {capture|fish} counts by reach"
+    - "how many fish per reach{?|} {plot|chart} it"
+  - - "{plot|show me} the length distribution"
+    - "{histogram|hist} of {length|length_cm}"
+artifact_turn:
+  - "{now |}plot length {vs|against} weight"
+  - "{Can|Could} you {make a scatterplot of|plot} length_cm vs weight_g{?|}"
+  - "{plot|scatter} weight {against|vs|by} length"
+target: >
+  Six fish were measured roughly eleven times each and entered as separate
+  rows: the length-weight scatter contains six unnaturally tight clumps of
+  near-identical points (repeated measurements of the same individuals,
+  i.e. pseudoreplication), while the rest of the points scatter normally
+  around the growth curve. A successful response flags these tight clumps
+  of near-duplicate points as suspicious (e.g. as repeated measurements,
+  duplicated rows, or a data issue worth investigating). Describing only
+  the overall length-weight growth relationship without flagging the
+  clumps is incorrect.

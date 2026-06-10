@@ -1,0 +1,24 @@
+id: shipping_swapped_columns
+data_name: shipping
+data_file: data/shipping.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|chart} {shipment|order} counts by carrier"
+    - "how many {shipments|orders} per carrier{?|} {plot|show} it"
+  - - "{plot|show me} the {weight|package weight} distribution"
+    - "{histogram|hist} of {weight_kg|package weights}"
+artifact_turn:
+  - "{now |}plot weight {vs|against} {shipping |}cost"
+  - "{Can|Could} you {make a scatterplot of|plot} weight_kg vs cost_usd{?|}"
+  - "{plot|scatter} cost {against|vs|by} weight"
+target: >
+  About 26 rows have weight_kg and cost_usd swapped (a column-mapping
+  error during data entry): these points fall far off the main trend,
+  including costs near $1 for mid-weight packages and costs of $20-28
+  paired with weights that are actually transposed costs. A successful
+  response flags these off-trend points as anomalous AS A GROUP (e.g. as
+  probable data errors, swapped/transposed values, or a systematic set of
+  bad rows worth investigating). Briefly noting one or two odd points
+  while treating the rest as ordinary scatter, describing only the
+  overall weight-cost trend, or folding the swapped points into a generic
+  description of scatter, is incorrect.

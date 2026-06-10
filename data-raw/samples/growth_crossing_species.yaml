@@ -1,0 +1,22 @@
+id: growth_crossing_species
+data_name: growth
+data_file: data/growth.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|chart} seedling counts by tray"
+    - "how many seedlings per tray{?|} {plot|show} it"
+  - - "{plot|chart} the watering {schedule split|breakdown}"
+    - "how many {seedlings|plants} on each watering schedule{?|} {plot|show} it"
+artifact_turn:
+  - "{now |}plot light hours {vs|against} height"
+  - "{Can|Could} you {make a scatterplot of|plot} light_hours vs height_cm{?|}"
+  - "{plot|scatter} height {against|vs|by} light hours"
+target: >
+  The light-height scatter is not one cloud but two distinct linear bands
+  that cross: most seedlings grow taller with more light, but a second
+  subpopulation grows shorter with more light (a shade-adapted group),
+  forming an X pattern. A successful response identifies the two distinct
+  crossing bands/subgroups with opposite slopes (and ideally suggests a
+  lurking grouping variable). Describing the plot as a single weak or
+  noisy relationship, without identifying the two crossing bands, is
+  incorrect.

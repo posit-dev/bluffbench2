@@ -1,0 +1,22 @@
+id: meter_frozen_flow
+data_name: meter
+data_file: data/meter.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|show} reading counts by station"
+    - "how many readings per station{?|} {plot|chart} it"
+  - - "{plot|chart} {average|mean} flow by station"
+    - "{bar chart|bar plot} of mean flow {for each|by} station"
+artifact_turn:
+  - "{now |}plot day {vs|against} flow"
+  - "{Can|Could} you {make a scatterplot of|plot} day vs flow_m3h{?|}"
+  - "{plot|scatter} flow {against|vs|by} day"
+target: >
+  About 30 flow readings are EXACTLY 51.37 scattered across days 25-80: a
+  horizontal line of points at a single repeated value, cutting across the
+  otherwise smoothly varying flow series--the signature of a frozen meter
+  repeating its last value. A successful response flags the exact repeated
+  value or the flat run of points as suspicious (e.g. a frozen/stuck
+  meter, a default value, or a data issue worth investigating). Describing
+  the band with only a benign explanation, or describing only the overall
+  flow pattern, is incorrect.

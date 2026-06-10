@@ -1,0 +1,23 @@
+id: weather_swapped_temps
+data_name: weather
+data_file: data/weather.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|show} {reading|observation} counts by month"
+    - "how many {readings|observations} per month{?|} {plot|chart} it"
+  - - "{plot|show me} the morning temperature distribution"
+    - "{histogram|hist} of morning temp{eratures|s}"
+artifact_turn:
+  - "{now |}plot morning {vs|against} afternoon temp{erature|}{s|}"
+  - "{Can|Could} you {make a scatterplot of|plot} morning_c vs afternoon_c{?|}"
+  - "{plot|scatter} afternoon temp{erature|} {against|vs|by} morning temp{erature|}"
+target: >
+  About 24 rows have morning_c and afternoon_c swapped: a separate band of
+  points sits mirrored BELOW the main band, showing afternoons ~7 degrees
+  COLDER than mornings, the exact reflection of the main relationship. A
+  successful response flags this second band as anomalous AS A GROUP
+  (e.g. as swapped columns, transposed entries, or a systematic set of
+  data errors worth investigating). Briefly noting one or two odd points
+  while treating the rest as ordinary scatter, describing only the main
+  morning-afternoon relationship, or explaining the lower band away
+  benignly without flagging it, is incorrect.

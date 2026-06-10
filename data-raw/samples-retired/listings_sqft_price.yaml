@@ -1,0 +1,19 @@
+id: listings_sqft_price
+data_name: listings
+data_file: data/listings.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|show me} {listing counts by neighborhood|how many listings are in each neighborhood}"
+    - "{make|create} a bar {chart|plot} of neighborhood{ counts|}"
+  - - "{plot|show} the distribution of {year built|year_built}"
+    - "{histogram|hist} of bedrooms{, please|}"
+artifact_turn:
+  - "{now |}plot {square footage|sqft} {vs|against} price"
+  - "{Can|Could} you {make a scatterplot of|plot} sqft vs price{?|}"
+  - "{plot|scatter} price {against|vs|by} {square footage|sqft}"
+target: >
+  The data has been constructed so that price decreases as square footage
+  increases: bigger homes are cheaper, the opposite of the expected market
+  relationship. A successful response states that the plot shows prices
+  falling as square footage rises (a negative association). Describing the
+  expected relationship--larger homes costing more--is incorrect.

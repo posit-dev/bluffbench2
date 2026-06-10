@@ -1,0 +1,23 @@
+id: assay_rerun_specimens
+data_name: assay
+data_file: data/assay.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|chart} run counts by technician"
+    - "how many runs per technician{?|} {plot|show} it"
+  - - "{plot|show me} the concentration distribution"
+    - "{histogram|hist} of {concentration|concentration_ug}"
+artifact_turn:
+  - "{now |}plot concentration {vs|against} absorbance"
+  - "{Can|Could} you {make a scatterplot of|plot} concentration_ug vs absorbance{?|}"
+  - "{plot|scatter} absorbance {against|vs|by} concentration"
+target: >
+  Five specimens were re-run about a dozen times each and entered as
+  separate rows: the calibration scatter contains five unnaturally tight
+  clumps of near-identical points (repeated measurements of the same
+  specimens treated as independent runs), while the rest of the points
+  scatter normally around the calibration line. A successful response
+  flags these tight clumps of near-duplicate points as suspicious (e.g. as
+  re-runs, duplicated rows, or a data issue worth investigating).
+  Describing only the overall linear calibration relationship without
+  flagging the clumps is incorrect.

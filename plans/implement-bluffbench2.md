@@ -38,3 +38,15 @@ Design decisions recorded in `inst/questions.md`.
 - [x] Build dataset, document, smoke-test with 1 sample
 - [x] Full run against Sonnet 4.6 (medium effort, adaptive thinking)
 - [x] Subagent transcript review; fix issues; re-run until clean
+
+## Calibration (target ~20% for Sonnet 4.6 medium, 20 samples)
+
+- [x] Screen 14 real-world oddity types via direct "describe this plot" probes
+      (hard: heaping, imputed line, pseudoreplication, stuck sensor, swapped
+      columns, zero-defaults; medium: crossing subgroups, placeholder dates)
+- [x] 3 epochs on original 10; exclude all-correct (4 of 5 trends, trawl,
+      retention); keep fitness + 3 shapes
+- [x] Author 16 new hard samples (2 per oddity type) + 3 reserves
+- [x] 2-epoch calibration run on candidate 20; swap easiest samples for
+      reserves if C-rate lands above ~20%
+- [x] Final verification run + transcript review

@@ -1,0 +1,22 @@
+id: screentime_minutes_heaping
+data_name: screentime
+data_file: data/screentime.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|show} respondent counts by region"
+    - "how many respondents per region{?|} {plot|chart} it"
+  - - "{plot|show me} the age distribution"
+    - "{histogram|hist} of {respondent ages|age}"
+artifact_turn:
+  - "{now |}plot age {vs|against} daily {screen time|minutes}"
+  - "{Can|Could} you {make a scatterplot of|plot} age vs daily_minutes{?|}"
+  - "{plot|scatter} daily {screen time|minutes} {against|vs|by} age"
+target: >
+  A majority of the self-reported daily screen time values have been
+  heaped onto multiples of 30 minutes: the scatter shows conspicuous
+  horizontal bands at 120, 150, 180, 210, ... rather than a smooth spread,
+  the classic rounding pattern of self-reported durations. A successful
+  response calls out the banding/heaping at round half-hour values (e.g.
+  as self-report rounding or a data collection artifact worth noting).
+  Describing only the overall age-screen time trend without noting the
+  heaped bands is incorrect.

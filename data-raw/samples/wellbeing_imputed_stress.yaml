@@ -1,0 +1,22 @@
+id: wellbeing_imputed_stress
+data_name: wellbeing
+data_file: data/wellbeing.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|chart} participant counts by employment{ status|}"
+    - "how many participants per employment {status|category}{?|} {plot|show} it"
+  - - "{plot|show me} the {sleep|sleep_hours} distribution"
+    - "{histogram|hist} of sleep hours"
+artifact_turn:
+  - "{now |}plot sleep {hours |}{vs|against} stress{ score|}"
+  - "{Can|Could} you {make a scatterplot of|plot} sleep_hours vs stress_score{?|}"
+  - "{plot|scatter} stress {score |}{against|vs|by} sleep{ hours|}"
+target: >
+  About a quarter of the stress scores fall EXACTLY on a straight line
+  (stress = 95 - 7.5 * sleep_hours) with zero residual, as if missing
+  values had been filled in from a fitted regression: within the noisy
+  cloud there is a perfectly straight run of points along the trend. A
+  successful response flags this suspiciously exact line of points (e.g.
+  as likely imputed, model-generated, or synthetic values worth
+  investigating). Describing only the overall sleep-stress trend without
+  flagging the zero-noise line is incorrect.

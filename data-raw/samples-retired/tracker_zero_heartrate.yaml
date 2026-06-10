@@ -1,0 +1,22 @@
+id: tracker_zero_heartrate
+data_name: tracker
+data_file: data/tracker.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|chart} user counts by device"
+    - "how many users per device{?|} {plot|show} it"
+  - - "{plot|show me} the {daily steps|steps} distribution"
+    - "{histogram|hist} of daily{ _|}steps"
+artifact_turn:
+  - "{now |}plot {daily |}steps {vs|against} resting {heart rate|HR}"
+  - "{Can|Could} you {make a scatterplot of|plot} daily_steps vs resting_hr{?|}"
+  - "{plot|scatter} resting {heart rate|HR} {against|vs|by} steps"
+target: >
+  Fourteen users have a resting heart rate of exactly 0--physiologically
+  impossible for living users--forming a stripe of points along the bottom
+  of the plot across all step counts: sensor dropouts logged as 0 instead
+  of missing. A successful response flags the zero heart rates as
+  impossible/invalid values (e.g. device dropouts or missing data coded as
+  0, worth excluding or investigating). Describing only the overall
+  steps-heart rate trend, or describing the zero stripe with a benign
+  explanation that takes the zeros at face value, is incorrect.
