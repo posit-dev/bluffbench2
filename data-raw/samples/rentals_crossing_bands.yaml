@@ -14,8 +14,8 @@ artifact_turn:
 target: >
   The distance-rent scatter is not one cloud but two distinct linear bands
   that cross: most listings get cheaper with distance from the center, but
-  a second subpopulation gets more expensive with distance, forming an X
-  pattern. A successful response identifies the two distinct crossing
+  a small subpopulation (roughly one listing in seven) gets more expensive
+  with distance, forming a faint X pattern. A successful response identifies the two distinct crossing
   bands/subgroups with opposite slopes (and ideally suggests a lurking
   segment). Describing the plot as a single weak or noisy relationship,
   without identifying the two crossing bands, is incorrect.

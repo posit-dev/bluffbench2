@@ -1,0 +1,23 @@
+id: feedback_straight_liners
+data_name: feedback
+data_file: data/feedback.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|chart} response counts by course"
+    - "how many responses per course{?|} {plot|show} it"
+  - - "{plot|chart} the in-person/online {split|breakdown}"
+    - "how many responses {were|came from} online{ students|}{?|} {plot|show} it"
+artifact_turn:
+  - "{now |}plot content rating {vs|against} instructor rating"
+  - "{Can|Could} you {make a scatterplot of|plot} content_rating vs instructor_rating{?|}"
+  - "{plot|scatter} instructor rating {against|vs|by} content rating"
+target: >
+  About 34 responses have content_rating EXACTLY equal to
+  instructor_rating--survey straight-lining--forming a perfect diagonal
+  line of points along y = x that cuts through the differently-sloped
+  correlated cloud and sticks out at both extremes. A successful response
+  flags the exact-equality diagonal or the suspicious number of identical
+  answers as odd (e.g. straight-lining, careless responding, a duplicated
+  column, or a data issue worth investigating)--noticing even part of the
+  diagonal run as anomalous counts. Describing only the overall positive
+  correlation between the two ratings is incorrect.

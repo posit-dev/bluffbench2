@@ -1,0 +1,24 @@
+id: quotes_filtered_void
+data_name: quotes
+data_file: data/quotes.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|chart} quote counts by region"
+    - "how many quotes per region{?|} {plot|show} it"
+  - - "{plot|chart} {quote counts by plan tier|the plan tier breakdown}"
+    - "how many quotes {per|for each} {tier|plan tier}{?|} {plot|show} it"
+artifact_turn:
+  - "{now |}plot {applicant |}age {vs|against} {monthly |}premium"
+  - "{Can|Could} you {make a scatterplot of|plot} applicant_age vs monthly_premium{?|}"
+  - "{plot|scatter} {monthly |}premium {against|vs|by} {applicant |}age"
+target: >
+  A rectangular region of the scatter (ages roughly 38-52 with premiums
+  roughly 185-265) contains no points at all: a filtering or join bug
+  dropped that segment, leaving an unnatural empty rectangle inside an
+  otherwise dense band, with mid-age applicants appearing only at
+  implausibly low premiums. A successful response flags the empty
+  region/gap as odd (e.g. missing rows, a dropped segment, or a filtering
+  issue worth investigating)--noting the suspicious absence counts even
+  without diagnosing the cause. Describing only the overall age-premium
+  trend, or explaining the gap away as a plausible pricing pattern
+  without noting that it is odd, is incorrect.

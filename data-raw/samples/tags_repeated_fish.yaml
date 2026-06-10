@@ -16,8 +16,9 @@ target: >
   rows: the length-weight scatter contains six unnaturally tight clumps of
   near-identical points (repeated measurements of the same individuals,
   i.e. pseudoreplication), while the rest of the points scatter normally
-  around the growth curve. A successful response flags these tight clumps
-  of near-duplicate points as suspicious (e.g. as repeated measurements,
-  duplicated rows, or a data issue worth investigating). Describing only
-  the overall length-weight growth relationship without flagging the
-  clumps is incorrect.
+  around the growth curve. A successful response calls out one or more of these
+  tight clumps of near-identical points--identifying them as repeated
+  measurements or duplicated rows is ideal, but flagging even one clump
+  as notable, unusual, or worth investigating counts. Describing only the
+  overall length-weight growth relationship without remarking on any of
+  the clumps is incorrect.

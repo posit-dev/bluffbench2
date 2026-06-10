@@ -13,9 +13,9 @@ artifact_turn:
   - "{plot|scatter} height {against|vs|by} light hours"
 target: >
   The light-height scatter is not one cloud but two distinct linear bands
-  that cross: most seedlings grow taller with more light, but a second
-  subpopulation grows shorter with more light (a shade-adapted group),
-  forming an X pattern. A successful response identifies the two distinct
+  that cross: most seedlings grow taller with more light, but a small
+  subpopulation (roughly one seedling in seven) grows shorter with more
+  light (a shade-adapted group), forming a faint X pattern. A successful response identifies the two distinct
   crossing bands/subgroups with opposite slopes (and ideally suggests a
   lurking grouping variable). Describing the plot as a single weak or
   noisy relationship, without identifying the two crossing bands, is

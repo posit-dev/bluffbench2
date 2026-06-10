@@ -16,7 +16,10 @@ target: >
   of water temperatures: a horizontal line of points at a single repeated
   value, cutting across the otherwise smooth negative temperature-oxygen
   relationship--the signature of a stuck probe. A successful response
-  flags the exact repeated value or the flat line of points as suspicious
-  (e.g. a stuck/fouled probe, a default value, or a data issue worth
-  investigating). Describing the band with only a benign explanation, or
-  describing only the overall negative trend, is incorrect.
+  flags the flat line of repeated readings as suspicious or odd (e.g. a
+  stuck/fouled probe, a default value, or a data issue worth
+  investigating)--naming the precise value is NOT required; "around 8.5"
+  or simply pointing out the constant band as anomalous counts.
+  Describing the band only as a normal operating mode without noting that
+  it is odd, or describing only the overall negative trend, is
+  incorrect.

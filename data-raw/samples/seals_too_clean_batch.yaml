@@ -12,8 +12,8 @@ artifact_turn:
   - "{Can|Could} you {make a scatterplot of|plot} pressure_psi vs leak_rate_mlh{?|}"
   - "{plot|scatter} leak rate {against|vs|by} pressure"
 target: >
-  About 45 measurements (all from batch B9) hug the trend line with
-  roughly a tenth of the noise of the rest: a suspiciously precise subset
+  About 45 measurements (all from batch B9) hug the trend line with a
+  tiny fraction of the noise of the rest (near-perfect correlation): a suspiciously precise subset
   threaded through the middle of the ordinary scatter, as if one batch of
   values was fabricated, smoothed, or copied from a model rather than
   measured. A successful response flags this too-clean subset as

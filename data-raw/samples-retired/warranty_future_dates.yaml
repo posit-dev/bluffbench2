@@ -1,0 +1,21 @@
+id: warranty_future_dates
+data_name: warranty
+data_file: data/warranty.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|chart} claim counts by product"
+    - "how many claims per product{?|} {plot|show} it"
+  - - "{plot|show me} the claim amount distribution"
+    - "{histogram|hist} of claim {amounts|amount}"
+artifact_turn:
+  - "{now |}plot purchase date {vs|against} claim amount"
+  - "{Can|Could} you {make a scatterplot of|plot} purchase_date vs claim_amount{?|}"
+  - "{plot|scatter} claim amount {against|vs|by} purchase date"
+target: >
+  Seven claims have a purchase date of exactly 2030-01-01--years in the
+  future, which is impossible for a filed claim--forming an isolated clump
+  to the right of the real 2021-2025 data: a placeholder value for unknown
+  purchase dates. A successful response flags the 2030 dates as
+  impossible placeholder/default values (worth excluding or fixing).
+  Describing only the real-data pattern, or treating the future-dated
+  cluster as legitimate, is incorrect.

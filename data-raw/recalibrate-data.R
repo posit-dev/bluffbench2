@@ -95,3 +95,70 @@ reruns <- lapply(1:3, function(i) {
 assay <- rbind(assay, do.call(rbind, reruns))
 assay <- assay[sample(nrow(assay)), ]
 write_data(assay, "assay")
+
+# round 2 ----------------------------------------------------------------------
+# - weather: swapped rows rebalanced to ~45% and bands moved closer (+5)
+# - rentals/growth: minority crossing band halved
+# - seals: too-clean batch made even tighter (sd 0.25 -> 0.08)
+
+# weather: two balanced mirrored bands from swapped columns -------------------
+n <- 170
+weather <- data.frame(
+  station_id = sprintf("WX%02d", sample(1:25, n, replace = TRUE)),
+  month = sample(month.abb[4:9], n, replace = TRUE),
+  morning_c = round(runif(n, 6, 22), 1)
+)
+weather$afternoon_c <- round(weather$morning_c + 5 + rnorm(n, 0, 1.2), 1)
+swap <- sample(n, round(0.45 * n))
+tmp <- weather$morning_c[swap]
+weather$morning_c[swap] <- weather$afternoon_c[swap]
+weather$afternoon_c[swap] <- tmp
+write_data(weather, "weather")
+
+# rentals: smaller crossing band -----------------------------------------------
+n <- 190
+luxury <- runif(n) < 0.14
+rentals <- data.frame(
+  listing = sample(10000:99999, n),
+  bedrooms = sample(1:4, n, replace = TRUE),
+  distance_km = round(runif(n, 0.3, 18), 2)
+)
+rentals$rent_usd <- round(ifelse(
+  luxury,
+  1300 + 95 * rentals$distance_km,
+  2900 - 80 * rentals$distance_km
+) + rnorm(n, 0, 130))
+write_data(rentals, "rentals")
+
+# growth: smaller crossing band ------------------------------------------------
+n <- 180
+shade <- runif(n) < 0.15
+growth <- data.frame(
+  tray = sample(paste0("T", 1:10), n, replace = TRUE),
+  watering = sample(c("daily", "alternate"), n, replace = TRUE),
+  light_hours = round(runif(n, 4, 16), 1)
+)
+growth$height_cm <- round(ifelse(
+  shade,
+  30 - 1.3 * growth$light_hours,
+  2 + 1.7 * growth$light_hours
+) + rnorm(n, 0, 2.2), 1)
+write_data(growth, "growth")
+
+# seals: too-clean batch tightened ---------------------------------------------
+n <- 165
+seals <- data.frame(
+  batch = sample(paste0("B", 1:8), n, replace = TRUE),
+  inspector = sample(c("AL", "JM", "TS"), n, replace = TRUE),
+  pressure_psi = round(runif(n, 10, 90), 1)
+)
+seals$leak_rate_mlh <- round(2 + 0.31 * seals$pressure_psi + rnorm(n, 0, 3.4), 2)
+clean <- data.frame(
+  batch = "B9",
+  inspector = sample(c("AL", "JM", "TS"), 45, replace = TRUE),
+  pressure_psi = round(runif(45, 15, 85), 1)
+)
+clean$leak_rate_mlh <- round(2 + 0.31 * clean$pressure_psi + rnorm(45, 0, 0.08), 2)
+seals <- rbind(seals, clean)
+seals <- seals[sample(nrow(seals)), ]
+write_data(seals, "seals")

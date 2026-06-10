@@ -12,12 +12,14 @@ artifact_turn:
   - "{Can|Could} you {make a scatterplot of|plot} morning_c vs afternoon_c{?|}"
   - "{plot|scatter} afternoon temp{erature|} {against|vs|by} morning temp{erature|}"
 target: >
-  About 24 rows have morning_c and afternoon_c swapped: a separate band of
-  points sits mirrored BELOW the main band, showing afternoons ~7 degrees
-  COLDER than mornings, the exact reflection of the main relationship. A
-  successful response flags this second band as anomalous AS A GROUP
-  (e.g. as swapped columns, transposed entries, or a systematic set of
-  data errors worth investigating). Briefly noting one or two odd points
-  while treating the rest as ordinary scatter, describing only the main
-  morning-afternoon relationship, or explaining the lower band away
-  benignly without flagging it, is incorrect.
+  Nearly half of the rows have morning_c and afternoon_c swapped: the
+  scatter splits into two roughly balanced parallel bands, one showing
+  afternoons ~5 degrees warmer than mornings and the other its exact
+  mirror image (afternoons ~5 degrees COLDER), which is meteorologically
+  implausible as a systematic pattern. A
+  successful response flags the mirrored band or its points as suspicious
+  or indicative of something being off--identifying the swap is ideal,
+  but noting that afternoons systematically colder than mornings is odd,
+  or calling these points probable data errors worth investigating,
+  counts. Describing only a generic spread or two groups without flagging
+  anything as off is incorrect.
