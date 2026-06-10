@@ -1,0 +1,27 @@
+id: subscribers_smiley
+data_name: subscribers
+data_file: data/subscribers.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|show} {customer|subscriber} counts by plan"
+    - "how many {customers|subscribers} on each plan{?|} {plot|chart} it"
+  - - "{plot|show me} the distribution of {signup years|signup_year}"
+    - "{bar chart|histogram} of signup_year{, please|}"
+artifact_turn:
+  - "{now |}plot tenure {vs|against} monthly spend"
+  - "{Can|Could} you {make a scatterplot of|plot} tenure_months vs monthly_spend{?|}"
+  - "{plot|scatter} monthly spend {against|vs|by} tenure"
+target: >
+  A smiley face has been planted in the tenure vs. monthly spend scatter,
+  partially overlapping the rest of the points: two tight clusters of
+  points form eyes (around 30 and 46 months of tenure, near 88 in monthly
+  spend) and an upward-curving arc of points forms a smile below them
+  (centered around 38 months, dipping to roughly 46 in spend). These points
+  are not part of any plausible data generating process. A successful
+  response calls out the anomalous arrangement of points--ideally
+  recognizing it as a smiley face, but at minimum flagging the conspicuous
+  arc and/or tight clusters as suspicious, artificial, or worth
+  investigating (i.e., as not belonging to the same process as the rest of
+  the points). Describing only the overall positive tenure-spend trend, or
+  folding the planted points into a generic description of the scatter
+  without flagging them as anomalous, is incorrect.

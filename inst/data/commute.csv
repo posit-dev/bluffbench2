@@ -1,0 +1,151 @@
+"respondent","borough","vehicle","distance_km","commute_min"
+1,"Midtown","car",26.5,30
+2,"Midtown","train",20.1,34
+3,"North End","car",16.6,48
+4,"Midtown","bus",36.5,20
+5,"Lakeside","train",22.7,34
+6,"Lakeside","train",3.7,48
+7,"Harborview","bike",38.2,21
+8,"Lakeside","car",16.9,39
+9,"Harborview","bus",22.3,37
+10,"Lakeside","bus",18.8,38
+11,"Harborview","car",1.4,55
+12,"Lakeside","car",32,34
+13,"Midtown","car",30.6,21
+14,"Harborview","car",29.5,27
+15,"North End","train",1.9,60
+16,"Harborview","car",1.6,54
+17,"North End","car",42,10
+18,"Lakeside","car",16.1,50
+19,"Midtown","car",23.2,29
+20,"Harborview","car",19.3,38
+21,"Harborview","car",33.5,13
+22,"North End","car",19.4,36
+23,"Lakeside","bus",15.9,37
+24,"Lakeside","car",37.5,21
+25,"North End","train",33.2,28
+26,"North End","bike",39.1,12
+27,"North End","car",23.1,25
+28,"Lakeside","car",1.4,50
+29,"North End","bus",35,22
+30,"Midtown","bus",16.6,48
+31,"Lakeside","car",13.3,46
+32,"North End","bike",12.8,39
+33,"Midtown","train",40.7,12
+34,"Harborview","bus",32.5,23
+35,"North End","car",10.4,49
+36,"North End","car",4,52
+37,"North End","train",6.5,46
+38,"North End","train",13,44
+39,"Midtown","car",13.3,49
+40,"Midtown","bus",37.7,16
+41,"Midtown","car",10.7,45
+42,"North End","train",16.1,35
+43,"North End","car",31.5,17
+44,"Harborview","car",4.1,52
+45,"Midtown","car",24.7,29
+46,"Harborview","car",6.1,62
+47,"Harborview","car",14.5,47
+48,"North End","train",26.6,36
+49,"Harborview","car",34.3,27
+50,"Harborview","car",22.3,33
+51,"Harborview","car",10,47
+52,"Midtown","car",8.6,50
+53,"Lakeside","car",20.2,28
+54,"Lakeside","car",20,39
+55,"Lakeside","bus",17.1,40
+56,"Lakeside","car",14.4,52
+57,"Lakeside","car",2,51
+58,"North End","bus",23.1,40
+59,"Midtown","train",16.2,39
+60,"Harborview","train",16.5,40
+61,"Midtown","car",5.5,44
+62,"Harborview","car",33.8,27
+63,"North End","train",33.4,20
+64,"Harborview","car",26.9,37
+65,"Harborview","car",17.1,39
+66,"Lakeside","car",34.1,22
+67,"Midtown","car",25.8,34
+68,"Lakeside","train",37.7,23
+69,"Midtown","bus",8.7,52
+70,"Lakeside","bus",33.3,21
+71,"North End","bus",5.3,49
+72,"Harborview","car",11.8,48
+73,"North End","bus",23,35
+74,"Harborview","bike",40.6,19
+75,"Harborview","bus",14.1,47
+76,"Harborview","train",22.3,33
+77,"Midtown","car",33,29
+78,"Midtown","train",3.4,57
+79,"Lakeside","car",33.7,18
+80,"North End","car",33.8,29
+81,"Lakeside","train",6.9,50
+82,"North End","car",33.5,21
+83,"North End","bus",3.8,45
+84,"Lakeside","train",10.7,46
+85,"Lakeside","train",30.9,30
+86,"Midtown","train",40,9
+87,"Midtown","bus",21.6,41
+88,"Midtown","bus",27,25
+89,"Lakeside","train",14.4,49
+90,"Lakeside","train",1.6,58
+91,"Midtown","car",34.9,28
+92,"Midtown","car",17.1,36
+93,"North End","train",13.3,37
+94,"Harborview","car",33.2,19
+95,"Midtown","train",23.3,38
+96,"Lakeside","bus",39.5,24
+97,"North End","train",31,34
+98,"Midtown","train",38.9,15
+99,"Harborview","bus",24.5,27
+100,"Lakeside","bus",4.6,52
+101,"Lakeside","car",6.5,47
+102,"North End","bike",40.9,19
+103,"Midtown","car",20.3,39
+104,"Midtown","car",15.1,40
+105,"North End","car",11.6,38
+106,"Lakeside","train",24.6,23
+107,"Lakeside","car",15.4,52
+108,"Midtown","car",5.1,52
+109,"Harborview","train",41.4,8
+110,"Lakeside","car",17.5,39
+111,"Midtown","bike",36.8,24
+112,"North End","bus",31.6,28
+113,"Harborview","car",39.1,13
+114,"North End","car",40,11
+115,"Midtown","car",20,40
+116,"North End","bus",37,28
+117,"Lakeside","train",37.9,15
+118,"North End","train",12.2,41
+119,"Lakeside","bus",27.8,28
+120,"Harborview","bike",19.6,32
+121,"North End","train",11.1,49
+122,"Lakeside","train",29.1,27
+123,"North End","bike",29.3,32
+124,"North End","car",6.9,42
+125,"North End","bus",36.2,15
+126,"Lakeside","car",33.7,13
+127,"Harborview","car",5.7,54
+128,"Harborview","car",16.5,37
+129,"Lakeside","car",37.9,18
+130,"Harborview","train",22.5,37
+131,"Harborview","bus",15.4,34
+132,"Lakeside","bus",34.3,19
+133,"Midtown","bike",31,20
+134,"Midtown","train",17.1,40
+135,"North End","bike",19,38
+136,"North End","train",31.8,32
+137,"Lakeside","train",9.1,49
+138,"Lakeside","car",2.5,62
+139,"Lakeside","car",41.5,12
+140,"North End","car",17.5,40
+141,"Harborview","bus",33.9,27
+142,"North End","car",23.2,35
+143,"Lakeside","car",13.1,45
+144,"Harborview","car",4.9,58
+145,"Midtown","car",5.5,43
+146,"Midtown","bus",17.6,42
+147,"Midtown","car",34.2,25
+148,"Midtown","train",33,16
+149,"Lakeside","train",31.7,17
+150,"Lakeside","car",39.1,14

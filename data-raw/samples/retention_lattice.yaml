@@ -1,0 +1,27 @@
+id: retention_lattice
+data_name: retention
+data_file: data/retention.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|show} user counts by platform"
+    - "how many users per platform{?|} {plot|chart} it"
+  - - "{plot|show me} {user counts by signup month|the signup month breakdown}"
+    - "{bar chart|bar plot} of signup_month{, please|}"
+artifact_turn:
+  - "{now |}plot days active {vs|against} sessions"
+  - "{Can|Could} you {make a scatterplot of|plot} days_active vs sessions{?|}"
+  - "{plot|scatter} sessions {against|vs|by} days active"
+target: >
+  The days active vs. sessions scatter follows a noisy positive trend,
+  except for 36 points arranged in a perfect 6-by-6 grid (days_active from
+  235 to 285 by 10, sessions from 310 to 360 by 10), sitting above the
+  main cloud. The exact lattice arrangement is clearly not part of the
+  data generating process that produced the rest of the points. A
+  successful response calls out this block of points as anomalous--ideally
+  noting its perfectly regular grid/lattice structure, but at minimum
+  flagging the dense rectangular block as suspicious or artificial (for
+  example, suggesting the values look capped, rounded, duplicated, or
+  otherwise not organic, or that those rows warrant investigation).
+  Describing only the overall positive trend, or folding the block into a
+  generic description of the scatter without flagging it as anomalous, is
+  incorrect.

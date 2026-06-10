@@ -1,0 +1,36 @@
+Package: bluffbench2
+Title: An Eval Measuring Whether Agents Notice What's Actually in a Plot
+Version: 0.0.0.9000
+Authors@R:
+    person("Simon", "Couch", , "simon.couch@posit.co", role = c("aut", "cre"))
+Description: A multi-turn, artifact-driven evaluation of language models'
+    willingness to pause and examine plots during routine data analysis.
+    Agents are situated in a realistic harness, walked through a few
+    unremarkable plotting requests, and then asked to make a plot containing
+    a counterintuitive or anomalous artifact. The eval measures whether the
+    agent notices and accurately describes the artifact. A harder, more
+    realistic successor to bluffbench.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Depends:
+    R (>= 4.1)
+Imports:
+    btw,
+    cli,
+    ellmer,
+    glue,
+    jsonlite,
+    purrr,
+    rlang,
+    tibble,
+    vitals,
+    withr
+Suggests:
+    dplyr,
+    ggplot2,
+    tidyverse,
+    usethis,
+    yaml
+LazyData: true

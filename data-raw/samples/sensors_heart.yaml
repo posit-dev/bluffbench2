@@ -1,0 +1,28 @@
+id: sensors_heart
+data_name: sensors
+data_file: data/sensors.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|show} {reading|observation} counts by station"
+    - "how many readings per station{?|} {plot|chart} it"
+  - - "{plot|show me} the {battery|battery_pct} distribution"
+    - "{histogram|hist} of battery {levels|percentages}"
+artifact_turn:
+  - "{now |}plot temperature {vs|against} humidity"
+  - "{Can|Could} you {make a scatterplot of|plot} temperature_c vs humidity_pct{?|}"
+  - "{plot|scatter} humidity {against|vs|by} temperature"
+target: >
+  A heart shape has been planted in the temperature vs. humidity scatter,
+  centered around 21 degrees C and 52 percent humidity and partially
+  overlapping the rest of the points: roughly 60 points trace the outline
+  of a heart, with two lobes near the top (around 60-70 percent humidity)
+  and a point at the bottom dipping to roughly 27 percent humidity. These
+  points are not part of any plausible data generating process. A
+  successful response calls out the anomalous arrangement of
+  points--ideally recognizing it as a heart, but at minimum flagging the
+  conspicuous curve or outline of points as suspicious, artificial, or
+  worth investigating (i.e., as not belonging to the same process as the
+  rest of the points). Describing only the overall negative
+  temperature-humidity trend, or folding the planted points into a generic
+  description of the scatter without flagging them as anomalous, is
+  incorrect.
