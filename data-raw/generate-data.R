@@ -1,8 +1,8 @@
-# Generates the synthetic datasets shipped in inst/data/. Each dataset
-# contains a couple of unremarkable columns (for the lull plots) and a pair
-# of columns whose joint distribution contains the artifact.
-
-set.seed(20260610)
+# Generates the synthetic datasets shipped in inst/data/, one section per
+# dataset. Each dataset contains a couple of unremarkable columns (for the
+# lull plots) and a pair of columns whose joint distribution contains the
+# artifact. Each section sets its own seed so datasets can be re-tuned
+# independently.
 
 write_data <- function(df, name) {
   write.csv(
@@ -14,266 +14,405 @@ write_data <- function(df, name) {
 
 clip <- function(x, lo, hi) pmin(pmax(x, lo), hi)
 
-# thymoma: larger tumors, longer survival ------------------------------------
-n <- 150
-thymoma <- data.frame(
-  patient_id = sprintf("PT-%04d", sample(1000:9999, n)),
-  age = round(clip(rnorm(n, 62, 12), 28, 88)),
-  sex = sample(c("M", "F"), n, replace = TRUE, prob = c(0.55, 0.45)),
-  chemo = sample(c("yes", "no"), n, replace = TRUE, prob = c(0.4, 0.6)),
-  tumor_size_cm = round(runif(n, 0.8, 9.2), 1)
-)
-thymoma$survival_months <- round(clip(
-  6 + 9.5 * thymoma$tumor_size_cm + rnorm(n, 0, 9),
-  1, 120
-))
-write_data(thymoma, "thymoma")
-
-# fitness: more exercise, higher resting heart rate ---------------------------
-n <- 160
-fitness <- data.frame(
-  participant = sprintf("P%03d", seq_len(n)),
-  age = round(clip(rnorm(n, 41, 13), 18, 75)),
-  sex = sample(c("M", "F", "NB"), n, replace = TRUE, prob = c(0.47, 0.49, 0.04)),
-  weekly_exercise_hrs = round(clip(rexp(n, 1 / 5), 0, 16), 1)
-)
-fitness$resting_hr <- round(clip(
-  52 + 2.4 * fitness$weekly_exercise_hrs + rnorm(n, 0, 4.5),
-  45, 110
-))
-write_data(fitness, "fitness")
-
-# listings: bigger homes, lower prices ----------------------------------------
-n <- 180
-listings <- data.frame(
-  listing_id = sample(10000:99999, n),
-  neighborhood = sample(
-    c("Eastmoor", "Riverside", "Old Town", "Hillcrest", "The Flats"),
-    n,
-    replace = TRUE
-  ),
-  year_built = sample(1925:2022, n, replace = TRUE),
-  sqft = round(runif(n, 650, 3900))
-)
-listings$bedrooms <- clip(round(listings$sqft / 900 + rnorm(n, 0.8, 0.7)), 1, 6)
-listings$price <- round(clip(
-  980000 - 160 * listings$sqft + rnorm(n, 0, 48000),
-  120000, 1.2e6
-), -2)
-write_data(listings, "listings")
-
-# dosage: higher dose, worse symptoms -----------------------------------------
+# assay: a few specimens re-run many times (pseudoreplication) ----------------
+set.seed(101)
 n <- 140
-dosage <- data.frame(
-  subject = sprintf("S-%03d", seq_len(n)),
-  site = sample(paste0("Site ", LETTERS[1:4]), n, replace = TRUE),
-  age = round(clip(rnorm(n, 47, 14), 18, 80)),
-  dose_mg = sample(c(0, 25, 50, 100, 150, 200), n, replace = TRUE)
+assay <- data.frame(
+  run_id = seq_len(n),
+  technician = sample(c("DH", "KM", "RS"), n, replace = TRUE),
+  concentration_ug = round(runif(n, 2, 95), 2)
 )
-dosage$symptom_score <- round(clip(
-  18 + 0.22 * dosage$dose_mg + rnorm(n, 0, 7),
-  0, 100
-), 1)
-write_data(dosage, "dosage")
-
-# commute: longer distances, shorter commutes ---------------------------------
-n <- 150
-commute <- data.frame(
-  respondent = seq_len(n),
-  borough = sample(
-    c("North End", "Harborview", "Midtown", "Lakeside"),
-    n,
-    replace = TRUE
-  ),
-  vehicle = sample(
-    c("car", "bus", "train", "bike"),
-    n,
-    replace = TRUE,
-    prob = c(0.5, 0.2, 0.2, 0.1)
-  ),
-  distance_km = round(runif(n, 1, 42), 1)
-)
-commute$commute_min <- round(clip(
-  58 - 1.05 * commute$distance_km + rnorm(n, 0, 5.5),
-  4, 90
-))
-write_data(commute, "commute")
-
-# subscribers: smiley face in tenure vs monthly spend -------------------------
-n_bg <- 190
-bg <- data.frame(
-  tenure_months = round(runif(n_bg, 0, 72), 1),
-  monthly_spend = NA_real_
-)
-bg$monthly_spend <- round(clip(
-  35 + 0.55 * bg$tenure_months + rnorm(n_bg, 0, 16),
-  5, 130
-), 2)
-
-eye <- function(cx, cy, n = 11) {
+assay$absorbance <- round(0.04 + 0.0095 * assay$concentration_ug +
+  rnorm(n, 0, 0.045), 3)
+reruns <- lapply(1:3, function(i) {
+  conc <- runif(1, 15, 85)
+  ab <- 0.04 + 0.0095 * conc
+  k <- 20
   data.frame(
-    tenure_months = round(rnorm(n, cx, 0.9), 1),
-    monthly_spend = round(rnorm(n, cy, 1.6), 2)
+    run_id = n + (i - 1) * 20 + seq_len(k),
+    technician = sample(c("DH", "KM", "RS"), 1),
+    concentration_ug = round(conc + rnorm(k, 0, 0.15), 2),
+    absorbance = round(ab + rnorm(k, 0, 0.004), 3)
   )
-}
-t_arc <- seq(pi + 0.45, 2 * pi - 0.45, length.out = 38)
-mouth <- data.frame(
-  tenure_months = round(38 + 13 * cos(t_arc) + rnorm(38, 0, 0.35), 1),
-  monthly_spend = round(72 + 26 * sin(t_arc) + rnorm(38, 0, 0.7), 2)
+})
+assay <- rbind(assay, do.call(rbind, reruns))
+assay <- assay[sample(nrow(assay)), ]
+write_data(assay, "assay")
+
+# bridges: the same few bridges inspected repeatedly --------------------------
+set.seed(102)
+n <- 135
+bridges <- data.frame(
+  inspection_id = sprintf("INS%05d", sample(10000:99999, n)),
+  district = sample(c("north", "south", "east", "west"), n, replace = TRUE),
+  span_m = round(runif(n, 18, 220), 1)
 )
-face <- rbind(eye(30, 88), eye(46, 88), mouth)
-
-subscribers <- rbind(bg, face)
-subscribers <- subscribers[sample(nrow(subscribers)), ]
-subscribers$plan <- sample(
-  c("basic", "standard", "premium"),
-  nrow(subscribers),
-  replace = TRUE,
-  prob = c(0.45, 0.35, 0.2)
-)
-subscribers$signup_year <- sample(2019:2025, nrow(subscribers), replace = TRUE)
-subscribers$customer_id <- sprintf("C%05d", sample(10000:99999, nrow(subscribers)))
-subscribers <- subscribers[, c(
-  "customer_id", "plan", "signup_year", "tenure_months", "monthly_spend"
-)]
-write_data(subscribers, "subscribers")
-
-# sensors: heart shape in temperature vs humidity -----------------------------
-n_bg <- 180
-sensors_bg <- data.frame(
-  temperature_c = round(runif(n_bg, 4, 36), 1),
-  humidity_pct = NA_real_
-)
-sensors_bg$humidity_pct <- round(clip(
-  85 - 1.1 * sensors_bg$temperature_c + rnorm(n_bg, 0, 11),
-  5, 100
-), 1)
-
-t_heart <- seq(0, 2 * pi, length.out = 60)
-heart_x <- 16 * sin(t_heart)^3
-heart_y <- 13 * cos(t_heart) - 5 * cos(2 * t_heart) -
-  2 * cos(3 * t_heart) - cos(4 * t_heart)
-heart <- data.frame(
-  temperature_c = round(21 + 0.45 * heart_x + rnorm(60, 0, 0.25), 1),
-  humidity_pct = round(52 + 1.4 * heart_y + rnorm(60, 0, 0.6), 1)
-)
-
-sensors <- rbind(sensors_bg, heart)
-sensors <- sensors[sample(nrow(sensors)), ]
-sensors$station = sprintf("ST-%02d", sample(1:18, nrow(sensors), replace = TRUE))
-sensors$battery_pct <- round(runif(nrow(sensors), 11, 100))
-sensors <- sensors[, c("station", "battery_pct", "temperature_c", "humidity_pct")]
-write_data(sensors, "sensors")
-
-# trawl: tight off-curve cluster in length vs weight --------------------------
-n_bg <- 200
-trawl_bg <- data.frame(
-  species = sample(
-    c("haddock", "whiting", "pollock", "hake"),
-    n_bg,
-    replace = TRUE
-  ),
-  depth_m = round(runif(n_bg, 30, 220)),
-  length_cm = round(runif(n_bg, 9, 78), 1)
-)
-trawl_bg$weight_g <- round(
-  0.0095 * trawl_bg$length_cm^3 * exp(rnorm(n_bg, 0, 0.16))
-)
-
-blob_n <- 24
-blob <- data.frame(
-  species = sample(c("haddock", "whiting"), blob_n, replace = TRUE),
-  depth_m = round(runif(blob_n, 30, 220)),
-  length_cm = round(rnorm(blob_n, 29, 1.1), 1),
-  weight_g = round(rnorm(blob_n, 2550, 70))
-)
-
-trawl <- rbind(trawl_bg, blob)
-trawl <- trawl[sample(nrow(trawl)), ]
-trawl$haul <- sample(1:12, nrow(trawl), replace = TRUE)
-trawl <- trawl[, c("haul", "species", "depth_m", "length_cm", "weight_g")]
-write_data(trawl, "trawl")
-
-# orchard: five-pointed star outline in tree age vs yield ---------------------
-n_bg <- 210
-orchard_bg <- data.frame(
-  variety = sample(
-    c("honeycrisp", "gala", "fuji", "braeburn"),
-    n_bg,
-    replace = TRUE
-  ),
-  soil_ph = round(runif(n_bg, 5.4, 7.3), 1),
-  tree_age_yrs = round(runif(n_bg, 2, 40), 1)
-)
-orchard_bg$yield_kg <- round(clip(
-  8 + 4.2 * orchard_bg$tree_age_yrs - 0.052 * orchard_bg$tree_age_yrs^2 +
-    rnorm(n_bg, 0, 9),
-  0, 130
-), 1)
-
-star_vertices <- function(cx, cy, rx_outer, ry_outer, points = 5) {
-  angles <- pi / 2 + seq(0, 2 * pi, length.out = 2 * points + 1)[-(2 * points + 1)]
-  r <- rep(c(1, 0.42), points)
+bridges$deflection_mm <- round(2 + 0.085 * bridges$span_m *
+  exp(rnorm(n, 0, 0.18)), 2)
+repeats <- lapply(1:5, function(i) {
+  span <- runif(1, 40, 190)
+  defl <- 2 + 0.085 * span
+  k <- 12
   data.frame(
-    x = cx + rx_outer * r * cos(angles),
-    y = cy + ry_outer * r * sin(angles)
+    inspection_id = sprintf("INS%05d", sample(10000:99999, k)),
+    district = sample(c("north", "south", "east", "west"), 1),
+    span_m = round(span + rnorm(k, 0, 0.3), 1),
+    deflection_mm = round(defl * exp(rnorm(k, 0, 0.015)), 2)
   )
-}
-v <- star_vertices(14, 100, 6.5, 24)
-v <- rbind(v, v[1, ])
-star_pts <- do.call(rbind, lapply(seq_len(nrow(v) - 1), function(i) {
-  s <- seq(0, 1, length.out = 6)[-6]
+})
+bridges <- rbind(bridges, do.call(rbind, repeats))
+bridges <- bridges[sample(nrow(bridges)), ]
+write_data(bridges, "bridges")
+
+# claims: a bad join repeats a few exact incomes (vertical strings) -----------
+set.seed(103)
+n <- 180
+claims <- data.frame(
+  claim_type = sample(c("auto", "home", "umbrella"), n, replace = TRUE, prob = c(0.5, 0.4, 0.1)),
+  region = sample(c("north", "south", "coastal"), n, replace = TRUE),
+  claimant_income_k = round(runif(n, 28, 140), 2)
+)
+claims$claim_amount_k <- round(clip(0.9 + 0.012 * claims$claimant_income_k +
+  rnorm(n, 0, 0.55), 0.2, 4), 2)
+strings <- do.call(rbind, lapply(1:6, function(i) {
+  inc <- round(runif(1, 35, 130), 2)
   data.frame(
-    x = v$x[i] + s * (v$x[i + 1] - v$x[i]),
-    y = v$y[i] + s * (v$y[i + 1] - v$y[i])
+    claim_type = sample(c("auto", "home", "umbrella"), 11, replace = TRUE),
+    region = sample(c("north", "south", "coastal"), 1),
+    claimant_income_k = rep(inc, 11),
+    claim_amount_k = round(clip(0.9 + 0.012 * inc + rnorm(11, 0, 0.55), 0.2, 4), 2)
   )
 }))
-star <- data.frame(
-  variety = sample(c("honeycrisp", "gala"), nrow(star_pts), replace = TRUE),
-  soil_ph = round(runif(nrow(star_pts), 5.4, 7.3), 1),
-  tree_age_yrs = round(star_pts$x + rnorm(nrow(star_pts), 0, 0.12), 1),
-  yield_kg = round(star_pts$y + rnorm(nrow(star_pts), 0, 0.5), 1)
+claims <- rbind(claims, strings)
+claims <- claims[sample(nrow(claims)), ]
+write_data(claims, "claims")
+
+# clinic: terminal digit preference in systolic blood pressure ----------------
+set.seed(104)
+n <- 210
+clinic <- data.frame(
+  patient_id = sprintf("MRN%05d", sample(10000:99999, n)),
+  clinic_site = sample(c("Downtown", "Westside", "Northgate"), n, replace = TRUE),
+  sex = sample(c("M", "F"), n, replace = TRUE),
+  age = round(clip(rnorm(n, 56, 15), 20, 90))
 )
+clinic$systolic <- 95 + 0.55 * clinic$age + rnorm(n, 0, 9)
+heaped <- sample(n, round(n * 0.55))
+clinic$systolic[heaped] <- round(clinic$systolic[heaped] / 10) * 10
+clinic$systolic <- round(clinic$systolic)
+write_data(clinic, "clinic")
 
-orchard <- rbind(orchard_bg, star)
-orchard <- orchard[sample(nrow(orchard)), ]
-orchard$block <- sample(paste0("B", 1:8), nrow(orchard), replace = TRUE)
-orchard <- orchard[, c("block", "variety", "soil_ph", "tree_age_yrs", "yield_kg")]
-write_data(orchard, "orchard")
+# energy: regression-imputed heating usage ------------------------------------
+set.seed(105)
+n <- 150
+energy <- data.frame(
+  meter_id = sprintf("MTR%04d", sample(1000:9999, n)),
+  dwelling = sample(c("apartment", "detached", "townhouse"), n, replace = TRUE),
+  outdoor_temp_c = round(runif(n, -8, 18), 1)
+)
+energy$heating_kwh <- round(38 - 1.45 * energy$outdoor_temp_c + rnorm(n, 0, 4.2), 2)
+imp_t <- round(sort(runif(55, -7, 17)), 1)
+energy_imp <- data.frame(
+  meter_id = sprintf("MTR%04d", sample(1000:9999, length(imp_t))),
+  dwelling = sample(c("apartment", "detached", "townhouse"), length(imp_t), replace = TRUE),
+  outdoor_temp_c = imp_t,
+  heating_kwh = round(38 - 1.45 * imp_t, 2)
+)
+energy <- rbind(energy, energy_imp)
+energy <- energy[sample(nrow(energy)), ]
+write_data(energy, "energy")
 
-# retention: perfect lattice in days active vs sessions -----------------------
-n_bg <- 230
-retention_bg <- data.frame(
-  platform = sample(
-    c("ios", "android", "web"),
-    n_bg,
-    replace = TRUE,
-    prob = c(0.4, 0.38, 0.22)
+# feedback: straight-lined survey responses (exact y = x diagonal) ------------
+set.seed(106)
+n <- 210
+feedback <- data.frame(
+  course = sample(
+    c("STAT 301", "STAT 412", "DSCI 210", "DSCI 320", "MATH 255"),
+    n,
+    replace = TRUE
   ),
-  signup_month = sample(month.abb, n_bg, replace = TRUE),
-  days_active = round(runif(n_bg, 1, 365))
+  modality = sample(c("in-person", "online"), n, replace = TRUE, prob = c(0.65, 0.35)),
+  content_rating = round(runif(n, 20, 95), 1)
 )
-retention_bg$sessions <- round(clip(
-  0.62 * retention_bg$days_active + rnorm(n_bg, 0, 32),
-  1, 400
-))
+feedback$instructor_rating <- round(clip(
+  32 + 0.42 * feedback$content_rating + rnorm(n, 0, 7.5),
+  0, 100
+), 1)
+straight_vals <- round(c(runif(20, 22, 60), runif(14, 60, 95)), 1)
+straight <- data.frame(
+  course = sample(
+    c("STAT 301", "STAT 412", "DSCI 210", "DSCI 320", "MATH 255"),
+    34,
+    replace = TRUE
+  ),
+  modality = sample(c("in-person", "online"), 34, replace = TRUE),
+  content_rating = straight_vals,
+  instructor_rating = straight_vals
+)
+feedback <- rbind(feedback, straight)
+feedback <- feedback[sample(nrow(feedback)), ]
+write_data(feedback, "feedback")
 
-lattice <- expand.grid(
-  days_active = seq(235, 285, by = 10),
-  sessions = seq(310, 360, by = 10)
+# greenhouse: stuck humidity sensor hidden inside the band --------------------
+set.seed(107)
+n <- 190
+greenhouse <- data.frame(
+  bay = sample(paste0("Bay ", 1:6), n, replace = TRUE),
+  fan_on = sample(c("yes", "no"), n, replace = TRUE),
+  temperature_c = round(runif(n, 16, 34), 1)
 )
-lattice$platform <- sample(
-  c("ios", "android", "web"),
-  nrow(lattice),
-  replace = TRUE
+greenhouse$humidity_pct <- round(clip(96 - 1.7 * greenhouse$temperature_c +
+  rnorm(n, 0, 6), 20, 100), 1)
+stuck <- data.frame(
+  bay = sample(paste0("Bay ", 1:6), 16, replace = TRUE),
+  fan_on = sample(c("yes", "no"), 16, replace = TRUE),
+  temperature_c = round(runif(16, 21.5, 28), 1),
+  humidity_pct = 54.2
 )
-lattice$signup_month <- sample(month.abb, nrow(lattice), replace = TRUE)
-lattice <- lattice[, c("platform", "signup_month", "days_active", "sessions")]
+greenhouse <- rbind(greenhouse, stuck)
+greenhouse <- greenhouse[sample(nrow(greenhouse)), ]
+write_data(greenhouse, "greenhouse")
 
-retention <- rbind(retention_bg, lattice)
-retention <- retention[sample(nrow(retention)), ]
-retention$user_id <- sprintf("U%06d", sample(1e5:(1e6 - 1), nrow(retention)))
-retention <- retention[, c(
-  "user_id", "platform", "signup_month", "days_active", "sessions"
-)]
-write_data(retention, "retention")
+# growth: two species with opposite light responses mixed together ------------
+set.seed(108)
+n <- 180
+shade <- runif(n) < 0.15
+growth <- data.frame(
+  tray = sample(paste0("T", 1:10), n, replace = TRUE),
+  watering = sample(c("daily", "alternate"), n, replace = TRUE),
+  light_hours = round(runif(n, 4, 16), 1)
+)
+growth$height_cm <- round(ifelse(
+  shade,
+  30 - 1.3 * growth$light_hours,
+  2 + 1.7 * growth$light_hours
+) + rnorm(n, 0, 2.2), 1)
+write_data(growth, "growth")
+
+# labs: regression-imputed cholesterol values ---------------------------------
+set.seed(109)
+n <- 150
+labs <- data.frame(
+  specimen = sprintf("L-%04d", seq_len(n)),
+  fasting = sample(c("yes", "no"), n, replace = TRUE, prob = c(0.8, 0.2)),
+  bmi = round(runif(n, 18, 42), 1)
+)
+labs$cholesterol <- round(120 + 2.6 * labs$bmi + rnorm(n, 0, 18), 1)
+imp_bmi <- round(runif(55, 20, 40), 1)
+labs_imp <- data.frame(
+  specimen = sprintf("L-%04d", n + seq_along(imp_bmi)),
+  fasting = sample(c("yes", "no"), length(imp_bmi), replace = TRUE),
+  bmi = imp_bmi,
+  cholesterol = round(120 + 2.6 * imp_bmi, 1)
+)
+labs <- rbind(labs, labs_imp)
+labs <- labs[sample(nrow(labs)), ]
+write_data(labs, "labs")
+
+# ponds: stuck oxygen probe hidden inside the band ----------------------------
+set.seed(110)
+n <- 185
+ponds <- data.frame(
+  pond = sample(paste0("P", 1:8), n, replace = TRUE),
+  fed_today = sample(c("yes", "no"), n, replace = TRUE),
+  water_temp_c = round(runif(n, 12, 30), 1)
+)
+ponds$dissolved_o2_mgl <- round(clip(13.5 - 0.22 * ponds$water_temp_c +
+  rnorm(n, 0, 0.7), 4, 14), 2)
+stuck <- data.frame(
+  pond = sample(paste0("P", 1:8), 15, replace = TRUE),
+  fed_today = sample(c("yes", "no"), 15, replace = TRUE),
+  water_temp_c = round(runif(15, 19.5, 26.5), 1),
+  dissolved_o2_mgl = 8.45
+)
+ponds <- rbind(ponds, stuck)
+ponds <- ponds[sample(nrow(ponds)), ]
+write_data(ponds, "ponds")
+
+# quotes: a filtering bug dropped a rectangular segment -----------------------
+set.seed(111)
+n <- 340
+quotes <- data.frame(
+  region = sample(c("metro", "suburban", "rural"), n, replace = TRUE),
+  plan_tier = sample(c("bronze", "silver", "gold"), n, replace = TRUE),
+  applicant_age = round(runif(n, 18, 75))
+)
+quotes$monthly_premium <- round(90 + 2.6 * quotes$applicant_age + rnorm(n, 0, 28), 2)
+quotes <- quotes[
+  !(quotes$applicant_age > 38 & quotes$applicant_age < 52 &
+      quotes$monthly_premium > 185 & quotes$monthly_premium < 265),
+]
+write_data(quotes, "quotes")
+
+# rentals: two crossing bands in distance vs price ----------------------------
+set.seed(112)
+n <- 190
+luxury <- runif(n) < 0.14
+rentals <- data.frame(
+  listing = sample(10000:99999, n),
+  bedrooms = sample(1:4, n, replace = TRUE),
+  distance_km = round(runif(n, 0.3, 18), 2)
+)
+rentals$rent_usd <- round(ifelse(
+  luxury,
+  1300 + 95 * rentals$distance_km,
+  2900 - 80 * rentals$distance_km
+) + rnorm(n, 0, 130))
+write_data(rentals, "rentals")
+
+# river: drifting turbidity sensor (smooth in-band chain) ---------------------
+set.seed(113)
+n <- 200
+river <- data.frame(
+  hour = round(sort(runif(n, 0, 240)), 2),
+  weekday = NA_character_,
+  battery_v = NA_real_
+)
+river$weekday <- c("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")[
+  (floor(river$hour / 24) %% 7) + 1
+]
+river$battery_v <- round(12.6 - 0.004 * river$hour + rnorm(n, 0, 0.15), 2)
+river$turbidity_ntu <- round(18 + 4 * sin(river$hour / 38) + rnorm(n, 0, 3.2), 2)
+
+drift_hours <- seq(105, 140, length.out = 18)
+drift_vals <- 19 - 0.07 * (drift_hours - 105) +
+  cumsum(rnorm(18, 0, 0.28))
+drift <- data.frame(
+  hour = round(drift_hours, 2),
+  weekday = c("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")[
+    (floor(drift_hours / 24) %% 7) + 1
+  ],
+  battery_v = round(12.6 - 0.004 * drift_hours + rnorm(18, 0, 0.15), 2),
+  turbidity_ntu = round(drift_vals, 2)
+)
+river <- rbind(river, drift)
+river <- river[order(river$hour), ]
+write_data(river, "river")
+
+# screentime: self-reported minutes heaped at half-hours ----------------------
+set.seed(114)
+n <- 200
+screentime <- data.frame(
+  respondent = seq_len(n),
+  region = sample(c("urban", "suburban", "rural"), n, replace = TRUE),
+  age = round(clip(rnorm(n, 34, 12), 13, 70))
+)
+screentime$daily_minutes <- clip(290 - 2.4 * screentime$age + rnorm(n, 0, 35), 10, 420)
+heaped <- sample(n, round(n * 0.6))
+screentime$daily_minutes[heaped] <-
+  round(screentime$daily_minutes[heaped] / 30) * 30
+screentime$daily_minutes <- round(screentime$daily_minutes)
+write_data(screentime, "screentime")
+
+# seals: one batch's measurements are suspiciously precise --------------------
+set.seed(115)
+n <- 165
+seals <- data.frame(
+  batch = sample(paste0("B", 1:8), n, replace = TRUE),
+  inspector = sample(c("AL", "JM", "TS"), n, replace = TRUE),
+  pressure_psi = round(runif(n, 10, 90), 1)
+)
+seals$leak_rate_mlh <- round(2 + 0.31 * seals$pressure_psi + rnorm(n, 0, 3.4), 2)
+clean <- data.frame(
+  batch = "B9",
+  inspector = sample(c("AL", "JM", "TS"), 45, replace = TRUE),
+  pressure_psi = round(runif(45, 15, 85), 1)
+)
+clean$leak_rate_mlh <- round(2 + 0.31 * clean$pressure_psi + rnorm(45, 0, 0.08), 2)
+seals <- rbind(seals, clean)
+seals <- seals[sample(nrow(seals)), ]
+write_data(seals, "seals")
+
+# shipping: weight and cost columns swapped for some rows ---------------------
+set.seed(116)
+n <- 180
+shipping <- data.frame(
+  order_id = sample(100000:999999, n),
+  carrier = sample(c("UPX", "FedDel", "Postal"), n, replace = TRUE),
+  weight_kg = round(runif(n, 0.4, 30), 2)
+)
+shipping$cost_usd <- round(7 + 0.42 * shipping$weight_kg + rnorm(n, 0, 1.1), 2)
+swap <- sample(n, 26)
+tmp <- shipping$weight_kg[swap]
+shipping$weight_kg[swap] <- shipping$cost_usd[swap]
+shipping$cost_usd[swap] <- tmp
+write_data(shipping, "shipping")
+
+# stores: negative margins folded positive ------------------------------------
+set.seed(117)
+n <- 230
+stores <- data.frame(
+  store_id = sprintf("S%04d", sample(1000:9999, n)),
+  region = sample(c("northeast", "southeast", "central", "west"), n, replace = TRUE),
+  floor_area_sqm = round(runif(n, 40, 320), 1)
+)
+margin <- -8 + 0.075 * stores$floor_area_sqm + rnorm(n, 0, 9)
+stores$weekly_margin_k <- round(abs(margin), 2)
+write_data(stores, "stores")
+
+# tags: a few tagged fish weighed many times ----------------------------------
+set.seed(118)
+n <- 130
+tags <- data.frame(
+  tag_id = sprintf("T%04d", sample(1000:9999, n)),
+  reach = sample(c("upper", "middle", "lower"), n, replace = TRUE),
+  length_cm = round(runif(n, 12, 60), 1)
+)
+tags$weight_g <- round(10.5 * tags$length_cm^1.6 * exp(rnorm(n, 0, 0.18)) / 10)
+repeats <- lapply(1:6, function(i) {
+  len <- runif(1, 20, 52)
+  wt <- 10.5 * len^1.6 / 10
+  k <- 11
+  data.frame(
+    tag_id = sprintf("T%04d", sample(1000:9999, 1)),
+    reach = sample(c("upper", "middle", "lower"), 1),
+    length_cm = round(len + rnorm(k, 0, 0.25), 1),
+    weight_g = round(wt * exp(rnorm(k, 0, 0.012)))
+  )
+})
+tags <- rbind(tags, do.call(rbind, repeats))
+tags <- tags[sample(nrow(tags)), ]
+write_data(tags, "tags")
+
+# weather: balanced mirrored bands from swapped columns -----------------------
+set.seed(119)
+n <- 170
+weather <- data.frame(
+  station_id = sprintf("WX%02d", sample(1:25, n, replace = TRUE)),
+  month = sample(month.abb[4:9], n, replace = TRUE),
+  morning_c = round(runif(n, 6, 22), 1)
+)
+weather$afternoon_c <- round(weather$morning_c + 3 + rnorm(n, 0, 1.0), 1)
+swap <- sample(n, round(0.45 * n))
+tmp <- weather$morning_c[swap]
+weather$morning_c[swap] <- weather$afternoon_c[swap]
+weather$afternoon_c[swap] <- tmp
+write_data(weather, "weather")
+
+# wellbeing: imputed stress scores ---------------------------------------------
+set.seed(120)
+n <- 160
+wellbeing <- data.frame(
+  participant = sprintf("W%03d", seq_len(n)),
+  employment = sample(
+    c("full-time", "part-time", "student", "retired"),
+    n,
+    replace = TRUE
+  ),
+  sleep_hours = round(runif(n, 4, 10), 1)
+)
+wellbeing$stress_score <- round(clip(95 - 7.5 * wellbeing$sleep_hours + rnorm(n, 0, 8), 5, 95), 1)
+imp_sleep <- round(runif(50, 4.5, 9.5), 1)
+wb_imp <- data.frame(
+  participant = sprintf("W%03d", n + seq_along(imp_sleep)),
+  employment = sample(
+    c("full-time", "part-time", "student", "retired"),
+    length(imp_sleep),
+    replace = TRUE
+  ),
+  sleep_hours = imp_sleep,
+  stress_score = round(95 - 7.5 * imp_sleep, 1)
+)
+wellbeing <- rbind(wellbeing, wb_imp)
+wellbeing <- wellbeing[sample(nrow(wellbeing)), ]
+write_data(wellbeing, "wellbeing")
