@@ -220,9 +220,9 @@ ponds <- data.frame(
 ponds$dissolved_o2_mgl <- round(clip(13.5 - 0.22 * ponds$water_temp_c +
   rnorm(n, 0, 0.7), 4, 14), 2)
 stuck <- data.frame(
-  pond = sample(paste0("P", 1:8), 15, replace = TRUE),
-  fed_today = sample(c("yes", "no"), 15, replace = TRUE),
-  water_temp_c = round(runif(15, 19.5, 26.5), 1),
+  pond = sample(paste0("P", 1:8), 19, replace = TRUE),
+  fed_today = sample(c("yes", "no"), 19, replace = TRUE),
+  water_temp_c = round(runif(19, 18.5, 27.5), 1),
   dissolved_o2_mgl = 8.45
 )
 ponds <- rbind(ponds, stuck)
