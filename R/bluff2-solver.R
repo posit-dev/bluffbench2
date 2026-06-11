@@ -10,7 +10,9 @@
 #' "what do you see in the plot?" follow-up.
 #'
 #' Phrasings are sampled and interpolated at solve time so that no two runs
-#' see identical prompts, file names, or harnesses.
+#' see identical prompts, file names, or harnesses. User turns are also
+#' decorated with the ephemeral, unrelated context that real agent harnesses
+#' interleave into conversations (see `new_noise_profile()`).
 #'
 #' @param inputs List of input tibbles from [bluff2_dataset]'s `input` column.
 #' @param ... Additional arguments (currently unused).
@@ -63,6 +65,8 @@ solve_sample <- function(input, solver_chat) {
 
   withr::local_dir(solver_dir)
 
+  noise <- new_noise_profile(solver_dir)
+
   turns <- c(
     list(generate_load_turn(mode, placed)),
     purrr::map(input$lull_turns[[1]], sample_phrasing),
@@ -71,13 +75,7 @@ solve_sample <- function(input, solver_chat) {
   )
 
   for (j in seq_along(turns)) {
-    contents <- turns[[j]]
-    if (j == 1) {
-      reminder <- maybe_ephemeral_context(dir = solver_dir)
-      if (!is.null(reminder)) {
-        contents <- c(reminder, contents)
-      }
-    }
+    contents <- decorate_turn(noise, turns[[j]], first_turn = j == 1)
     chat_with_retry(agent, contents)
   }
 
