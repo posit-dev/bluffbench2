@@ -91,13 +91,16 @@ solve_sample <- function(input, solver_chat) {
 
 # Writes the sample's data frame where the conversation expects to find it:
 # as a csv or rda file in the solver's working directory, or assigned
-# directly into the R tool's evaluation environment.
+# directly into the R tool's evaluation environment. The data is first
+# dressed with realistic blemishes (see `dress_data()`).
 place_data <- function(df, data_name, mode, dir, env) {
+  dressed <- dress_data(df, mode)
+  df <- dressed$df
   switch(
     mode,
     csv = {
       file_name <- generate_file_name(data_name, "csv")
-      utils::write.csv(df, file.path(dir, file_name), row.names = FALSE)
+      write_dressed_csv(df, file.path(dir, file_name), dressed$write)
       list(file_name = file_name, object_name = NULL)
     },
     rda = {
