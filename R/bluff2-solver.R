@@ -53,19 +53,26 @@ solve_sample <- function(input, solver_chat) {
 
   solver_dir <- tempfile(paste0(input$data_name, "-analysis-"))
   dir.create(solver_dir)
+  # Normalize so the path matches what getwd()/pwd report (macOS resolves
+  # /var to /private/var); the tools rely on that to mask it consistently.
+  solver_dir <- normalizePath(solver_dir)
   env <- new.env(parent = globalenv())
 
   placed <- place_data(df, input$data_name, mode, solver_dir, env)
 
-  state <- new_tool_state(solver_dir)
+  display_dir <- generate_display_wd(input$data_name)
+  state <- new_tool_state(solver_dir, display_dir)
   agent <- solver_chat$clone()
   agent$set_turns(list())
-  agent$set_system_prompt(random_system_prompt(solver_dir))
-  agent$set_tools(c(shell_tools(state), list(tool_run_r(env))))
+  agent$set_system_prompt(random_system_prompt(display_dir))
+  agent$set_tools(c(
+    shell_tools(state),
+    list(tool_run_r(env, solver_dir, display_dir))
+  ))
 
   withr::local_dir(solver_dir)
 
-  noise <- new_noise_profile(solver_dir)
+  noise <- new_noise_profile(solver_dir, display_dir)
 
   turns <- c(
     list(generate_load_turn(mode, placed)),

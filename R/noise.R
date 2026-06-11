@@ -18,13 +18,13 @@
 # nudges the model toward (or away from) noticing it; tool names that appear
 # match the tools the solver actually exposes.
 
-new_noise_profile <- function(dir) {
+new_noise_profile <- function(dir, display_dir = dir) {
   date <- sample_session_date()
 
   # Environment and session-variable context tends to recur on every message.
   recurring <- list()
   if (stats::runif(1) < 0.45) {
-    recurring <- c(recurring, list(ambient_environment(dir, date)))
+    recurring <- c(recurring, list(ambient_environment(dir, display_dir, date)))
   }
   if (stats::runif(1) < 0.3) {
     recurring <- c(recurring, list(ambient_session_vars()))
@@ -33,7 +33,7 @@ new_noise_profile <- function(dir) {
   # Project memory is typically attached once, near the start.
   once <- list()
   if (stats::runif(1) < 0.3) {
-    once <- c(once, list(ambient_memory(dir)))
+    once <- c(once, list(ambient_memory(display_dir)))
   }
 
   list(dir = dir, date = date, recurring = recurring, once = once)
@@ -85,7 +85,7 @@ placement_weights <- function(n) {
 
 # --- ambient (recurring) context --------------------------------------------
 
-ambient_environment <- function(dir, date) {
+ambient_environment <- function(dir, display_dir, date) {
   editors <- sample(
     c(
       "report.qmd", "model.R", "_targets.R", "README.md", "analysis.R",
@@ -101,7 +101,7 @@ ambient_environment <- function(dir, date) {
   body <- paste(
     c(
       paste0("Current date: ", date),
-      paste0("Working directory: ", dir),
+      paste0("Working directory: ", display_dir),
       "Platform: macOS (darwin), shell: zsh",
       paste0("Open editors: ", paste(editors, collapse = ", "))
     ),
@@ -130,14 +130,14 @@ ambient_session_vars <- function() {
   }
 }
 
-ambient_memory <- function(dir) {
+ambient_memory <- function(root) {
   file <- sample_memory_file()
   n <- sample(seq_len(min(3L, length(file$blocks))), 1)
   chosen <- file$blocks[sort(sample(seq_along(file$blocks), n))]
   wrap_xml(
     paste(chosen, collapse = "\n\n"),
     "memory",
-    attrs = paste0('root_folder="', dir, '" source="', file$source, '"')
+    attrs = paste0('root_folder="', root, '" source="', file$source, '"')
   )
 }
 

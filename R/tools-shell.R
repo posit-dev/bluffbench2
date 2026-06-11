@@ -4,9 +4,10 @@
 # directory) and `read_files` (paths Read so far, used to enforce
 # read-before-edit).
 
-new_tool_state <- function(dir) {
+new_tool_state <- function(dir, display_dir = dir) {
   state <- new.env(parent = emptyenv())
   state$dir <- dir
+  state$display_dir <- display_dir
   state$read_files <- character()
   state
 }
@@ -34,15 +35,43 @@ tool_result_error <- function(message) {
   ellmer::ContentToolResult(error = message)
 }
 
+# Maps a path the model supplies (which lives in the narrated `display_dir`
+# world) onto the real temp dir where files actually are. Paths under
+# `display_dir` keep their sub-path; any other absolute path is reduced to its
+# basename so it still lands in the (flat) working directory rather than
+# escaping the sandbox.
 resolve_path <- function(path, state) {
+  display <- state$display_dir %||% state$dir
+  if (startsWith(path, display)) {
+    rel <- sub("^/", "", substring(path, nchar(display) + 1L))
+    return(if (nzchar(rel)) file.path(state$dir, rel) else state$dir)
+  }
   if (startsWith(path, "/") || grepl("^[A-Za-z]:", path)) {
-    return(path)
+    return(file.path(state$dir, basename(path)))
   }
   file.path(state$dir, path)
 }
 
+# Rewrites the real temp dir to the narrated `display_dir` in text shown to
+# the model (tool output), and the reverse for paths the model passes in (tool
+# input). No-ops when the two coincide (i.e. when no fake path is in play).
+mask_real_dir <- function(text, state) {
+  if (identical(state$dir, state$display_dir)) {
+    return(text)
+  }
+  gsub(state$dir, state$display_dir, text, fixed = TRUE)
+}
+
+unmask_display_dir <- function(text, state) {
+  if (identical(state$dir, state$display_dir)) {
+    return(text)
+  }
+  gsub(state$display_dir, state$dir, text, fixed = TRUE)
+}
+
 tool_bash <- function(state) {
   run_bash <- function(command, description = NULL, timeout = NULL, run_in_background = NULL) {
+    command <- unmask_display_dir(command, state)
     out_file <- tempfile()
     status <- tryCatch(
       withr::with_dir(
@@ -57,10 +86,10 @@ tool_bash <- function(state) {
       error = function(e) e
     )
     if (inherits(status, "error")) {
-      return(tool_result_error(conditionMessage(status)))
+      return(tool_result_error(mask_real_dir(conditionMessage(status), state)))
     }
     output <- readLines(out_file, warn = FALSE)
-    text <- paste(output, collapse = "\n")
+    text <- mask_real_dir(paste(output, collapse = "\n"), state)
     if (nchar(text) > 30000) {
       text <- paste0(substr(text, 1, 30000), "\n... [output truncated]")
     }
@@ -295,7 +324,7 @@ tool_glob <- function(state) {
     matches <- file.path(root, matches)
     info <- file.info(matches)
     matches <- matches[order(info$mtime, decreasing = TRUE)]
-    paste(matches, collapse = "\n")
+    mask_real_dir(paste(matches, collapse = "\n"), state)
   }
 
   ellmer::tool(
@@ -359,7 +388,7 @@ tool_grep <- function(state) {
     if (length(results) == 0) {
       return("No matches found.")
     }
-    paste(results, collapse = "\n")
+    mask_real_dir(paste(results, collapse = "\n"), state)
   }
 
   ellmer::tool(

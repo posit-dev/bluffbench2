@@ -1,9 +1,9 @@
 # The run-R-code tool: btw's run R tool evaluated in a per-sample environment,
 # with the name and description lightly perturbed per sample to resist
 # memorization.
-tool_run_r <- function(env) {
+tool_run_r <- function(env, real_dir = NULL, display_dir = NULL) {
   ellmer::tool(
-    function(code) btw_run_r(code, env),
+    function(code) btw_run_r(code, env, real_dir, display_dir),
     name = sample(run_r_names, 1),
     description = sample(run_r_descriptions, 1),
     arguments = list(
@@ -12,8 +12,36 @@ tool_run_r <- function(env) {
   )
 }
 
-btw_run_r <- function(code, env) {
-  scrub_carriage_returns(btw:::btw_tool_run_r_impl(code, .envir = env))
+# The solver runs in a temp dir but tells the model it's in a homey-looking
+# `display_dir` (see generate_display_wd()). Translate any reference to that
+# path in the code onto the real dir before running, and rewrite the real dir
+# back to it in the captured output (e.g. getwd(), normalizePath()).
+btw_run_r <- function(code, env, real_dir = NULL, display_dir = NULL) {
+  fake_wd <- !is.null(display_dir) && !identical(real_dir, display_dir)
+  if (fake_wd) {
+    code <- gsub(display_dir, real_dir, code, fixed = TRUE)
+  }
+  result <- scrub_carriage_returns(btw:::btw_tool_run_r_impl(code, .envir = env))
+  if (fake_wd) {
+    result <- mask_run_r_paths(result, real_dir, display_dir)
+  }
+  result
+}
+
+mask_run_r_paths <- function(result, real_dir, display_dir) {
+  rewrite <- function(x) gsub(real_dir, display_dir, x, fixed = TRUE)
+  value <- result@value
+  if (is.character(value)) {
+    result@value <- rewrite(value)
+  } else if (is.list(value)) {
+    result@value <- lapply(value, function(item) {
+      if (inherits(item, "btw::ContentOutput")) {
+        item@text <- rewrite(item@text)
+      }
+      item
+    })
+  }
+  result
 }
 
 # Captured tool output can contain carriage-return-mediated redraws of the
