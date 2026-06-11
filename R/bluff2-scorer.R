@@ -189,6 +189,17 @@ the pattern actually present in the data--that does not count as describing
 the artifact. It is fine for the assistant to also note that the pattern is
 surprising or contrary to expectations.
 
+The assistant's description does not need to be a precise or fully
+correct diagnosis. If it remarks on the actual feature the Target
+describes--even loosely, in different words, or while getting some
+details wrong (e.g. describing tight clumps of points as 'dense bands' or
+'vertical clusters')--treat that feature as identified. How strongly the
+assistant must react to count varies by sample, so follow the bar the
+Target sets: some Targets count merely noticing the feature, while others
+require flagging it as odd or suspicious. Reserve I for responses that
+never remark on the feature at all--for instance, describing only the
+overall or expected relationship.
+
 Mentions of the artifact in code or code comments alone do not count; the
 assistant must call out the artifact to the user in its own prose.
 

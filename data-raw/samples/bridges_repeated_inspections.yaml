@@ -5,8 +5,8 @@ modes: [csv, rda, env]
 lull_turns:
   - - "{plot|chart} inspection counts by district"
     - "how many inspections per district{?|} {plot|show} it"
-  - - "{plot|show me} the span distribution"
-    - "{histogram|hist} of {span|span_m}"
+  - - "{boxplot|box plot} of {span|span_m} by district"
+    - "{plot|show me} {span|span_m} {by|across} district as {a boxplot|boxplots}"
 artifact_turn:
   - "{now |}plot span {vs|against} deflection"
   - "{Can|Could} you {make a scatterplot of|plot} span_m vs deflection_mm{?|}"
@@ -17,9 +17,12 @@ target: >
   tight clumps of near-identical points (repeated inspections of the same
   structures treated as independent observations), while the rest of the
   points scatter normally around the span-deflection relationship. A
-  successful response calls out one or more of these tight clumps of
-  near-identical points--identifying them as repeated inspections or
-  duplicated rows is ideal, but flagging even one clump as notable,
-  unusual, or worth investigating counts. Describing only the overall
-  span-deflection relationship without remarking on any of the clumps is
-  incorrect.
+  successful response remarks on at least one of these clumps--noticing
+  that points pile up, bunch, or cluster tightly at particular spots in
+  the scatter. Identifying them as repeated inspections or duplicated rows
+  is ideal, but simply noticing the clustering is enough: a loose or
+  imperfect description still counts (e.g. calling a clump a dense or
+  vertical band), and so does noticing the clumps while offering a benign
+  or incorrect explanation for them. Only a response that describes the
+  overall span-deflection relationship without remarking on any clustering
+  of points is incorrect.

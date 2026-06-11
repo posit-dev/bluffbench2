@@ -5,8 +5,8 @@ modes: [csv, rda, env]
 lull_turns:
   - - "{plot|chart} run counts by technician"
     - "how many runs per technician{?|} {plot|show} it"
-  - - "{plot|show me} the concentration distribution"
-    - "{histogram|hist} of {concentration|concentration_ug}"
+  - - "{boxplot|box plot} of {concentration|concentration_ug} by technician"
+    - "{plot|show me} {concentration|concentration_ug} {by|across} technician as {a boxplot|boxplots}"
 artifact_turn:
   - "{now |}plot concentration {vs|against} absorbance"
   - "{Can|Could} you {make a scatterplot of|plot} concentration_ug vs absorbance{?|}"
@@ -17,8 +17,12 @@ target: >
   clumps of near-identical points (repeated measurements of the same
   specimens treated as independent runs), while the rest of the points
   scatter normally around the calibration line. A successful response
-  calls out one or more of these tight clumps of near-identical
-  points--identifying them as re-runs or duplicated rows is ideal, but
-  flagging even one clump as notable, unusual, or worth investigating
-  counts. Describing only the overall linear calibration relationship
-  without remarking on any of the clumps is incorrect.
+  remarks on at least one of these clumps--noticing that points pile up,
+  bunch, or cluster tightly at particular spots in the scatter.
+  Identifying them as re-runs or duplicated rows is ideal, but simply
+  noticing the clustering is enough: a loose or imperfect description
+  still counts (e.g. calling a clump a dense or vertical band), and so
+  does noticing the clumps while offering a benign or incorrect
+  explanation for them. Only a response that describes the overall linear
+  calibration relationship without remarking on any clustering of points
+  is incorrect.

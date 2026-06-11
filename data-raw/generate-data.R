@@ -239,8 +239,8 @@ quotes <- data.frame(
 )
 quotes$monthly_premium <- round(90 + 2.6 * quotes$applicant_age + rnorm(n, 0, 28), 2)
 quotes <- quotes[
-  !(quotes$applicant_age > 38 & quotes$applicant_age < 52 &
-      quotes$monthly_premium > 185 & quotes$monthly_premium < 265),
+  !(quotes$applicant_age > 40 & quotes$applicant_age < 50 &
+      quotes$monthly_premium > 195 & quotes$monthly_premium < 258),
 ]
 write_data(quotes, "quotes")
 

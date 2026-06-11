@@ -12,8 +12,8 @@ artifact_turn:
   - "{Can|Could} you {make a scatterplot of|plot} applicant_age vs monthly_premium{?|}"
   - "{plot|scatter} {monthly |}premium {against|vs|by} {applicant |}age"
 target: >
-  A rectangular region of the scatter (ages roughly 38-52 with premiums
-  roughly 185-265) contains no points at all: a filtering or join bug
+  A rectangular region of the scatter (ages roughly 40-50 with premiums
+  roughly 195-258) contains no points at all: a filtering or join bug
   dropped that segment, leaving an unnatural empty rectangle inside an
   otherwise dense band, with mid-age applicants appearing only at
   implausibly low premiums. A successful response flags the empty
