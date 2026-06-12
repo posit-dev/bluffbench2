@@ -1,14 +1,14 @@
 library(bluffbench2)
 
 chat <- ellmer::chat_anthropic(
-  model = "claude-sonnet-4-6",
+  model = "claude-opus-4-8",
   api_args = list(
     thinking = list(type = "adaptive"),
     output_config = list(effort = "medium")
   )
 )
 
-tsk <- bluff2_task(dir = "logs")
+tsk <- bluff2_task(epochs = 2, dir = "logs")
 tsk$eval(solver_chat = chat, view = FALSE)
 
 samples <- tsk$get_samples()

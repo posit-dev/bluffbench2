@@ -1,0 +1,25 @@
+id: revenue_forward_filled
+data_name: revenue
+data_file: data/revenue.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|chart} total revenue by region"
+    - "which region {brings in the most|has the highest total revenue}{?|} {plot|show} it"
+  - - "{plot|chart} {total orders|order totals} by region"
+    - "how many orders {per|in each} region{?|} {plot|show} it"
+artifact_turn:
+  - "{now |}plot monthly revenue {by|for each} region{ over time|}"
+  - "{Can|Could} you {plot|chart} revenue {by month|over time}{,|} {one line per|split by|colored by} region{?|}"
+  - "{line chart|plot} of monthly revenue by region"
+target: >
+  One region (Mountain) only changes value at quarter boundaries: its line
+  is a staircase of flat three-month plateaus (the same figure repeated
+  EXACTLY for Jan-Feb-Mar, a new figure for Apr-May-Jun, and so on) while
+  every other region wiggles month to month--the signature of quarterly
+  reporting forward-filled into a monthly table, not genuine stability. A
+  successful response flags the stepped/plateaued series as odd or worth
+  investigating (e.g. values repeating exactly within quarters, a
+  staircase pattern, quarterly data disguised as monthly, a fill/reporting
+  artifact). Describing that region merely as "flat", "stable", or "less
+  volatile" without noting the exact repeats or step pattern as anomalous,
+  or describing only overall levels and trends, is incorrect.

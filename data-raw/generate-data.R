@@ -122,6 +122,30 @@ energy <- rbind(energy, energy_imp)
 energy <- energy[sample(nrow(energy)), ]
 write_data(energy, "energy")
 
+# expenses: claims bunched just under the auto-approval limit -----------------
+set.seed(121)
+n <- 380
+expenses <- data.frame(
+  report_id = sprintf("EXP%05d", sample(10000:99999, n)),
+  department = sample(
+    c("sales", "engineering", "operations", "marketing"),
+    n,
+    replace = TRUE
+  ),
+  category = sample(
+    c("meals", "travel", "supplies", "software"),
+    n,
+    replace = TRUE,
+    prob = c(0.4, 0.3, 0.2, 0.1)
+  )
+)
+amount <- clip(rlnorm(n, log(46), 0.6), 6, 240)
+over <- which(amount > 75 & amount < 96)
+trimmed <- sample(over, round(length(over) * 0.6))
+amount[trimmed] <- runif(length(trimmed), 67.5, 74.9)
+expenses$amount_usd <- round(amount, 2)
+write_data(expenses, "expenses")
+
 # feedback: straight-lined survey responses (exact y = x diagonal) ------------
 set.seed(106)
 n <- 210
@@ -209,6 +233,30 @@ labs <- rbind(labs, labs_imp)
 labs <- labs[sample(nrow(labs)), ]
 write_data(labs, "labs")
 
+# outlets: one outlet's sales feed mirrors another's, lagged a day ------------
+set.seed(124)
+outlet_names <- c(
+  "Maple St", "Riverside", "Hilltop", "Old Town",
+  "Eastgate", "Crestview", "Parkway", "Lakeview"
+)
+dates <- seq(as.Date("2025-09-01"), by = "day", length.out = 56)
+base <- stats::setNames(round(runif(8, 2400, 5400)), outlet_names)
+outlets <- data.frame(
+  sales_date = rep(dates, each = 8),
+  outlet = rep(outlet_names, times = 56)
+)
+outlets$transactions <- rpois(nrow(outlets), base[outlets$outlet] / 31)
+outlets$daily_sales_usd <- round(
+  base[outlets$outlet] * exp(rnorm(nrow(outlets), 0, 0.16)),
+  2
+)
+# The lag keeps the two columns from matching row-for-row in a head() of the
+# raw file while leaving their value sets (and so their boxes) identical.
+lakeview <- outlets$daily_sales_usd[outlets$outlet == "Lakeview"]
+outlets$daily_sales_usd[outlets$outlet == "Crestview"] <-
+  c(lakeview[56], lakeview[-56])
+write_data(outlets, "outlets")
+
 # ponds: stuck oxygen probe hidden inside the band ----------------------------
 set.seed(110)
 n <- 185
@@ -259,6 +307,24 @@ rentals$rent_usd <- round(ifelse(
   2900 - 80 * rentals$distance_km
 ) + rnorm(n, 0, 130))
 write_data(rentals, "rentals")
+
+# revenue: one region reports quarterly, forward-filled to monthly ------------
+set.seed(125)
+months <- format(seq(as.Date("2024-01-01"), by = "month", length.out = 24), "%Y-%m")
+regions <- c("Northeast", "Southeast", "Midwest", "Pacific", "Mountain")
+region_base <- c(
+  Northeast = 472, Southeast = 391, Midwest = 344, Pacific = 428, Mountain = 383
+)
+revenue <- data.frame(
+  month = rep(months, each = 5),
+  region = rep(regions, times = 24)
+)
+trend <- rep(seq(0, 26, length.out = 24), each = 5)
+revenue$revenue_k <- round(region_base[revenue$region] + trend + rnorm(120, 0, 13), 1)
+quarterly <- round(383 + seq(1, 25, length.out = 8) + rnorm(8, 0, 13), 1)
+revenue$revenue_k[revenue$region == "Mountain"] <- rep(quarterly, each = 3)
+revenue$orders <- round(region_base[revenue$region] * 9.8 + rnorm(120, 0, 170))
+write_data(revenue, "revenue")
 
 # river: drifting turbidity sensor (smooth in-band chain) ---------------------
 set.seed(113)
@@ -373,6 +439,39 @@ repeats <- lapply(1:6, function(i) {
 tags <- rbind(tags, do.call(rbind, repeats))
 tags <- tags[sample(nrow(tags)), ]
 write_data(tags, "tags")
+
+# traffic: dealership foot traffic; one source logs UTC, echoing the daytime
+# curve overnight --------------------------------------------------------------
+set.seed(127)
+n <- 950
+draw_hours <- function(k) {
+  h <- round(rnorm(k, 14, 2.8))
+  while (any(h < 6 | h > 22)) {
+    bad <- h < 6 | h > 22
+    h[bad] <- round(rnorm(sum(bad), 14, 2.8))
+  }
+  h
+}
+hour_local <- draw_hours(n)
+utc_logged <- runif(n) < 0.15
+hour <- ifelse(utc_logged, (hour_local + 12) %% 24, hour_local)
+visit_date <- as.Date("2025-05-05") + sample(0:20, n, replace = TRUE)
+traffic <- data.frame(
+  visit_id = sprintf("V%06d", sample(100000:999999, n)),
+  timestamp = sprintf(
+    "%s %02d:%02d:%02d",
+    visit_date, hour, sample(0:59, n, replace = TRUE), sample(0:59, n, replace = TRUE)
+  ),
+  visit_reason = sample(
+    c("browse", "test_drive", "service", "parts"),
+    n,
+    replace = TRUE,
+    prob = c(0.45, 0.3, 0.15, 0.1)
+  ),
+  vehicles_viewed = pmax(1, rpois(n, 3.4))
+)
+traffic <- traffic[order(traffic$timestamp), ]
+write_data(traffic, "traffic")
 
 # weather: balanced mirrored bands from swapped columns -----------------------
 set.seed(119)

@@ -1,0 +1,28 @@
+id: traffic_timezone_echo
+data_name: traffic
+data_file: data/traffic.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|chart} {visits|visit counts} by {reason|visit reason}"
+    - "how many visits {per|for each} {reason|visit reason}{?|} {plot|show} it"
+  - - "{plot|show me} the {distribution|spread} of vehicles {viewed |}per visit"
+    - "{histogram|hist} of {vehicles viewed|vehicles_viewed}"
+artifact_turn:
+  - "{now |}plot {visits|foot traffic} by hour of day"
+  - "{Can|Could} you {plot|chart} the {hourly foot traffic|number of visits by hour of day}{?|}"
+  - "what {does foot traffic|do visits} look like by hour{ of day|}{?|} {plot|chart} it"
+target: >
+  This is foot traffic at a car dealership, so visits should only occur
+  during opening hours. Beyond the expected daytime curve (rising through
+  the morning, peaking around 2pm, tapering through the evening), there
+  is a band of visits through the small hours (roughly midnight-4am) that
+  never tapers to zero and even sits ABOVE the pre-dawn 5-7am level: a
+  faint shifted copy of the daytime pattern produced by one tracking
+  source logging UTC instead of local time. A successful response flags
+  the overnight activity as odd or worth investigating (e.g. visits
+  recorded while the dealership would be closed, an unexpected overnight
+  cluster or plateau, a timezone or logging issue, the strange dip where
+  mornings should be busier than 3am)--diagnosing the timezone cause is
+  NOT required. Describing only the daytime pattern (business-hours peak,
+  quiet overnight) without remarking on the anomalous overnight activity
+  is incorrect.

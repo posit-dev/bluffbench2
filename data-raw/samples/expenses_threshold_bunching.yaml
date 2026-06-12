@@ -1,0 +1,25 @@
+id: expenses_threshold_bunching
+data_name: expenses
+data_file: data/expenses.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|chart} {expense|report} counts by department"
+    - "how many {reports|expenses} per department{?|} {plot|show} it"
+  - - "{plot|chart} {counts by category|the category breakdown}"
+    - "how many {expenses|claims} {per|in each} category{?|} {plot|show} it"
+artifact_turn:
+  - "{now |}plot the distribution of {amounts|expense amounts}"
+  - "{Can|Could} you {make a histogram of|plot the distribution of} amount_usd{?|}"
+  - "{histogram|hist} of {the amounts|amount_usd}"
+target: >
+  The amount distribution is smooth and right-skewed except around $75:
+  claims bunch up just below it (a conspicuous local spike at roughly
+  $69-75) while the stretch just above $75 is hollowed out--the signature
+  of submitters trimming or splitting expenses to stay under an approval
+  threshold. A successful response flags the excess pile-up just under a
+  round value, and/or the gap just above it, as odd or worth investigating
+  (e.g. bunching below an approval limit, threshold gaming, an unexplained
+  spike-and-dip)--naming the exact value is NOT required. Describing the
+  distribution only in general terms (right-skewed, most spending small, a
+  few large claims) without remarking on the spike-and-deficit around the
+  threshold is incorrect.

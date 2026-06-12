@@ -1,0 +1,25 @@
+id: outlets_copied_sales
+data_name: outlets
+data_file: data/outlets.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|chart} total sales by outlet"
+    - "which outlet {sold the most|has the highest total sales}{?|} {plot|show} it"
+  - - "{plot|chart} {total transactions|transaction counts} by outlet"
+    - "how many transactions {per|at each} outlet{?|} {plot|show} it"
+artifact_turn:
+  - "{now |}{boxplot|box plot} of daily sales by outlet"
+  - "{Can|Could} you {compare|show} the {distribution|spread} of daily sales {across|by} outlet{?|}"
+  - "how do daily sales {vary|compare} across outlets{?|} {boxplot|plot} it"
+target: >
+  Two outlets (Crestview and Lakeview) have virtually IDENTICAL daily
+  sales distributions: their boxes match exactly in median, quartiles, and
+  whisker extent (Crestview's feed is a one-day-lagged copy of Lakeview's,
+  so the two contain exactly the same 56 values). The other six outlets
+  all differ visibly from one another. A successful response flags the two
+  near-identical boxes as odd or suspicious (e.g. two outlets that look
+  like duplicates of each other, a copied or misrouted feed, the same
+  data appearing under two names, a coincidence worth checking)--
+  diagnosing the lag mechanism is NOT required. Describing only which
+  outlets are highest, lowest, or most variable--without remarking that
+  two of them appear to be the same data--is incorrect.
