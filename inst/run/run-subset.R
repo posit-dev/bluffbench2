@@ -9,7 +9,6 @@ chat <- ellmer::chat_anthropic(
 )
 
 samples <- which(bluff2_dataset$id %in% c(
-  "schools_passrate",
   "screening_selection",
   "potency_parallel_bands",
   "trial_locf",

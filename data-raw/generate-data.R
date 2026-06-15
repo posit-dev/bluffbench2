@@ -516,21 +516,6 @@ wellbeing <- rbind(wellbeing, wb_imp)
 wellbeing <- wellbeing[sample(nrow(wellbeing)), ]
 write_data(wellbeing, "wellbeing")
 
-# schools: pass rates are small-denominator fractions -------------------------
-set.seed(129)
-n <- 200
-class_size <- sample(6:40, n, replace = TRUE)
-true_rate <- clip(0.62 + 0.004 * class_size, 0, 0.95)
-n_pass <- rbinom(n, class_size, true_rate)
-schools <- data.frame(
-  school_id = sprintf("SCH%03d", seq_len(n)),
-  district = sample(c("central", "north", "south", "east", "west"), n, replace = TRUE),
-  level = sample(c("elementary", "middle", "high"), n, replace = TRUE),
-  class_size = class_size,
-  pass_rate = round(n_pass / class_size, 3)
-)
-write_data(schools, "schools")
-
 # screening: composite inclusion rule induces a selection edge ----------------
 set.seed(130)
 N <- 260
