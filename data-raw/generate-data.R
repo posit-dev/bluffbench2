@@ -515,3 +515,84 @@ wb_imp <- data.frame(
 wellbeing <- rbind(wellbeing, wb_imp)
 wellbeing <- wellbeing[sample(nrow(wellbeing)), ]
 write_data(wellbeing, "wellbeing")
+
+# schools: pass rates are small-denominator fractions -------------------------
+set.seed(129)
+n <- 200
+class_size <- sample(6:40, n, replace = TRUE)
+true_rate <- clip(0.62 + 0.004 * class_size, 0, 0.95)
+n_pass <- rbinom(n, class_size, true_rate)
+schools <- data.frame(
+  school_id = sprintf("SCH%03d", seq_len(n)),
+  district = sample(c("central", "north", "south", "east", "west"), n, replace = TRUE),
+  level = sample(c("elementary", "middle", "high"), n, replace = TRUE),
+  class_size = class_size,
+  pass_rate = round(n_pass / class_size, 3)
+)
+write_data(schools, "schools")
+
+# screening: composite inclusion rule induces a selection edge ----------------
+set.seed(130)
+N <- 260
+a <- rnorm(N, 52, 11)
+b <- rnorm(N, 52, 11)
+keep <- (a + b) < 112 & a > 18 & b > 18
+screening <- data.frame(
+  subject_id = sprintf("S%04d", sample(1000:9999, sum(keep))),
+  site = sample(c("A", "B", "C"), sum(keep), replace = TRUE),
+  cohort = sample(c("2023", "2024"), sum(keep), replace = TRUE),
+  biomarker_a = round(a[keep], 1),
+  biomarker_b = round(b[keep], 1)
+)
+write_data(screening, "screening")
+
+# potency: two pooled methods sit in parallel offset bands --------------------
+set.seed(131)
+n <- 170
+method <- sample(c("A", "B"), n, replace = TRUE)
+potency <- data.frame(
+  lot = sprintf("L%04d", sample(1000:9999, n)),
+  instrument = sample(c("hplc1", "hplc2", "hplc3"), n, replace = TRUE),
+  method = method,
+  input_mg = round(runif(n, 5, 95), 1)
+)
+offset <- ifelse(method == "A", 0, 1.6)
+potency$potency_pct <- round(1.0 + 0.045 * potency$input_mg + offset + rnorm(n, 0, 0.45), 2)
+potency <- potency[sample(nrow(potency)), ]
+write_data(potency, "potency")
+
+# trial: dropouts carried forward (LOCF) flatline some trajectories -----------
+set.seed(132)
+n_pat <- 40
+weeks <- c(0, 2, 4, 6, 8, 10, 12)
+rows <- lapply(seq_len(n_pat), function(p) {
+  base <- rnorm(1, 60, 8)
+  slope <- rnorm(1, -1.6, 0.6)
+  traj <- base + slope * weeks + rnorm(length(weeks), 0, 3.5)
+  if (runif(1) < 0.2) {
+    d <- sample(4:6, 1)
+    traj[d:length(weeks)] <- traj[d]
+  }
+  data.frame(
+    patient_id = p,
+    arm = sample(c("active", "placebo"), 1),
+    week = weeks,
+    score = round(traj, 1)
+  )
+})
+trial <- do.call(rbind, rows)
+write_data(trial, "trial")
+
+# field: paired field measurements snapped onto a coarse grid -----------------
+set.seed(133)
+n <- 150
+soil_moisture <- runif(n, 12, 40)
+yield <- 1.8 + 0.13 * soil_moisture + rnorm(n, 0, 0.6)
+field <- data.frame(
+  plot_id = sprintf("F%03d", seq_len(n)),
+  block = sample(c("I", "II", "III", "IV"), n, replace = TRUE),
+  region = sample(c("east", "west"), n, replace = TRUE),
+  soil_moisture = round(soil_moisture / 2) * 2,
+  yield_t_ha = round(round(yield / 0.4) * 0.4, 2)
+)
+write_data(field, "field")

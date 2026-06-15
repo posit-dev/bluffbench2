@@ -1,0 +1,26 @@
+id: screening_selection
+data_name: screening
+data_file: data/screening.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|show} the counts by site"
+    - "how many subjects per site{?|} {plot|chart} it"
+  - - "{plot|chart} the {breakdown|split} by cohort"
+    - "how many subjects in each cohort{?|} {plot|show} it"
+artifact_turn:
+  - "{now |}plot biomarker_b {vs|against} biomarker_a"
+  - "{Can|Could} you {make a scatterplot of|plot} biomarker_a vs biomarker_b{?|}"
+  - "{plot|scatter} the two biomarkers {against|vs} each other"
+target: >
+  The cloud is bounded by a sharp diagonal edge--no subjects appear above
+  the line biomarker_a + biomarker_b around 112--and shows an induced
+  NEGATIVE correlation between the two markers. This is the signature of a
+  composite inclusion/selection rule (subjects enrolled only when the two
+  markers sum below a cutoff), not a genuine biological trade-off. A
+  successful response flags the straight diagonal boundary or the empty
+  upper-right region as odd, or notes that the negative correlation is
+  likely induced by a selection/inclusion rule (a truncation, collider, or
+  Berkson-type artifact)--diagnosing the exact mechanism is NOT required.
+  Describing only the negative correlation between the markers as if it
+  were a real relationship, without remarking on the sharp diagonal cutoff
+  or the selection, is incorrect.

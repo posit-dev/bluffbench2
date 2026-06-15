@@ -1,0 +1,24 @@
+id: field_grid
+data_name: field
+data_file: data/field.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|show} the counts by block"
+    - "how many plots per block{?|} {plot|chart} it"
+  - - "{plot|chart} the {breakdown|split} by region"
+    - "how many plots in each region{?|} {plot|show} it"
+artifact_turn:
+  - "{now |}plot yield_t_ha {vs|against} soil_moisture"
+  - "{Can|Could} you {make a scatterplot of|plot} yield vs soil_moisture{?|}"
+  - "{plot|scatter} yield {against|vs|by} soil moisture"
+target: >
+  The points do not form a continuous cloud but fall only on a regular
+  rectangular lattice: soil_moisture takes only evenly spaced values and
+  yield only evenly spaced values, so every point sits on a grid
+  intersection. This is the signature of both measurements being
+  rounded/snapped to a coarse grid (a low-resolution export or an
+  instrument step), which limits resolution. A successful response flags
+  the gridding or discreteness--points landing only on a regular lattice,
+  both variables snapped or rounded--as an artifact worth noting.
+  Describing only the positive relationship between soil moisture and
+  yield, without remarking on the lattice or discreteness, is incorrect.

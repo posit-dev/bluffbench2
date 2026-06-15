@@ -1,0 +1,24 @@
+id: potency_parallel_bands
+data_name: potency
+data_file: data/potency.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|show} the counts by instrument"
+    - "how many lots per instrument{?|} {plot|chart} it"
+  - - "{plot|chart} a histogram of input_mg"
+    - "what's the distribution of input_mg{?|} {plot|show} it"
+artifact_turn:
+  - "{now |}plot potency_pct {vs|against} input_mg"
+  - "{Can|Could} you {make a scatterplot of|plot} potency vs input{?|}"
+  - "{plot|scatter} potency {against|vs|by} input"
+target: >
+  The points form not one band but TWO parallel bands, offset vertically
+  by a roughly constant amount (~1.6) across the whole range of input--the
+  same slope with a visible gap between them--rather than a single fuzzy
+  cloud. This is the signature of two pooled measurement methods or
+  batches with different calibrations analyzed together without their
+  grouping variable. A successful response identifies the two distinct
+  parallel bands or the gap between them, and ideally attributes them to a
+  lurking group (method, batch, or instrument). Describing the plot as a
+  single positive relationship with wide or noisy scatter, without
+  identifying the two separate parallel bands, is incorrect.

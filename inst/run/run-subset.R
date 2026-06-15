@@ -9,10 +9,11 @@ chat <- ellmer::chat_anthropic(
 )
 
 samples <- which(bluff2_dataset$id %in% c(
-  "expenses_threshold_bunching",
-  "outlets_copied_sales",
-  "revenue_forward_filled",
-  "traffic_timezone_echo"
+  "schools_passrate",
+  "screening_selection",
+  "potency_parallel_bands",
+  "trial_locf",
+  "field_grid"
 ))
 
 tsk <- bluff2_task(epochs = 2, dir = "logs", samples = samples)

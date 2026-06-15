@@ -1,0 +1,26 @@
+id: trial_locf
+data_name: trial
+data_file: data/trial.csv
+modes: [csv, rda, env]
+lull_turns:
+  - - "{plot|show} the counts by arm"
+    - "how many records per arm{?|} {plot|chart} it"
+  - - "{plot|chart} a boxplot of score by arm"
+    - "how does score {compare|differ} across arms{?|} {plot|show} it"
+artifact_turn:
+  - "{now |}plot score over week, {one line per patient|a line per patient}"
+  - "{Can|Could} you {make a spaghetti plot of|plot} score across the weeks, grouped by patient{?|}"
+  - "{plot|chart} each patient's score {over|across} the weeks"
+target: >
+  Most patients' score trajectories drift downward week to week with
+  measurement noise, but about seven patients' lines go perfectly FLAT
+  from some visit onward--an exactly constant value repeated through to
+  week 12--with the flat run starting at scattered visits. This is the
+  signature of dropouts whose last observation was carried forward (LOCF),
+  not genuine stabilization. A successful response flags the flat or
+  horizontal trajectory tails as suspicious (e.g. carried-forward or
+  imputed values, dropouts held constant, LOCF, or a run of repeated
+  identical values)--the exact count is NOT required. Describing the
+  trajectories only as "declining, with some patients stabilizing or
+  plateauing," without noting that the tails are exactly constant or look
+  carried-forward, is incorrect.
