@@ -1,0 +1,2 @@
+inst/run/logs/*.json filter=lfs diff=lfs merge=lfs -text
+inst/run/tasks/*.rda filter=lfs diff=lfs merge=lfs -text
