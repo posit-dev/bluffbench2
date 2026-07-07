@@ -34,3 +34,5 @@ Suggests:
     usethis,
     yaml
 LazyData: true
+URL: https://github.com/posit-dev/bluffbench2
+BugReports: https://github.com/posit-dev/bluffbench2/issues
