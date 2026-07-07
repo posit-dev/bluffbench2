@@ -19,13 +19,16 @@
 #'   described the artifact.
 #' * `thinking`: Logical; `TRUE` for models run with medium thinking effort,
 #'   `FALSE` for non-thinking variants.
-#' * `cost`: Total solver cost in USD for running the full evaluation
-#'   (all samples, all epochs) for this model variant. Derived from token usage
-#'   and per-model pricing. The same value is repeated across all rows for a
-#'   given model.
+#' * `cost`: Solver cost in USD for running this individual sample-epoch.
+#'   Derived from the sample's token usage and per-model pricing. Summing `cost`
+#'   within a model yields that model variant's total evaluation cost.
+#' * `lab`: The organization that developed the model: "Anthropic", "OpenAI",
+#'   or "Google".
+#' * `release_date`: The date the model was publicly released, as a [Date].
+#' * `release_date_source`: A URL citing the source for the release date.
 #'
 #' @format A tibble with columns `model`, `id`, `epoch`, `score`, `thinking`,
-#'   and `cost`.
+#'   `cost`, `lab`, `release_date`, and `release_date_source`.
 "bluff2_results"
 
 # See usage in data-raw/bluff2_results.R
