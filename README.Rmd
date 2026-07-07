@@ -9,6 +9,7 @@ Among other things, data science is a practice of noticing and caring about subt
 The eval harness is a relatively generic coding agent harness with some prompting related to data analysis. The agent carries out a few "lull" turns, making a couple plots and tables unrelated to the eval. Then, at some point, it will be asked to produce a data visualization that produces a subtle visual artifact (that could feasibly result from a real data generating process):
 
 ```{r}
+#| echo: false
 library(ggplot2)
 
 labs <- read.csv(system.file("data/labs.csv", package = "bluffbench2"))

@@ -13,18 +13,6 @@ some point, it will be asked to produce a data visualization that
 produces a subtle visual artifact (that could feasibly result from a
 real data generating process):
 
-``` r
-library(ggplot2)
-
-labs <- read.csv(system.file("data/labs.csv", package = "bluffbench2"))
-labs$fitted <- abs(labs$cholesterol - round(120 + 2.6 * labs$bmi, 1)) < 1e-6
-
-ggplot(labs, aes(bmi, cholesterol)) +
-  geom_point(alpha = 0.8) +
-  labs(x = "BMI", y = "cholesterol") +
-  theme_minimal()
-```
-
 ![](README_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
 In this example, the agent is then graded on whether it mentions the
