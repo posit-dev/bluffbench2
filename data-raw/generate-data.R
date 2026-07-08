@@ -15,7 +15,9 @@ write_data <- function(df, name) {
 clip <- function(x, lo, hi) pmin(pmax(x, lo), hi)
 
 # assay: a few specimens re-run many times (pseudoreplication) ----------------
-set.seed(101)
+# Seed chosen so the three rerun centers stay well separated (~24/54/81 ug);
+# nearby centers can otherwise merge into one visual clump.
+set.seed(1290)
 n <- 140
 assay <- data.frame(
   run_id = seq_len(n),
