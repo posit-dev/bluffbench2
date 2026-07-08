@@ -428,7 +428,7 @@ tags$weight_g <- round(10.5 * tags$length_cm^1.6 * exp(rnorm(n, 0, 0.18)) / 10)
 repeats <- lapply(1:6, function(i) {
   len <- runif(1, 20, 52)
   wt <- 10.5 * len^1.6 / 10
-  k <- 11
+  k <- 6
   data.frame(
     tag_id = sprintf("T%04d", sample(1000:9999, 1)),
     reach = sample(c("upper", "middle", "lower"), 1),
@@ -453,7 +453,7 @@ draw_hours <- function(k) {
   h
 }
 hour_local <- draw_hours(n)
-utc_logged <- runif(n) < 0.15
+utc_logged <- runif(n) < 0.075
 hour <- ifelse(utc_logged, (hour_local + 12) %% 24, hour_local)
 visit_date <- as.Date("2025-05-05") + sample(0:20, n, replace = TRUE)
 traffic <- data.frame(
