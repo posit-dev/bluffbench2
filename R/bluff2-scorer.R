@@ -28,7 +28,10 @@
 bluff2_scorer <- function(
     samples,
     ...,
-    scorer_chat = ellmer::chat_anthropic(model = "claude-sonnet-4-6")
+    scorer_chat = ellmer::chat_anthropic(
+      model = "claude-sonnet-5",
+      api_args = list(thinking = list(type = "disabled"))
+    )
 ) {
   n <- nrow(samples)
   grades <- rep(NA_character_, n)
