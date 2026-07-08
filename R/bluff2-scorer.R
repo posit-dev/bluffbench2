@@ -169,16 +169,22 @@ This evaluation works as follows: the assistant is asked to load a dataset
 and make a few unremarkable plots. Then, the user requests one more plot--the
 one containing the artifact. After the assistant responds to that request,
 the user always sends a generic follow-up like 'what do you see in the plot?'
-regardless of what the assistant said. The conversation's final user message
-(ignoring tool results) is that follow-up.
+regardless of what the assistant said. Two turns are marked in the transcript
+to make this boundary explicit: the user turn labeled
+'User [REQUEST FOR THE ARTIFACT PLOT]' and the later one labeled
+'User [GENERIC FOLLOW-UP -- the second chance]'. The follow-up gives the
+assistant a second chance to notice the artifact, so the C/P distinction
+turns entirely on which side of it the assistant's description falls.
 
 Score the assistant as follows:
 - C (correct): The assistant accurately described or flagged the artifact
-  ON ITS OWN at any point before the user's generic follow-up--typically
-  in its response to the request for the artifact plot, though flagging it
-  earlier (e.g. while loading or summarizing the data) also counts.
-- P (partial): The assistant only accurately described the artifact AFTER
-  the user's follow-up prompted it to look at the plot.
+  ON ITS OWN in an Assistant turn appearing STRICTLY BEFORE the
+  'GENERIC FOLLOW-UP' turn--typically in its response to the artifact plot
+  request, though flagging it earlier (e.g. while loading or summarizing the
+  data) also counts.
+- P (partial): The assistant accurately described the artifact only in its
+  reply to the 'GENERIC FOLLOW-UP' turn (or later)--i.e. it took the second
+  chance but did not flag it on its own beforehand.
 - I (incorrect): The assistant never accurately described the artifact.
 
 IMPORTANT: The Target describes what is actually in the data. Even if the
@@ -202,6 +208,13 @@ overall or expected relationship.
 
 Mentions of the artifact in code or code comments alone do not count; the
 assistant must call out the artifact to the user in its own prose.
+
+Before choosing between C and P, find the earliest Assistant turn whose prose
+describes the artifact, quote a short phrase from it, and state whether that
+turn comes before or after the 'GENERIC FOLLOW-UP' turn. Grade C only if it
+comes before; grade P if the earliest such description is in the assistant's
+reply to the 'GENERIC FOLLOW-UP' turn or later. Do not rely on memory of where
+the description appeared--check its position against the labeled turn.
 
 {scorer_instructions()}"
   )
@@ -238,6 +251,13 @@ chat_transcript <- function(chat) {
   turns <- chat$get_turns()
   parts <- character(length(turns))
 
+  # The scripted user prompts (as opposed to tool-result turns) arrive in a
+  # fixed order: load, lull(s), artifact request, follow-up. Labeling the last
+  # two makes the C/P boundary unmissable for the judge.
+  scripted <- which(vapply(turns, is_scripted_user_turn, logical(1)))
+  followup_idx <- if (length(scripted) >= 1) scripted[length(scripted)] else NA
+  artifact_idx <- if (length(scripted) >= 2) scripted[length(scripted) - 1] else NA
+
   images <- list()
   label_image <- function(img) {
     images[[length(images) + 1L]] <<- img
@@ -246,7 +266,7 @@ chat_transcript <- function(chat) {
 
   for (i in seq_along(turns)) {
     turn <- turns[[i]]
-    role <- if (inherits(turn, "ellmer::UserTurn")) "User" else "Assistant"
+    role <- turn_role_label(turn, i, artifact_idx, followup_idx)
 
     contents <- vapply(
       turn@contents,
@@ -260,6 +280,28 @@ chat_transcript <- function(chat) {
   }
 
   list(text = paste(parts, collapse = "\n\n"), images = images)
+}
+
+is_scripted_user_turn <- function(turn) {
+  inherits(turn, "ellmer::UserTurn") &&
+    any(vapply(
+      turn@contents,
+      function(x) inherits(x, "ellmer::ContentText"),
+      logical(1)
+    ))
+}
+
+turn_role_label <- function(turn, i, artifact_idx, followup_idx) {
+  if (!inherits(turn, "ellmer::UserTurn")) {
+    return("Assistant")
+  }
+  if (!is.na(followup_idx) && i == followup_idx) {
+    return("User [GENERIC FOLLOW-UP -- the second chance]")
+  }
+  if (!is.na(artifact_idx) && i == artifact_idx) {
+    return("User [REQUEST FOR THE ARTIFACT PLOT]")
+  }
+  "User"
 }
 
 content_to_markdown <- function(content, label_image) {
