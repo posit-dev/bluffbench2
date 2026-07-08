@@ -481,7 +481,7 @@ weather <- data.frame(
   month = sample(month.abb[4:9], n, replace = TRUE),
   morning_c = round(runif(n, 6, 22), 1)
 )
-weather$afternoon_c <- round(weather$morning_c + 3 + rnorm(n, 0, 1.0), 1)
+weather$afternoon_c <- round(weather$morning_c + 3 + rnorm(n, 0, 1.6), 1)
 swap <- sample(n, round(0.45 * n))
 tmp <- weather$morning_c[swap]
 weather$morning_c[swap] <- weather$afternoon_c[swap]
