@@ -79,5 +79,22 @@ over a one-off `target` tweak.
 
 There's an Anthropic API key in the environment. Runs write Inspect-style logs
 to `logs/` (validated against vitals' pydantic models so the log viewer renders
-them); `inst/run/logs/` holds run outputs for inspecting trajectories. When
-diagnosing a grading decision, read the relevant log entry rather than guessing.
+them); `inst/run/logs/` holds run outputs for inspecting trajectories.
+
+### Reading a trajectory from a log
+
+Each `inst/run/logs/*.json` is one model run: `samples` is a flat list of
+length `n_samples × n_epochs`, each element keyed by `id` + `epoch`. Per sample,
+`messages` is the canonical transcript (roles `system`/`user`/`assistant`/`tool`;
+text inline, assistant tool calls under `tool_calls`, only images stored
+out-of-line as `attachment://<hash>` against the sample's `attachments` map,
+which holds plain text or `data:image/png;base64,...`). `scores[...]` has
+`value` (I/P/C), `answer`, `explanation` (judge reasoning), and
+`metadata.grading` (the full judge prompt). `events` is the raw API-call log
+(also dedupes long text into attachments) — redundant with `messages` for
+reading, useful for cross-checking the actually-executed code.
+
+Don't `cat` these (~30–80 MB, inlined base64). Load with a small Python script
+and, to read a full trajectory with plots, resolve each `attachment://` image to
+a PNG saved alongside a markdown transcript so it can be opened visually —
+namespace image filenames per epoch or epoch 2 overwrites epoch 1.
