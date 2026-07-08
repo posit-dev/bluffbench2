@@ -324,6 +324,9 @@ revenue$revenue_k <- round(region_base[revenue$region] + trend + rnorm(120, 0, 1
 quarterly <- round(383 + seq(1, 25, length.out = 8) + rnorm(8, 0, 13), 1)
 revenue$revenue_k[revenue$region == "Mountain"] <- rep(quarterly, each = 3)
 revenue$orders <- round(region_base[revenue$region] * 9.8 + rnorm(120, 0, 170))
+# Shuffle so the forward-filled Mountain repeats don't surface, adjacent, in a
+# raw data preview before the artifact-plot turn.
+revenue <- revenue[sample(nrow(revenue)), ]
 write_data(revenue, "revenue")
 
 # river: drifting turbidity sensor (smooth in-band chain) ---------------------
