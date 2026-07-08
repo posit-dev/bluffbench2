@@ -11,9 +11,9 @@ tsk <- bluff2_task(epochs = 2)
 # * Gemini 3.x: `thinkingLevel = "MEDIUM"`, or `thinkingBudget = 0`.
 
 run <- function(name, solver_chat) {
+  withr::local_envvar(VITALS_LOG_DIR = "inst/run/logs")
   task <- tsk$clone()
   task$eval(solver_chat = solver_chat, view = FALSE)
-  task$log("inst/run/logs")
 }
 
 # Fable/Mythos decline some requests with `stop_reason = "refusal"` rather than
