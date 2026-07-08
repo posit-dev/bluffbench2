@@ -7,6 +7,7 @@
 "rural","silver",40,167.27
 "metro","bronze",60,246.6
 "rural","gold",60,242.87
+"suburban","bronze",41,201.73
 "metro","silver",25,106.55
 "metro","gold",71,259
 "metro","bronze",46,173.44
@@ -95,6 +96,7 @@
 "rural","silver",40,183.27
 "rural","gold",25,120.41
 "suburban","gold",27,140.27
+"metro","silver",42,196.02
 "rural","silver",63,278.99
 "metro","bronze",27,207.6
 "suburban","silver",58,259.16
@@ -161,6 +163,7 @@
 "rural","bronze",62,240.97
 "suburban","gold",67,247.67
 "metro","silver",32,178.57
+"suburban","silver",49,254.32
 "metro","gold",54,222.61
 "suburban","silver",53,245.81
 "suburban","silver",71,320.4
@@ -224,13 +227,16 @@
 "suburban","gold",25,223.51
 "suburban","bronze",19,142
 "rural","silver",49,262.93
+"suburban","bronze",43,200.62
 "metro","silver",61,249.5
 "rural","bronze",57,268.02
 "suburban","silver",60,241.6
+"suburban","silver",44,197.29
 "metro","bronze",21,147.67
 "suburban","bronze",68,263.24
 "suburban","silver",51,204.59
 "suburban","silver",65,303.91
+"rural","silver",44,254.12
 "suburban","silver",59,217.31
 "suburban","silver",48,155.99
 "metro","silver",62,218.76
@@ -243,6 +249,7 @@
 "rural","bronze",34,136.6
 "suburban","gold",67,297.38
 "metro","gold",30,174.34
+"metro","silver",41,254.09
 "metro","gold",60,219.95
 "metro","gold",25,150.12
 "rural","bronze",19,117.8
@@ -252,6 +259,7 @@
 "suburban","gold",48,172.01
 "suburban","bronze",22,154.59
 "suburban","silver",32,193.57
+"metro","silver",47,201.48
 "rural","bronze",29,200.53
 "rural","gold",58,220.15
 "metro","bronze",23,121.28
@@ -273,6 +281,7 @@
 "rural","silver",71,280.44
 "rural","silver",34,200.81
 "suburban","bronze",55,247.14
+"metro","silver",43,201.03
 "metro","bronze",69,305.01
 "rural","silver",64,237.44
 "metro","gold",22,185.13
