@@ -66,6 +66,51 @@ is more appropriate than a one-off `target` tweak.
 Runs write Inspect-style logs to `logs/`; `inst/run/logs/` holds run outputs 
 for inspecting trajectories.
 
+### Running the eval against a new model
+
+Refer to `inst/run/run.R`. It builds `tsk <- bluff2_task(epochs = 2)`
+once, then `run(name, solver_chat)` clones the task, evals it against the given
+ellmer chat, and writes a timestamped json into `inst/run/logs/`. Each provider
+gets a `medium` (adaptive/effort) and, where supported, a `nonthinking` setting;
+the mechanism differs by provider, so `run.R` has per-provider helpers
+(`anthropic_adaptive`/`anthropic_nonthinking`, `openai_adaptive`/`_nonthinking`,
+`gemini_adaptive`/`_nonthinking`).
+
+Don't assume a helper works for an unfamiliar model — before running a full eval,
+spot-check the thinking setting with `ellmer` directly:
+
+```r
+library(ellmer)
+prompt <- "A rope over a pulley has a weight on one end and a monkey of equal weight on the other, balanced. The monkey climbs. What happens to the weight?"
+
+chat_thinking$chat(prompt)
+chat_nonthinking$chat(prompt)
+
+chat_thinking$get_tokens()$output
+chat_nonthinking$get_tokens()$output
+```
+
+Thinking tokens count as output, so on a reasoning-heavy prompt the thinking
+variant should report meaningfully more output tokens than the disabled one. If
+they're comparable, the thinking setting isn't taking effect and the helper needs
+adjusting for that model.
+
+To add a model:
+
+1. Add a `run("<name>", <helper>("<model-id>"))` line to `inst/run/run.R`.
+2. Add the log slug → run name mapping to `run_names` in `R/bluff2-results.R`
+   (the slug is the model portion of the log filename).
+3. Add a row to `data-raw/model_metadata.csv` (`task_name`, `lab`,
+   `release_date`, `release_date_source`). Web search for the release date if
+   you don't know it.
+4. Add a `case_when` arm in `data-raw/bluff2_results.R` mapping the run name to a
+   display label, and a `manual_prices` row if the model isn't in ellmer's
+   pricing.
+5. Run the new line(s), then source `data-raw/bluff2_results.R` to regenerate 
+   the package data (`process_results()` reads every log, keeping the most 
+   recent per slug). For ease of running the new lines in a self-contained way,
+   you might write a temp file with the lines of interest.
+
 ### Reading a trajectory from a log
 
 Each `inst/run/logs/*.json` is one model run: `samples` is a flat list of
