@@ -16,13 +16,18 @@ target: >
   a negative margin even though many small stores should be losing money,
   and the would-be-negative values are reflected upward, producing a
   suspicious pileup of points just above zero at small floor areas
-  (instead of the cloud crossing below zero). A successful response flags
-  the absence of negative margins / the fold at zero as suspicious (e.g. a
-  sign or absolute-value error, clipping, or censoring worth
-  investigating). Remarking that margins bottom out at (or floor around)
-  zero regardless of store size, and treating that hard lower boundary as
-  notable or worth investigating, counts--the response need not name the
-  mechanism (absolute value, clipping) or explicitly state that no
-  negatives appear. Describing only the overall area-margin relationship,
-  or attributing the near-zero points to ordinary outliers/heteroscedasticity
-  without registering the systematic floor at zero, is incorrect.
+  (instead of the cloud crossing below zero). A successful response
+  registers the hard lower boundary at zero itself as notable or worth
+  investigating: that margins pile up against zero and none fall below it,
+  a floor or wall the cloud does not cross (e.g. flagged as a sign or
+  absolute-value error, clipping, or censoring). It need not name the
+  mechanism or explicitly say that no negatives appear, and it may still
+  offer a benign guess for the boundary--registering the pileup/floor at
+  zero as a structural feature is what counts. Merely observing that some
+  stores have low or near-zero margins--a subset of low performers or
+  outliers, even phrased as "regardless of size" or "worth a closer
+  look"--does NOT count on its own unless the response registers the
+  boundary at zero as a hard floor the points pile against. Describing
+  only the overall area-margin relationship, or attributing the near-zero
+  points to ordinary outliers/heteroscedasticity without registering the
+  systematic floor at zero, is also incorrect.
