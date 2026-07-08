@@ -19,5 +19,10 @@ target: >
   (instead of the cloud crossing below zero). A successful response flags
   the absence of negative margins / the fold at zero as suspicious (e.g. a
   sign or absolute-value error, clipping, or censoring worth
-  investigating). Describing only the overall area-margin relationship
-  without flagging the zero boundary is incorrect.
+  investigating). Remarking that margins bottom out at (or floor around)
+  zero regardless of store size, and treating that hard lower boundary as
+  notable or worth investigating, counts--the response need not name the
+  mechanism (absolute value, clipping) or explicitly state that no
+  negatives appear. Describing only the overall area-margin relationship,
+  or attributing the near-zero points to ordinary outliers/heteroscedasticity
+  without registering the systematic floor at zero, is incorrect.
