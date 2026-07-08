@@ -89,7 +89,7 @@ solve_sample <- function(input, solver_chat) {
   )
 
   for (j in seq_along(turns)) {
-    contents <- decorate_turn(noise, turns[[j]], first_turn = j == 1)
+    contents <- decorate_turn(noise, turns[[j]], first_turn = j == 1, env = env)
     chat_with_retry(agent, contents)
   }
 
