@@ -12,7 +12,7 @@ artifact_turn:
   - "{Can|Could} you {make a scatterplot of|plot} outdoor_temp_c vs heating_kwh{?|}"
   - "{plot|scatter} heating {usage|kWh} {against|vs|by} outdoor temp{erature|}"
 target: >
-  About a quarter of the heating values fall EXACTLY on a straight line
+  Roughly a sixth of the heating values fall EXACTLY on a straight line
   (heating_kwh = 38 - 1.45 * outdoor_temp_c) with zero residual, as if
   missing meter readings had been filled in from a fitted regression:
   within the noisy cloud there is a perfectly straight run of points along

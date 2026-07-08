@@ -12,7 +12,7 @@ artifact_turn:
   - "{Can|Could} you {make a scatterplot of|plot} length_cm vs weight_g{?|}"
   - "{plot|scatter} weight {against|vs|by} length"
 target: >
-  Six fish were measured roughly eleven times each and entered as separate
+  Six fish were measured roughly six times each and entered as separate
   rows: the length-weight scatter contains six unnaturally tight clumps of
   near-identical points (repeated measurements of the same individuals,
   i.e. pseudoreplication), while the rest of the points scatter normally

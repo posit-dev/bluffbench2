@@ -12,7 +12,7 @@ artifact_turn:
   - "{Can|Could} you {make a scatterplot of|plot} age vs daily_minutes{?|}"
   - "{plot|scatter} daily {screen time|minutes} {against|vs|by} age"
 target: >
-  A majority of the self-reported daily screen time values have been
+  About two in five of the self-reported daily screen time values have been
   heaped onto multiples of 30 minutes: the scatter shows conspicuous
   horizontal bands at 120, 150, 180, 210, ... rather than a smooth spread,
   the classic rounding pattern of self-reported durations. A successful

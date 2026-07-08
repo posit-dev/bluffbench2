@@ -12,7 +12,7 @@ artifact_turn:
   - "{Can|Could} you {make a scatterplot of|plot} age vs systolic{?|}"
   - "{plot|scatter} systolic {against|vs|by} age"
 target: >
-  More than half of the systolic readings have been heaped onto multiples
+  About a quarter of the systolic readings have been heaped onto multiples
   of 10: the scatter shows conspicuous horizontal bands of points at 110,
   120, 130, and 140 rather than a smooth spread, a classic terminal digit
   preference / rounding artifact in manually recorded blood pressures. A

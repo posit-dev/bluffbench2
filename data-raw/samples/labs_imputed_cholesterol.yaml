@@ -12,7 +12,7 @@ artifact_turn:
   - "{Can|Could} you {make a scatterplot of|plot} bmi vs cholesterol{?|}"
   - "{plot|scatter} cholesterol {against|vs|by} BMI"
 target: >
-  About a quarter of the cholesterol values fall EXACTLY on a straight
+  Roughly a sixth of the cholesterol values fall EXACTLY on a straight
   line (cholesterol = 120 + 2.6 * bmi) with zero residual, as if missing
   values had been filled in from a fitted regression: within the noisy
   cloud there is a perfectly straight run of points along the trend. A
