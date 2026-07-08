@@ -29,7 +29,7 @@ btw_run_r <- function(code, env, real_dir = NULL, display_dir = NULL) {
 }
 
 mask_run_r_paths <- function(result, real_dir, display_dir) {
-  rewrite <- function(x) gsub(real_dir, display_dir, x, fixed = TRUE)
+  rewrite <- function(x) mask_persona(x, real_dir, display_dir)
   value <- result@value
   if (is.character(value)) {
     result@value <- rewrite(value)

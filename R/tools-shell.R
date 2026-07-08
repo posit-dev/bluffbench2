@@ -56,10 +56,38 @@ resolve_path <- function(path, state) {
 # the model (tool output), and the reverse for paths the model passes in (tool
 # input). No-ops when the two coincide (i.e. when no fake path is in play).
 mask_real_dir <- function(text, state) {
-  if (identical(state$dir, state$display_dir)) {
+  mask_persona(text, state$dir, state$display_dir)
+}
+
+# Rewrites machine-specific details in tool output to match the narrated
+# persona: the real working directory becomes `display_dir`, and the real OS
+# username (as it surfaces in e.g. `ls -l` owner columns or `~` expansions)
+# becomes the persona username embedded in `display_dir`. No-op when no fake
+# path is in play. Shared by the shell tools and the R tool.
+mask_persona <- function(text, real_dir, display_dir) {
+  if (is.null(display_dir) || identical(real_dir, display_dir)) {
     return(text)
   }
-  gsub(state$dir, state$display_dir, text, fixed = TRUE)
+  text <- gsub(real_dir, display_dir, text, fixed = TRUE)
+  real_user <- Sys.info()[["user"]]
+  persona <- display_user(display_dir)
+  if (!is.na(persona) && nzchar(real_user) && !identical(real_user, persona)) {
+    text <- gsub(real_user, persona, text, fixed = TRUE)
+  }
+  text
+}
+
+# The persona username is the first path component under /Users in a display
+# working directory like /Users/priya/Documents/analysis (see
+# generate_display_wd()).
+display_user <- function(display_dir) {
+  parts <- strsplit(display_dir, "/", fixed = TRUE)[[1]]
+  parts <- parts[nzchar(parts)]
+  if (length(parts) >= 2 && identical(parts[[1]], "Users")) {
+    parts[[2]]
+  } else {
+    NA_character_
+  }
 }
 
 unmask_display_dir <- function(text, state) {
