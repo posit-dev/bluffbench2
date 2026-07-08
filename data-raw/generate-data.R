@@ -425,39 +425,6 @@ tags <- rbind(tags, do.call(rbind, repeats))
 tags <- tags[sample(nrow(tags)), ]
 write_data(tags, "tags")
 
-# traffic: dealership foot traffic; one source logs UTC, echoing the daytime
-# curve overnight --------------------------------------------------------------
-set.seed(127)
-n <- 950
-draw_hours <- function(k) {
-  h <- round(rnorm(k, 14, 2.8))
-  while (any(h < 6 | h > 22)) {
-    bad <- h < 6 | h > 22
-    h[bad] <- round(rnorm(sum(bad), 14, 2.8))
-  }
-  h
-}
-hour_local <- draw_hours(n)
-utc_logged <- runif(n) < 0.075
-hour <- ifelse(utc_logged, (hour_local + 12) %% 24, hour_local)
-visit_date <- as.Date("2025-05-05") + sample(0:20, n, replace = TRUE)
-traffic <- data.frame(
-  visit_id = sprintf("V%06d", sample(100000:999999, n)),
-  timestamp = sprintf(
-    "%s %02d:%02d:%02d",
-    visit_date, hour, sample(0:59, n, replace = TRUE), sample(0:59, n, replace = TRUE)
-  ),
-  visit_reason = sample(
-    c("browse", "test_drive", "service", "parts"),
-    n,
-    replace = TRUE,
-    prob = c(0.45, 0.3, 0.15, 0.1)
-  ),
-  vehicles_viewed = pmax(1, rpois(n, 3.4))
-)
-traffic <- traffic[order(traffic$timestamp), ]
-write_data(traffic, "traffic")
-
 # weather: balanced mirrored bands from swapped columns -----------------------
 set.seed(119)
 n <- 170
