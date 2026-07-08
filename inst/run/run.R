@@ -1,4 +1,3 @@
-withr::local_envvar(VITALS_LOG_DIR = "inst/run/logs")
 devtools::load_all()
 
 tsk <- bluff2_task(epochs = 2)
@@ -14,16 +13,28 @@ tsk <- bluff2_task(epochs = 2)
 run <- function(name, solver_chat) {
   task <- tsk$clone()
   task$eval(solver_chat = solver_chat, view = FALSE)
-  save(task, file = file.path("inst/run/tasks", paste0("tsk_", name, ".rda")))
+  task$log("inst/run/logs")
 }
 
-anthropic_adaptive <- function(model, effort = "medium") {
+# Fable/Mythos decline some requests with `stop_reason = "refusal"` rather than
+# an error; the Anthropic products fall back to Opus 4.8 on these by default,
+# but a direct API call does not. `fallback` opts into the server-side fallback
+# so those refusals route to Opus instead of surfacing as empty turns the eval
+# would score as failures to notice the artifact.
+anthropic_adaptive <- function(model, effort = "medium", fallback = NULL) {
+  api_args <- list(
+    thinking = list(type = "adaptive"),
+    output_config = list(effort = effort)
+  )
+  beta_headers <- character()
+  if (!is.null(fallback)) {
+    api_args$fallbacks <- list(list(model = fallback))
+    beta_headers <- "server-side-fallback-2026-06-01"
+  }
   ellmer::chat_anthropic(
     model = model,
-    api_args = list(
-      thinking = list(type = "adaptive"),
-      output_config = list(effort = effort)
-    )
+    api_args = api_args,
+    beta_headers = beta_headers
   )
 }
 
@@ -69,5 +80,6 @@ gemini_nonthinking <- function(model) {
 }
 
 run("opus_4_8_medium", anthropic_adaptive("claude-opus-4-8"))
+run("fable_5_medium", anthropic_adaptive("claude-fable-5", fallback = "claude-opus-4-8"))
 run("gpt_5_5_medium", openai_adaptive("gpt-5.5"))
 run("gemini_3_5_flash_medium", gemini_adaptive("gemini-3.5-flash"))
