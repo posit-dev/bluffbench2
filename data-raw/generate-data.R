@@ -222,7 +222,7 @@ labs <- data.frame(
   bmi = round(runif(n, 18, 42), 1)
 )
 labs$cholesterol <- round(120 + 2.6 * labs$bmi + rnorm(n, 0, 18), 1)
-imp_bmi <- round(runif(55, 20, 40), 1)
+imp_bmi <- round(runif(28, 20, 40), 1)
 labs_imp <- data.frame(
   specimen = sprintf("L-%04d", n + seq_along(imp_bmi)),
   fasting = sample(c("yes", "no"), length(imp_bmi), replace = TRUE),
@@ -364,7 +364,7 @@ screentime <- data.frame(
   age = round(clip(rnorm(n, 34, 12), 13, 70))
 )
 screentime$daily_minutes <- clip(290 - 2.4 * screentime$age + rnorm(n, 0, 35), 10, 420)
-heaped <- sample(n, round(n * 0.6))
+heaped <- sample(n, round(n * 0.39))
 screentime$daily_minutes[heaped] <-
   round(screentime$daily_minutes[heaped] / 30) * 30
 screentime$daily_minutes <- round(screentime$daily_minutes)
