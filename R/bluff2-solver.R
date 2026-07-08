@@ -56,7 +56,13 @@ solve_sample <- function(input, solver_chat) {
   # Normalize so the path matches what getwd()/pwd report (macOS resolves
   # /var to /private/var); the tools rely on that to mask it consistently.
   solver_dir <- normalizePath(solver_dir)
-  env <- new.env(parent = globalenv())
+  # Parent above globalenv (at the attached-package search path) rather than at
+  # it, so whatever happens to be in the user's global environment when the
+  # eval is launched--the run harness's own objects included--stays invisible
+  # to the model's R session. Common packages are pre-attached (see the
+  # library() call in bluff2_solver()), so they remain reachable through the
+  # search path.
+  env <- new.env(parent = parent.env(globalenv()))
 
   placed <- place_data(df, input$data_name, mode, solver_dir, env)
 
@@ -73,6 +79,7 @@ solve_sample <- function(input, solver_chat) {
   withr::local_dir(solver_dir)
 
   noise <- new_noise_profile(solver_dir, display_dir)
+  inject_session_objects(env, noise$env_objects, placed$object_name)
 
   turns <- c(
     list(generate_load_turn(mode, placed)),
@@ -116,6 +123,16 @@ place_data <- function(df, data_name, mode, dir, env) {
       list(file_name = NULL, object_name = object_name)
     }
   )
+}
+
+# Places the mock objects advertised by the session-variable noise into the
+# solver's environment, skipping any that would shadow the data object.
+inject_session_objects <- function(env, objects, data_name = NULL) {
+  keep <- setdiff(names(objects), data_name)
+  if (length(keep) > 0) {
+    list2env(objects[keep], envir = env)
+  }
+  invisible(env)
 }
 
 generate_load_turn <- function(mode, placed) {

@@ -23,11 +23,14 @@ new_noise_profile <- function(dir, display_dir = dir) {
 
   # Environment and session-variable context tends to recur on every message.
   recurring <- list()
+  env_objects <- list()
   if (stats::runif(1) < 0.45) {
     recurring <- c(recurring, list(ambient_environment(dir, display_dir, date)))
   }
   if (stats::runif(1) < 0.3) {
-    recurring <- c(recurring, list(ambient_session_vars()))
+    sv <- ambient_session_vars()
+    recurring <- c(recurring, list(sv$text))
+    env_objects <- sv$objects
   }
 
   # Project memory is typically attached once, near the start.
@@ -36,7 +39,13 @@ new_noise_profile <- function(dir, display_dir = dir) {
     once <- c(once, list(ambient_memory(display_dir)))
   }
 
-  list(dir = dir, date = date, recurring = recurring, once = once)
+  list(
+    dir = dir,
+    date = date,
+    recurring = recurring,
+    once = once,
+    env_objects = env_objects
+  )
 }
 
 # Decorates one user turn. `contents` is the user's message (a length-1
@@ -110,24 +119,74 @@ ambient_environment <- function(dir, display_dir, date) {
   wrap_xml(body, sample(c("environment_details", "ide_context", "context"), 1))
 }
 
+# Advertises a handful of unrelated objects as sitting in the user's session,
+# and returns matching mock values to place in the solver's environment so the
+# session state is internally consistent: a model that inspects `fit` or `con`
+# finds an object of the advertised type rather than a phantom. None of the
+# objects bear on any dataset's artifact.
 ambient_session_vars <- function() {
-  pool <- c(
-    "con | DBIConnection", "db | PqConnection", "cfg | list",
-    "opts | list", "pal | character", "fit | lm", "mod | glm",
-    "helpers | environment", "params | list", "tbl | tbl_df",
-    ".Random.seed | integer", "theme | theme"
-  )
-  vars <- sample(pool, sample(3:6, 1))
+  defs <- session_var_defs()
+  chosen <- defs[sample(length(defs), sample(3:6, 1))]
+
   body <- paste0(
     "The following variables are available in the user's R session ",
     "(name | type):\n",
-    paste(vars, collapse = "\n")
+    paste(vapply(chosen, function(v) v$label, character(1)), collapse = "\n")
   )
-  if (stats::runif(1) < 0.5) {
-    wrap_xml(body, "r_session")
-  } else {
-    wrap_xml(body, "system-reminder")
-  }
+  wrapper <- if (stats::runif(1) < 0.5) "r_session" else "system-reminder"
+
+  objects <- stats::setNames(
+    lapply(chosen, function(v) v$make()),
+    vapply(chosen, function(v) v$name, character(1))
+  )
+
+  list(text = wrap_xml(body, wrapper), objects = objects)
+}
+
+session_var_defs <- function() {
+  list(
+    list(label = "con | DBIConnection", name = "con",
+      make = function() mock_connection("DBIConnection")),
+    list(label = "db | PqConnection", name = "db",
+      make = function() mock_connection("PqConnection")),
+    list(label = "cfg | list", name = "cfg",
+      make = function() {
+        list(retries = 3L, base_url = "https://api.internal/v2", verbose = FALSE)
+      }),
+    list(label = "opts | list", name = "opts",
+      make = function() list(digits = 4L, na_rm = TRUE, scale = "log10")),
+    list(label = "pal | character", name = "pal",
+      make = function() c("#1B9E77", "#D95F02", "#7570B3", "#E7298A")),
+    list(label = "fit | lm", name = "fit",
+      make = function() stats::lm(mpg ~ wt, data = datasets::mtcars)),
+    list(label = "mod | glm", name = "mod",
+      make = function() {
+        stats::glm(vs ~ wt, family = stats::binomial(), data = datasets::mtcars)
+      }),
+    list(label = "helpers | environment", name = "helpers",
+      make = function() {
+        list2env(
+          list(
+            clamp = function(x, lo, hi) pmin(pmax(x, lo), hi),
+            pct = function(x) x / sum(x)
+          ),
+          parent = baseenv()
+        )
+      }),
+    list(label = "params | list", name = "params",
+      make = function() list(alpha = 0.05, n_boot = 2000L, seed = 42L)),
+    list(label = "tbl | tbl_df", name = "tbl",
+      make = function() {
+        tibble::tibble(key = letters[1:5], value = c(12, 7, 23, 4, 16))
+      })
+  )
+}
+
+mock_connection <- function(class) {
+  structure(
+    list(host = "db.internal", dbname = "analytics", disconnected = TRUE),
+    class = unique(c(class, "DBIConnection"))
+  )
 }
 
 ambient_memory <- function(root) {
