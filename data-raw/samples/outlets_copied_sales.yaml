@@ -3,10 +3,10 @@ data_name: outlets
 data_file: data/outlets.csv
 modes: [csv, rda, env]
 lull_turns:
-  - - "{plot|chart} total sales by outlet"
-    - "which outlet {sold the most|has the highest total sales}{?|} {plot|show} it"
   - - "{plot|chart} {total transactions|transaction counts} by outlet"
     - "how many transactions {per|at each} outlet{?|} {plot|show} it"
+  - - "{plot|show me} the {transaction|daily transaction} {count |}distribution"
+    - "{histogram|hist} of {transactions|daily transactions}"
 artifact_turn:
   - "{now |}{boxplot|box plot} of daily sales by outlet"
   - "{Can|Could} you {compare|show} the {distribution|spread} of daily sales {across|by} outlet{?|}"
