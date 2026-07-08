@@ -2,34 +2,25 @@ library(tidyverse)
 
 bluff2_results_raw <- process_results()
 
-# --- Extract per-sample solver costs from task objects ------------------------
+# --- Extract per-sample solver costs ------------------------------------------
 
-task_files <- list.files("inst/run/tasks", full.names = TRUE)
-
-sample_costs <- purrr::map(task_files, function(f) {
-  tmp <- new.env()
-  load(f, envir = tmp)
-  tsk <- tmp[[ls(tmp)[1]]]
-  task_name <- gsub("tsk_|\\.rda", "", basename(f))
-  samples <- tsk$get_samples()
-  # Per-sample solver cost and token usage, taken from each sample's solver
-  # Chat object. Summing these per model reproduces the task-level total.
-  tibble(
-    task_name = task_name,
-    id = samples$id,
-    epoch = samples$epoch,
-    cost = purrr::map_dbl(samples$solver_chat, ~ as.numeric(.x$get_cost())),
+# Per-sample solver cost and token usage, taken from each sample's solver
+# Chat object. Summing these per model reproduces the task-level total.
+sample_costs <- bluff2_results_raw |>
+  transmute(
+    task_name = task,
+    id,
+    epoch,
+    cost = purrr::map_dbl(solver_chat, ~ as.numeric(.x$get_cost())),
     solver_input_tokens = purrr::map_dbl(
-      samples$solver_chat,
+      solver_chat,
       ~ sum(.x$get_tokens()$input)
     ),
     solver_output_tokens = purrr::map_dbl(
-      samples$solver_chat,
+      solver_chat,
       ~ sum(.x$get_tokens()$output)
     )
   )
-}) |>
-  list_rbind()
 
 # Models missing from ellmer's litellm-based pricing are priced by hand here
 # (per-MTok input / output), falling back to the token-derived estimate below.
@@ -71,7 +62,7 @@ model_metadata <- read_csv(
 bluff2_results <-
   bluff2_results_raw |>
   rename(model = task) |>
-  select(-any_of("metadata")) |>
+  select(-any_of(c("metadata", "solver_chat"))) |>
   left_join(sample_costs, by = c("model" = "task_name", "id", "epoch")) |>
   left_join(model_metadata, by = c("model" = "task_name")) |>
   mutate(

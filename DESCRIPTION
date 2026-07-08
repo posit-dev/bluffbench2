@@ -27,7 +27,7 @@ Imports:
     purrr,
     rlang,
     tibble,
-    vitals,
+    vitals (>= 0.3.0.9001),
     withr
 Suggests:
     dplyr,
@@ -36,5 +36,7 @@ Suggests:
     usethis,
     yaml
 LazyData: true
+Remotes:
+    tidyverse/vitals
 URL: https://github.com/posit-dev/bluffbench2
 BugReports: https://github.com/posit-dev/bluffbench2/issues

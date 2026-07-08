@@ -31,21 +31,37 @@
 #'   `cost`, `lab`, `release_date`, and `release_date_source`.
 "bluff2_results"
 
-# See usage in data-raw/bluff2_results.R
+# See usage in data-raw/bluff2_results.R. Each run of the eval writes one
+# timestamped json log into `inst/run/logs`; logs are keyed back to run names
+# by the model slug in their filenames (`{timestamp}_bluffbench2-{model}-{hash}`),
+# and the most recent log per run wins. Add an entry here for each new run.
+run_names <- c(
+  "claude-opus-4-8" = "opus_4_8_medium",
+  "claude-fable-5" = "fable_5_medium",
+  "gpt-5.5" = "gpt_5_5_medium",
+  "gemini-3.5-flash" = "gemini_3_5_flash_medium"
+)
+
 process_results <- function() {
-  task_files <- list.files("inst/run/tasks", full.names = TRUE)
+  log_files <- sort(list.files(
+    "inst/run/logs",
+    pattern = "\\.json$",
+    full.names = TRUE
+  ))
+  slugs <- gsub(
+    "^[^_]+_bluffbench2-|-[0-9a-f]+\\.json$",
+    "",
+    basename(log_files)
+  )
+  latest <- tapply(log_files, slugs, function(files) files[length(files)])
 
-  load_object <- function(file) {
-    tmp <- new.env()
-    load(file = file, envir = tmp)
-    tmp[[ls(tmp)[1]]]
-  }
+  results <- purrr::imap(latest, function(file, slug) {
+    res <- vitals::vitals_log_read(file)
+    res$task <- run_names[[slug]]
+    res
+  })
 
-  tasks <- list()
-  for (task in task_files) {
-    tasks[[gsub(".rda", "", basename(task))]] <- load_object(task)
-  }
-  names(tasks) <- gsub("tsk_", "", names(tasks))
-
-  vitals::vitals_bind(!!!tasks)
+  results <- purrr::list_rbind(unname(results))
+  results$score <- factor(results$score, levels = c("I", "P", "C"), ordered = TRUE)
+  results[c("task", "id", "epoch", "score", "solver_chat")]
 }
