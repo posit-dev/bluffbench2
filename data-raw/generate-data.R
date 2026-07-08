@@ -97,7 +97,7 @@ clinic <- data.frame(
   age = round(clip(rnorm(n, 56, 15), 20, 90))
 )
 clinic$systolic <- 95 + 0.55 * clinic$age + rnorm(n, 0, 9)
-heaped <- sample(n, round(n * 0.55))
+heaped <- sample(n, round(n * 0.275))
 clinic$systolic[heaped] <- round(clinic$systolic[heaped] / 10) * 10
 clinic$systolic <- round(clinic$systolic)
 write_data(clinic, "clinic")
@@ -111,7 +111,7 @@ energy <- data.frame(
   outdoor_temp_c = round(runif(n, -8, 18), 1)
 )
 energy$heating_kwh <- round(38 - 1.45 * energy$outdoor_temp_c + rnorm(n, 0, 4.2), 2)
-imp_t <- round(sort(runif(55, -7, 17)), 1)
+imp_t <- round(sort(runif(28, -7, 17)), 1)
 energy_imp <- data.frame(
   meter_id = sprintf("MTR%04d", sample(1000:9999, length(imp_t))),
   dwelling = sample(c("apartment", "detached", "townhouse"), length(imp_t), replace = TRUE),
