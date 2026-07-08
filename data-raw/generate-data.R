@@ -389,21 +389,6 @@ seals <- rbind(seals, clean)
 seals <- seals[sample(nrow(seals)), ]
 write_data(seals, "seals")
 
-# shipping: weight and cost columns swapped for some rows ---------------------
-set.seed(116)
-n <- 180
-shipping <- data.frame(
-  order_id = sample(100000:999999, n),
-  carrier = sample(c("UPX", "FedDel", "Postal"), n, replace = TRUE),
-  weight_kg = round(runif(n, 0.4, 30), 2)
-)
-shipping$cost_usd <- round(7 + 0.42 * shipping$weight_kg + rnorm(n, 0, 1.1), 2)
-swap <- sample(n, 26)
-tmp <- shipping$weight_kg[swap]
-shipping$weight_kg[swap] <- shipping$cost_usd[swap]
-shipping$cost_usd[swap] <- tmp
-write_data(shipping, "shipping")
-
 # stores: negative margins folded positive ------------------------------------
 set.seed(117)
 n <- 230
