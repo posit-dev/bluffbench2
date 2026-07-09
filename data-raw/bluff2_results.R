@@ -27,6 +27,7 @@ sample_costs <- bluff2_results_raw |>
 manual_prices <- tribble(
   ~task_name                , ~input_per_mtok , ~output_per_mtok ,
   "opus_4_8_medium"         , 5               , 25               ,
+  "sonnet_5_medium"         , 3               , 15               ,
   "gemini_3_5_flash_medium" , 0.30            , 2.50             ,
   "gpt_5_5_medium"          , 1.25            , 10               ,
 )
@@ -68,6 +69,7 @@ bluff2_results <-
   mutate(
     model = case_when(
       model == "opus_4_8_medium" ~ "Claude Opus 4.8 (medium)",
+      model == "sonnet_5_medium" ~ "Claude Sonnet 5 (medium)",
       model == "gemini_3_5_flash_medium" ~ "Gemini 3.5 Flash (medium)",
       model == "gpt_5_5_medium" ~ "GPT-5.5 (medium)"
     ),

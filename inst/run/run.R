@@ -80,6 +80,6 @@ gemini_nonthinking <- function(model) {
 }
 
 run("opus_4_8_medium", anthropic_adaptive("claude-opus-4-8"))
-run("fable_5_medium", anthropic_adaptive("claude-fable-5", fallback = "claude-opus-4-8"))
+run("sonnet_5_medium", anthropic_adaptive("claude-sonnet-5"))
 run("gpt_5_5_medium", openai_adaptive("gpt-5.5"))
 run("gemini_3_5_flash_medium", gemini_adaptive("gemini-3.5-flash"))
