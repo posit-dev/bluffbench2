@@ -20,12 +20,14 @@ Depends:
     R (>= 4.1)
 Imports:
     btw,
+    callr,
     cli,
     ellmer,
     glue,
     jsonlite,
     purrr,
     rlang,
+    S7,
     tibble,
     vitals (>= 0.3.0.9001),
     withr

@@ -58,10 +58,10 @@ new_noise_profile <- function(dir, display_dir = dir) {
 # Decorates one user turn. `contents` is the user's message (a length-1
 # character vector). Returns a list of content pieces for `Chat$chat()`: the
 # user's text interspersed with sampled noise blocks.
-decorate_turn <- function(profile, contents, first_turn, env) {
+decorate_turn <- function(profile, contents, first_turn, session) {
   blocks <- profile$recurring
   if (!is.null(profile$session_wrapper)) {
-    sv_block <- render_session_vars(env, profile$session_wrapper)
+    sv_block <- render_session_vars(session, profile$session_wrapper)
     if (!is.null(sv_block)) {
       blocks <- c(blocks, list(sv_block))
     }
@@ -151,18 +151,20 @@ init_session_vars <- function() {
 }
 
 # Renders the session-variable block from the live state of the solver's
-# environment, so it reflects reality at each turn: the seeded mock objects
+# session, so it reflects reality at each turn: the seeded mock objects
 # plus whatever the model has created (and the data object, in env mode). This
 # keeps the model from concluding an object it just made "dropped out of the
 # session" because a frozen listing failed to mention it.
-render_session_vars <- function(env, wrapper) {
-  nms <- ls(env)
-  if (length(nms) == 0) {
+render_session_vars <- function(session, wrapper) {
+  lines <- solver_session_run(session, function() {
+    nms <- ls(globalenv())
+    vapply(nms, function(nm) {
+      paste0(nm, " | ", class(get(nm, envir = globalenv()))[1])
+    }, character(1), USE.NAMES = FALSE)
+  })
+  if (length(lines) == 0) {
     return(NULL)
   }
-  lines <- vapply(nms, function(nm) {
-    paste0(nm, " | ", class(get(nm, envir = env))[1])
-  }, character(1))
   body <- paste0(
     "The following variables are available in the user's R session ",
     "(name | type):\n",

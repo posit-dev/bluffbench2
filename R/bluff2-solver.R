@@ -28,12 +28,8 @@ bluff2_solver <- function(inputs, ..., solver_chat) {
 
   chats <- vector("list", length(inputs))
 
-  # Attach the packages models reach for so that function availability
-  # doesn't vary with the order in which samples happen to attach them.
   # A cli progress bar would be the natural fit here, but its redraws get
   # captured into R tool results when code run by the model emits output.
-  suppressPackageStartupMessages(library(tidyverse))
-
   for (i in seq_along(inputs)) {
     cli::cli_inform("Solving sample {i}/{length(inputs)}")
     chats[[i]] <- solve_sample(inputs[[i]], solver_chat)
@@ -56,15 +52,10 @@ solve_sample <- function(input, solver_chat) {
   # Normalize so the path matches what getwd()/pwd report (macOS resolves
   # /var to /private/var); the tools rely on that to mask it consistently.
   solver_dir <- normalizePath(solver_dir)
-  # Parent above globalenv (at the attached-package search path) rather than at
-  # it, so whatever happens to be in the user's global environment when the
-  # eval is launched--the run harness's own objects included--stays invisible
-  # to the model's R session. Common packages are pre-attached (see the
-  # library() call in bluff2_solver()), so they remain reachable through the
-  # search path.
-  env <- new.env(parent = parent.env(globalenv()))
+  session <- new_solver_session(solver_dir)
+  withr::defer(close_solver_session(session))
 
-  placed <- place_data(df, input$data_name, mode, solver_dir, env)
+  placed <- place_data(df, input$data_name, mode, solver_dir, session)
 
   display_dir <- generate_display_wd(input$data_name)
   state <- new_tool_state(solver_dir, display_dir)
@@ -73,13 +64,13 @@ solve_sample <- function(input, solver_chat) {
   agent$set_system_prompt(random_system_prompt(display_dir))
   agent$set_tools(c(
     shell_tools(state),
-    list(tool_run_r(env, solver_dir, display_dir))
+    list(tool_run_r(session, solver_dir, display_dir))
   ))
 
   withr::local_dir(solver_dir)
 
   noise <- new_noise_profile(solver_dir, display_dir)
-  inject_session_objects(env, noise$env_objects, placed$object_name)
+  inject_session_objects(session, noise$env_objects, placed$object_name)
 
   turns <- c(
     list(generate_load_turn(mode, placed)),
@@ -89,7 +80,12 @@ solve_sample <- function(input, solver_chat) {
   )
 
   for (j in seq_along(turns)) {
-    contents <- decorate_turn(noise, turns[[j]], first_turn = j == 1, env = env)
+    contents <- decorate_turn(
+      noise,
+      turns[[j]],
+      first_turn = j == 1,
+      session = session
+    )
     chat_with_retry(agent, contents)
   }
 
@@ -98,9 +94,9 @@ solve_sample <- function(input, solver_chat) {
 
 # Writes the sample's data frame where the conversation expects to find it:
 # as a csv or rda file in the solver's working directory, or assigned
-# directly into the R tool's evaluation environment. The data is first
+# directly into the solver session's global environment. The data is first
 # dressed with realistic blemishes (see `dress_data()`).
-place_data <- function(df, data_name, mode, dir, env) {
+place_data <- function(df, data_name, mode, dir, session) {
   dressed <- dress_data(df, mode)
   df <- dressed$df
   switch(
@@ -119,20 +115,35 @@ place_data <- function(df, data_name, mode, dir, env) {
     },
     env = {
       object_name <- generate_object_name(data_name)
-      assign(object_name, df, envir = env)
+      solver_session_run(
+        session,
+        function(name, value) {
+          assign(name, value, envir = globalenv())
+          invisible(NULL)
+        },
+        list(object_name, df)
+      )
       list(file_name = NULL, object_name = object_name)
     }
   )
 }
 
 # Places the mock objects advertised by the session-variable noise into the
-# solver's environment, skipping any that would shadow the data object.
-inject_session_objects <- function(env, objects, data_name = NULL) {
+# solver session's global environment, skipping any that would shadow the
+# data object.
+inject_session_objects <- function(session, objects, data_name = NULL) {
   keep <- setdiff(names(objects), data_name)
   if (length(keep) > 0) {
-    list2env(objects[keep], envir = env)
+    solver_session_run(
+      session,
+      function(objects) {
+        list2env(objects, envir = globalenv())
+        invisible(NULL)
+      },
+      list(objects[keep])
+    )
   }
-  invisible(env)
+  invisible(session)
 }
 
 generate_load_turn <- function(mode, placed) {
