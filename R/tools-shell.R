@@ -101,15 +101,24 @@ tool_bash <- function(state) {
   run_bash <- function(command, description = NULL, timeout = NULL, run_in_background = NULL) {
     command <- unmask_display_dir(command, state)
     out_file <- tempfile()
+    # The shell would otherwise inherit the harness's environment; scrub it to
+    # the same allowlist the R session uses, so `env` can't surface API keys,
+    # vitals/inspect configuration, or the launching harness (see
+    # solver_env_keep()).
+    drop <- solver_env_to_drop(names(Sys.getenv()))
+    scrub <- stats::setNames(rep(NA_character_, length(drop)), drop)
     status <- tryCatch(
-      withr::with_dir(
-        state$dir,
-        suppressWarnings(system2(
-          "/bin/zsh",
-          c("-c", shQuote(command)),
-          stdout = out_file,
-          stderr = out_file
-        ))
+      withr::with_envvar(
+        scrub,
+        withr::with_dir(
+          state$dir,
+          suppressWarnings(system2(
+            "/bin/zsh",
+            c("-c", shQuote(command)),
+            stdout = out_file,
+            stderr = out_file
+          ))
+        )
       ),
       error = function(e) e
     )

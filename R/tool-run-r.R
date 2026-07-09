@@ -56,21 +56,23 @@ close_solver_session <- function(session) {
 start_solver_session <- function(solver_dir) {
   rs <- callr::r_session$new()
   rs$run(
-    function(dir) {
+    function(dir, keep) {
       setwd(dir)
       # The child inherits the harness's environment variables and re-reads
       # ~/.Renviron at startup, so scrubbing must happen here, in the child,
-      # rather than at spawn time. Unset anything sensitive or
-      # harness-identifying--API keys and tokens, vitals configuration--and
-      # point PWD/OLDPWD (which otherwise name the directory the run was
-      # launched from) at the sample's own directory.
-      scrub <- grep(
-        "(_API_KEY$)|(_TOKEN$)|(^VITALS_)",
-        names(Sys.getenv()),
-        value = TRUE
-      )
-      if (length(scrub) > 0) {
-        Sys.unsetenv(scrub)
+      # rather than at spawn time--and against the child's own environment, so
+      # that variables callr sets in the child (e.g. CALLR_IS_RUNNING) are
+      # caught too. Keep only the allowlist (see solver_env_keep()) and drop
+      # everything else, so nothing sensitive or harness-identifying (API keys,
+      # vitals/inspect configuration, the launching agent harness, operator
+      # secrets) survives a Sys.getenv(). `keep` is passed as data rather than
+      # referenced as a bluffbench2 helper, which would reload the namespace in
+      # the child. Point PWD/OLDPWD (which otherwise name the directory the run
+      # was launched from) at the sample's own directory.
+      nms <- names(Sys.getenv())
+      drop <- nms[!(nms %in% keep$names | grepl(keep$prefix, nms))]
+      if (length(drop) > 0) {
+        Sys.unsetenv(drop)
       }
       Sys.setenv(PWD = dir, OLDPWD = dir)
       # Attach the packages models reach for, so function availability is the
@@ -78,9 +80,32 @@ start_solver_session <- function(solver_dir) {
       suppressPackageStartupMessages(library(tidyverse))
       invisible(NULL)
     },
-    list(solver_dir)
+    list(solver_dir, solver_env_keep())
   )
   rs
+}
+
+# The environment variables the solver's R session and shell keep; everything
+# else is dropped (see start_solver_session() and tool_bash()). The kept set is
+# what R and the packages models reach for actually need: R's own configuration
+# (R_*), locale (LC_*), the library and binary search paths, and
+# temp/working-directory pointers. Nothing here identifies the harness or
+# carries operator secrets.
+solver_env_keep <- function() {
+  list(
+    names = c(
+      "HOME", "PATH", "SHELL", "TERM", "USER", "LOGNAME",
+      "PWD", "OLDPWD", "TMPDIR", "TMP", "TEMP",
+      "LANG", "LANGUAGE", "TZ",
+      "DYLD_FALLBACK_LIBRARY_PATH", "LD_LIBRARY_PATH"
+    ),
+    prefix = "^(R_|LC_)"
+  )
+}
+
+# The environment variable names in `current` that fall outside the allowlist.
+solver_env_to_drop <- function(current, keep = solver_env_keep()) {
+  current[!(current %in% keep$names | grepl(keep$prefix, current))]
 }
 
 # Runs harness-side setup (placing data, injecting mock session objects,
