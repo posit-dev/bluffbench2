@@ -30,6 +30,8 @@ gpt_5_4_nano_medium,OpenAI,2026-03-17,https://developers.openai.com/api/docs/cha
 gpt_5_4_nano_nonthinking,OpenAI,2026-03-17,https://developers.openai.com/api/docs/changelog
 gpt_5_5_medium,OpenAI,2026-04-23,https://developers.openai.com/api/docs/changelog
 gpt_5_5_nonthinking,OpenAI,2026-04-23,https://developers.openai.com/api/docs/changelog
+gpt_5_6_terra_medium,OpenAI,2026-07-09,https://developers.openai.com/api/docs/changelog
+gpt_5_6_sol_medium,OpenAI,2026-07-09,https://developers.openai.com/api/docs/changelog
 gemini_2_5_pro_medium,Google,2025-03-25,https://ai.google.dev/gemini-api/docs/changelog
 gemini_2_5_flash_medium,Google,2025-06-17,https://ai.google.dev/gemini-api/docs/changelog
 gemini_2_5_flash_nonthinking,Google,2025-06-17,https://ai.google.dev/gemini-api/docs/changelog

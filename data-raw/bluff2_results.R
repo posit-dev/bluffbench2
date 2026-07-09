@@ -16,6 +16,10 @@ sample_costs <- bluff2_results_raw |>
       solver_chat,
       ~ sum(.x$get_tokens()$input)
     ),
+    solver_cached_tokens = purrr::map_dbl(
+      solver_chat,
+      ~ sum(.x$get_tokens()$cached_input)
+    ),
     solver_output_tokens = purrr::map_dbl(
       solver_chat,
       ~ sum(.x$get_tokens()$output)
@@ -23,13 +27,17 @@ sample_costs <- bluff2_results_raw |>
   )
 
 # Models missing from ellmer's litellm-based pricing are priced by hand here
-# (per-MTok input / output), falling back to the token-derived estimate below.
+# (per-MTok input / cached-read / output), falling back to the token-derived
+# estimate below. `input` counts uncached input; cached reads are billed
+# separately at the cached rate.
 manual_prices <- tribble(
-  ~task_name                , ~input_per_mtok , ~output_per_mtok ,
-  "opus_4_8_medium"         , 5               , 25               ,
-  "sonnet_5_medium"         , 3               , 15               ,
-  "gemini_3_5_flash_medium" , 0.30            , 2.50             ,
-  "gpt_5_5_medium"          , 1.25            , 10               ,
+  ~task_name                , ~input_per_mtok , ~cached_per_mtok , ~output_per_mtok ,
+  "opus_4_8_medium"         , 5               , 0.50             , 25               ,
+  "sonnet_5_medium"         , 3               , 0.30             , 15               ,
+  "gemini_3_5_flash_medium" , 1.50            , 0.15             , 9                ,
+  "gpt_5_5_medium"          , 5               , 0.50             , 30               ,
+  "gpt_5_6_terra_medium"    , 2.50            , 0.25             , 15               ,
+  "gpt_5_6_sol_medium"      , 5               , 0.50             , 30               ,
 )
 
 sample_costs <- sample_costs |>
@@ -37,8 +45,8 @@ sample_costs <- sample_costs |>
   mutate(
     cost = if_else(
       is.na(cost),
-      (solver_input_tokens *
-        input_per_mtok +
+      (solver_input_tokens * input_per_mtok +
+        solver_cached_tokens * cached_per_mtok +
         solver_output_tokens * output_per_mtok) /
         1e6,
       cost
@@ -71,7 +79,9 @@ bluff2_results <-
       model == "opus_4_8_medium" ~ "Claude Opus 4.8 (medium)",
       model == "sonnet_5_medium" ~ "Claude Sonnet 5 (medium)",
       model == "gemini_3_5_flash_medium" ~ "Gemini 3.5 Flash (medium)",
-      model == "gpt_5_5_medium" ~ "GPT-5.5 (medium)"
+      model == "gpt_5_5_medium" ~ "GPT-5.5 (medium)",
+      model == "gpt_5_6_terra_medium" ~ "GPT-5.6 Terra (medium)",
+      model == "gpt_5_6_sol_medium" ~ "GPT-5.6 Sol (medium)"
     ),
     thinking = stringr::str_detect(model, "\\(medium\\)")
   )
