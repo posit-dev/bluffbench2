@@ -70,7 +70,7 @@ solve_sample <- function(input, solver_chat) {
   withr::local_dir(solver_dir)
 
   noise <- new_noise_profile(solver_dir, display_dir)
-  inject_session_objects(session, noise$env_objects, placed$object_name)
+  inject_session_objects(session, noise$env_object_code, placed$object_name)
 
   turns <- c(
     list(generate_load_turn(mode, placed)),
@@ -130,17 +130,25 @@ place_data <- function(df, data_name, mode, dir, session) {
 
 # Places the mock objects advertised by the session-variable noise into the
 # solver session's global environment, skipping any that would shadow the
-# data object.
-inject_session_objects <- function(session, objects, data_name = NULL) {
-  keep <- setdiff(names(objects), data_name)
+# data object. `object_code` maps object names to deparsed constructor code,
+# evaluated in the child so the objects never cross serialization (see
+# init_session_vars()).
+inject_session_objects <- function(session, object_code, data_name = NULL) {
+  keep <- setdiff(names(object_code), data_name)
   if (length(keep) > 0) {
     solver_session_run(
       session,
-      function(objects) {
-        list2env(objects, envir = globalenv())
+      function(object_code) {
+        for (name in names(object_code)) {
+          assign(
+            name,
+            eval(parse(text = object_code[[name]]), globalenv()),
+            envir = globalenv()
+          )
+        }
         invisible(NULL)
       },
-      list(objects[keep])
+      list(object_code[keep])
     )
   }
   invisible(session)

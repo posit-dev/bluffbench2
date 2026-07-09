@@ -30,12 +30,12 @@ new_noise_profile <- function(dir, display_dir = dir) {
   # Session-variable context also recurs, but its block is rendered fresh each
   # turn from the live R session (see decorate_turn / render_session_vars), so
   # here we only fix which mock objects seed the session and how the block is
-  # wrapped; env_objects are injected into the solver's environment once.
-  env_objects <- list()
+  # wrapped; env_object_code is evaluated in the solver's session once.
+  env_object_code <- list()
   session_wrapper <- NULL
   if (stats::runif(1) < 0.3) {
     sv <- init_session_vars()
-    env_objects <- sv$objects
+    env_object_code <- sv$object_code
     session_wrapper <- sv$wrapper
   }
 
@@ -50,7 +50,7 @@ new_noise_profile <- function(dir, display_dir = dir) {
     date = date,
     recurring = recurring,
     once = once,
-    env_objects = env_objects,
+    env_object_code = env_object_code,
     session_wrapper = session_wrapper
   )
 }
@@ -133,21 +133,32 @@ ambient_environment <- function(dir, display_dir, date) {
 }
 
 # Chooses a handful of unrelated mock objects to seed into the user's session,
-# and the wrapper the session block will use. The objects are placed in the
-# solver's environment (see inject_session_objects) so the advertised session
+# and the wrapper the session block will use. The objects are built in the
+# solver's session (see inject_session_objects) so the advertised session
 # state is real: a model that inspects `fit` or `con` finds an object of the
 # stated type rather than a phantom. None of them bear on any dataset's artifact.
+#
+# The objects cross into the solver's session as deparsed code, not as built
+# objects: some (model fits, closures) would otherwise carry environments
+# whose parent chain reaches the bluffbench2 namespace, and serializing those
+# loads the package in the solver's session--naming the eval in
+# loadedNamespaces() and in the objects' own environments. Built in the child,
+# their environments are the child's globalenv, just as in a real session.
 init_session_vars <- function() {
   defs <- session_var_defs()
   chosen <- defs[sample(length(defs), sample(3:6, 1))]
 
-  objects <- stats::setNames(
-    lapply(chosen, function(v) v$make()),
+  object_code <- stats::setNames(
+    vapply(
+      chosen,
+      function(v) paste(deparse(body(v$make)), collapse = "\n"),
+      character(1)
+    ),
     vapply(chosen, function(v) v$name, character(1))
   )
   wrapper <- if (stats::runif(1) < 0.5) "r_session" else "system-reminder"
 
-  list(objects = objects, wrapper = wrapper)
+  list(object_code = object_code, wrapper = wrapper)
 }
 
 # Renders the session-variable block from the live state of the solver's
@@ -173,12 +184,25 @@ render_session_vars <- function(session, wrapper) {
   wrap_xml(body, wrapper)
 }
 
+# Each `make` body is deparsed and evaluated in the solver's session, so it
+# must be self-contained: base or `::`-qualified calls only, no bluffbench2
+# helpers.
 session_var_defs <- function() {
   list(
     list(name = "con",
-      make = function() mock_connection("DBIConnection")),
+      make = function() {
+        structure(
+          list(host = "db.internal", dbname = "analytics", disconnected = TRUE),
+          class = "DBIConnection"
+        )
+      }),
     list(name = "db",
-      make = function() mock_connection("PqConnection")),
+      make = function() {
+        structure(
+          list(host = "db.internal", dbname = "analytics", disconnected = TRUE),
+          class = c("PqConnection", "DBIConnection")
+        )
+      }),
     list(name = "cfg",
       make = function() {
         list(retries = 3L, base_url = "https://api.internal/v2", verbose = FALSE)
@@ -209,13 +233,6 @@ session_var_defs <- function() {
       make = function() {
         tibble::tibble(key = letters[1:5], value = c(12, 7, 23, 4, 16))
       })
-  )
-}
-
-mock_connection <- function(class) {
-  structure(
-    list(host = "db.internal", dbname = "analytics", disconnected = TRUE),
-    class = unique(c(class, "DBIConnection"))
   )
 }
 
