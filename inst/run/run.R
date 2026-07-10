@@ -1,5 +1,25 @@
 devtools::load_all()
 
+# The server-side-fallback beta returns a `content` block of type "fallback"
+# (an audit marker naming the from/to models) that ellmer's Claude provider
+# aborts on. It's safe to drop, so strip it before the original parser runs.
+local({
+  vt <- getNamespace("ellmer")$value_turn
+  provider <- getNamespace("ellmer")$ProviderAnthropic
+  orig <- S7::method(vt, provider)
+  S7::method(vt, provider) <- function(provider, result, has_type = FALSE) {
+    if (!is.null(result$content)) {
+      keep <- vapply(
+        result$content,
+        function(b) is.null(b$type) || !identical(b$type, "fallback"),
+        logical(1)
+      )
+      result$content <- result$content[keep]
+    }
+    orig(provider, result, has_type)
+  }
+})
+
 tsk <- bluff2_task(epochs = 2)
 
 # Each provider exposes a medium-thinking (`*_adaptive`) and a reasoning-off
@@ -80,6 +100,9 @@ gemini_nonthinking <- function(model) {
 }
 
 run("opus_4_8_medium", anthropic_adaptive("claude-opus-4-8"))
+run("fable_5_medium", anthropic_adaptive("claude-fable-5", fallback = "claude-opus-4-8"))
 run("sonnet_5_medium", anthropic_adaptive("claude-sonnet-5"))
 run("gpt_5_5_medium", openai_adaptive("gpt-5.5"))
+run("gpt_5_6_terra_medium", openai_adaptive("gpt-5.6-terra"))
+run("gpt_5_6_sol_medium", openai_adaptive("gpt-5.6-sol"))
 run("gemini_3_5_flash_medium", gemini_adaptive("gemini-3.5-flash"))

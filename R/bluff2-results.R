@@ -37,8 +37,11 @@
 # and the most recent log per run wins. Add an entry here for each new run.
 run_names <- c(
   "claude-opus-4-8" = "opus_4_8_medium",
+  "claude-fable-5" = "fable_5_medium",
   "claude-sonnet-5" = "sonnet_5_medium",
   "gpt-5.5" = "gpt_5_5_medium",
+  "gpt-5.6-terra" = "gpt_5_6_terra_medium",
+  "gpt-5.6-sol" = "gpt_5_6_sol_medium",
   "gemini-3.5-flash" = "gemini_3_5_flash_medium"
 )
 

@@ -17,7 +17,7 @@ sonnet_5_medium,Anthropic,2026-06-30,https://platform.claude.com/docs/en/release
 sonnet_5_nonthinking,Anthropic,2026-06-30,https://platform.claude.com/docs/en/release-notes/overview
 haiku_4_5_medium,Anthropic,2025-10-01,https://docs.anthropic.com/en/docs/about-claude/model-deprecations
 haiku_4_5_nonthinking,Anthropic,2025-10-01,https://docs.anthropic.com/en/docs/about-claude/model-deprecations
-claude_fable_5,Anthropic,2026-06-09,https://www.anthropic.com/news/claude-fable-5
+fable_5_medium,Anthropic,2026-06-09,https://www.anthropic.com/news/claude-fable-5
 gpt_5_medium,OpenAI,2025-08-07,https://developers.openai.com/api/docs/changelog
 gpt_5_nano_medium,OpenAI,2025-08-07,https://developers.openai.com/api/docs/changelog
 gpt_5_1_medium,OpenAI,2025-11-13,https://developers.openai.com/api/docs/changelog
