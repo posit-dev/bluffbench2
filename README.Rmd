@@ -13,7 +13,6 @@ The eval harness is a relatively generic coding agent harness with some promptin
 library(ggplot2)
 
 labs <- read.csv(system.file("data/labs.csv", package = "bluffbench2"))
-labs$fitted <- abs(labs$cholesterol - round(120 + 2.6 * labs$bmi, 1)) < 1e-6
 
 ggplot(labs, aes(bmi, cholesterol)) +
   geom_point(alpha = 0.8) +
@@ -21,6 +20,47 @@ ggplot(labs, aes(bmi, cholesterol)) +
   theme_minimal()
 ```
 
-In this example, the agent is then graded on whether it mentions the fact that there is a cluster of points that appear to follow the "fitted" line suspiciously tightly.
+In this example, the agent is then graded on whether it mentions the fact that there is a cluster of points that appear to follow the "fitted" line suspiciously tightly. Across samples, most artifacts get missed:
+
+```{r}
+#| fig-alt: "A bar plot showing scores for several frontier models. The two leaders, Gemini 3.5 Flash and Claude Fable 5, score in the mid-high teens. Models from OpenAI cluster at the bottom, never eclipsing 10%."
+#| echo: false
+library(bluffbench2)
+
+bluff2_summary <- 
+  bluff2_results %>%
+  summarize(
+    cost = sum(cost), 
+    score = (sum(score == "C") + (sum(score == "P") * .5)) / n(), 
+    n = n(),
+    .by = c(model, lab)
+  ) %>%
+  mutate(model = gsub(" (medium)", "", model, fixed = TRUE))
+
+bluff2_summary %>%
+  mutate(model = fct_reorder(model, score), lab = fct_relevel(lab, c("Google", "Anthropic", "OpenAI"))) %>%
+  ggplot() +
+  aes(x = score, y = model, fill = lab) +
+  geom_col() +
+  scale_fill_discrete(palette = c("#21bc38", "#dd9c1a", "#2c84e1")) +
+  theme_minimal() +
+  labs(
+    x = "Score", y = "Model", fill = "Lab", 
+    title = "Frontier models still struggle to notice subtle data quality issues",
+    subtitle = "*All runs use medium thinking* — posit-dev/bluffbench2"
+  ) +
+  scale_x_continuous(labels = label_percent(), limits = c(0, 1)) +
+  theme(
+    legend.location = "plot", legend.position = "inside", legend.position.inside = c(.84, .28),
+    plot.title.position = "plot", plot.subtitle = ggtext::element_markdown()
+  )
+```
+
+The evaluation can be installed as an R package with:
+
+```r
+# install.packages("pak")
+pak::pak("posit-dev/bluffbench2")
+```
 
 bluffbench is the successor to [bluffbench](https://github.com/posit-dev/bluffbench). It is implemented in R with [vitals](https://vitals.tidyverse.org/).
