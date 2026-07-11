@@ -1,0 +1,135 @@
+{
+  "2026-07-09T07-48-55-07-00_bluffbench2-gpt-5.5-14b317d862643afc0b12ea.json": {
+    "eval_id": {},
+    "run_id": "mQu4Cja7G3udiDVF1jZ6pf",
+    "task": "bluffbench2/gpt-5.5/14b317d862643afc0b12ea",
+    "task_id": "bluffbench2/gpt-5.5/14b317d862643afc0b12ea",
+    "task_version": 0,
+    "version": 2,
+    "status": "success",
+    "model": "openai/gpt-5.5",
+    "started_at": "2026-07-09T07:48:55-07:00",
+    "completed_at": "2026-07-09T07:48:55-07:00",
+    "primary_metric": {
+      "name": "accuracy",
+      "value": 1.9231,
+      "params": {
+        "1": "numeric_scores"
+      }
+    }
+  },
+  "2026-07-09T07-56-25-07-00_bluffbench2-claude-opus-4-8-14b317d862643afc0b12ea.json": {
+    "eval_id": {},
+    "run_id": "tm6RRFXJ06ZURpvuVIy1fC",
+    "task": "bluffbench2/claude-opus-4-8/14b317d862643afc0b12ea",
+    "task_id": "bluffbench2/claude-opus-4-8/14b317d862643afc0b12ea",
+    "task_version": 0,
+    "version": 2,
+    "status": "success",
+    "model": "anthropic/claude-opus-4-8",
+    "started_at": "2026-07-09T07:56:25-07:00",
+    "completed_at": "2026-07-09T07:56:25-07:00",
+    "primary_metric": {
+      "name": "accuracy",
+      "value": 9.6154,
+      "params": {
+        "1": "numeric_scores"
+      }
+    }
+  },
+  "2026-07-09T08-37-40-07-00_bluffbench2-claude-sonnet-5-14b317d862643afc0b12ea.json": {
+    "eval_id": {},
+    "run_id": "DqUQFy3j6SaUaoujYOJO8S",
+    "task": "bluffbench2/claude-sonnet-5/14b317d862643afc0b12ea",
+    "task_id": "bluffbench2/claude-sonnet-5/14b317d862643afc0b12ea",
+    "task_version": 0,
+    "version": 2,
+    "status": "success",
+    "model": "anthropic/claude-sonnet-5",
+    "started_at": "2026-07-09T08:37:40-07:00",
+    "completed_at": "2026-07-09T08:37:40-07:00",
+    "primary_metric": {
+      "name": "accuracy",
+      "value": 6.7308,
+      "params": {
+        "1": "numeric_scores"
+      }
+    }
+  },
+  "2026-07-09T14-42-52-07-00_bluffbench2-gpt-5.6-terra-14b317d862643afc0b12ea.json": {
+    "eval_id": {},
+    "run_id": "XuUkpdy3O1OoJ7ZXM0IBrk",
+    "task": "bluffbench2/gpt-5.6-terra/14b317d862643afc0b12ea",
+    "task_id": "bluffbench2/gpt-5.6-terra/14b317d862643afc0b12ea",
+    "task_version": 0,
+    "version": 2,
+    "status": "success",
+    "model": "openai/gpt-5.6-terra",
+    "started_at": "2026-07-09T14:42:52-07:00",
+    "completed_at": "2026-07-09T14:42:52-07:00",
+    "primary_metric": {
+      "name": "accuracy",
+      "value": 1.9231,
+      "params": {
+        "1": "numeric_scores"
+      }
+    }
+  },
+  "2026-07-09T15-17-02-07-00_bluffbench2-gpt-5.6-sol-14b317d862643afc0b12ea.json": {
+    "eval_id": {},
+    "run_id": "s5AZuvrw1u5Ka1hRpsWeLU",
+    "task": "bluffbench2/gpt-5.6-sol/14b317d862643afc0b12ea",
+    "task_id": "bluffbench2/gpt-5.6-sol/14b317d862643afc0b12ea",
+    "task_version": 0,
+    "version": 2,
+    "status": "success",
+    "model": "openai/gpt-5.6-sol",
+    "started_at": "2026-07-09T15:17:02-07:00",
+    "completed_at": "2026-07-09T15:17:02-07:00",
+    "primary_metric": {
+      "name": "accuracy",
+      "value": 4.8077,
+      "params": {
+        "1": "numeric_scores"
+      }
+    }
+  },
+  "2026-07-09T16-39-45-07-00_bluffbench2-gemini-3.5-flash-14b317d862643afc0b12ea.json": {
+    "eval_id": {},
+    "run_id": "ncDEX8q8wfT2Pq0OS8WtEZ",
+    "task": "bluffbench2/gemini-3.5-flash/14b317d862643afc0b12ea",
+    "task_id": "bluffbench2/gemini-3.5-flash/14b317d862643afc0b12ea",
+    "task_version": 0,
+    "version": 2,
+    "status": "success",
+    "model": "google_gemini/gemini-3.5-flash",
+    "started_at": "2026-07-09T16:39:45-07:00",
+    "completed_at": "2026-07-09T16:39:45-07:00",
+    "primary_metric": {
+      "name": "accuracy",
+      "value": 16.3462,
+      "params": {
+        "1": "numeric_scores"
+      }
+    }
+  },
+  "2026-07-10T09-00-00-07-00_bluffbench2-claude-fable-5-14b317d862643afc0b12ea.json": {
+    "eval_id": {},
+    "run_id": "6YUTOVdNdueHAX5nmyDyte",
+    "task": "bluffbench2/claude-fable-5/14b317d862643afc0b12ea",
+    "task_id": "bluffbench2/claude-fable-5/14b317d862643afc0b12ea",
+    "task_version": 0,
+    "version": 2,
+    "status": "success",
+    "model": "anthropic/claude-fable-5",
+    "started_at": "2026-07-09T19:04:11-07:00",
+    "completed_at": "2026-07-09T19:04:11-07:00",
+    "primary_metric": {
+      "name": "accuracy",
+      "value": 16.3462,
+      "params": {
+        "1": "numeric_scores"
+      }
+    }
+  }
+}

@@ -1,3 +1,7 @@
 .Rproj.user
 plans/
 .env
+.quarto
+/.quarto/
+
+**/*.quarto_ipynb

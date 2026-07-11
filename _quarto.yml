@@ -1,0 +1,9 @@
+project:
+  type: website
+  output-dir: docs
+  pre-render: Rscript inst/bundle.R
+  render:
+    - "index.qmd"
+
+website:
+  title: "bluffbench2"

@@ -1,0 +1,9 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "bluffbench2",
+    "section": "",
+    "text": "Source    Logs \n\nAmong other things, data science is a practice of noticing and caring about subtle data quality issues. bluffbench2 is an LLM evaluation that measures how effectively AI agents raise data quality concerns when faced with minor artifacts in data visualizations.\nThe eval harness is a relatively generic coding agent harness with some prompting related to data analysis. The agent carries out a few “lull” turns, making a couple plots and tables unrelated to the eval. Then, at some point, it will be asked to produce a data visualization that produces a subtle visual artifact (that could feasibly result from a real data generating process):\n\n\n\n\n\n\n\n\n\nIn this example, the agent is then graded on whether it mentions the fact that there is a cluster of points that appear to follow the “fitted” line suspiciously tightly. Across samples, most artifacts get missed:\n\n\n\n\n\n\n\n\n\nbluffbench2 is the successor to bluffbench.\n\nImplemented in R with vitals."
+  }
+]

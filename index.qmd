@@ -1,0 +1,89 @@
+---
+title: "bluffbench2"
+subtitle: "Data science is a practice of noticing and caring about subtle data quality issues."
+format:
+  html:
+    output-dir: docs
+---
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+body { background-color: #fbfbfb; }
+</style>
+
+::: {style="text-align: center; margin: 20px 0;"}
+<a href="https://github.com/posit-dev/bluffbench2" style="display: inline-block; background-color: black; color: white; padding: 10px 20px; margin: 0 15px; text-decoration: none; border-radius: 5px;">
+  <i class="fab fa-github"></i>  Source
+</a>
+<a href="logs/index.html" style="display: inline-block; background-color: black; color: white; padding: 10px 20px; margin: 0 15px; text-decoration: none; border-radius: 5px;">
+  <i class="fas fa-file-alt"></i>  Logs
+</a>
+:::
+
+Among other things, data science is a practice of noticing and caring about subtle data quality issues. bluffbench2 is an LLM evaluation that measures how effectively AI agents raise data quality concerns when faced with minor visual artifacts in plots.
+
+The eval harness is a relatively generic coding agent harness with some prompting related to data analysis. The agent carries out a few "lull" turns, making a couple plots and tables unrelated to the eval. Then, at some point, it will be asked to produce a data visualization that produces a subtle visual artifact (that could feasibly result from a real data generating process):
+
+```{r setup}
+#| include: false
+library(bluffbench2)
+library(tidyverse)
+library(scales)
+library(ggtext)
+```
+
+```{r artifact-plot}
+#| echo: false
+#| fig-align: center
+#| style: "border-radius: 10px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12); margin-bottom: 20px; padding: 15px 15px 0; background-color: white;"
+labs <- read.csv(system.file("data/labs.csv", package = "bluffbench2"))
+
+ggplot(labs, aes(bmi, cholesterol)) +
+  geom_point(alpha = 0.8) +
+  labs(x = "BMI", y = "cholesterol") +
+  theme_minimal()
+```
+
+In this example, the agent is then graded on whether it mentions the fact that there is a cluster of points that appear to follow the "fitted" line suspiciously tightly. Across samples, most artifacts get missed:
+
+```{r results-plot}
+#| fig-alt: "A bar plot showing scores for several frontier models. The two leaders, Gemini 3.5 Flash and Claude Fable 5, score in the mid-high teens. Models from OpenAI cluster at the bottom, never eclipsing 10%."
+#| echo: false
+#| fig-width: 8
+#| fig-align: center
+#| style: "border-radius: 10px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12); margin-bottom: 20px; padding: 15px 15px 0; background-color: white;"
+bluff2_summary <-
+  bluff2_results %>%
+  summarize(
+    cost = sum(cost),
+    score = (sum(score == "C") + (sum(score == "P") * .5)) / n(),
+    n = n(),
+    .by = c(model, lab)
+  ) %>%
+  mutate(model = gsub(" (medium)", "", model, fixed = TRUE))
+
+bluff2_summary %>%
+  mutate(model = fct_reorder(model, score), lab = fct_relevel(lab, c("Google", "Anthropic", "OpenAI"))) %>%
+  ggplot() +
+  aes(x = score, y = model, fill = lab) +
+  geom_col() +
+  scale_fill_discrete(palette = c("#21bc38", "#dd9c1a", "#2c84e1")) +
+  theme_minimal() +
+  labs(
+    x = "Score", y = "Model", fill = "Lab",
+    title = "Frontier models still struggle to notice subtle data quality issues",
+    subtitle = "*All runs use medium thinking* — posit-dev/bluffbench2"
+  ) +
+  scale_x_continuous(labels = label_percent(), limits = c(0, 1)) +
+  theme(
+    legend.location = "plot", legend.position = "inside", legend.position.inside = c(.84, .28),
+    plot.title.position = "plot", plot.subtitle = ggtext::element_markdown()
+  )
+```
+
+bluffbench2 is the successor to [bluffbench](https://github.com/posit-dev/bluffbench).
+
+::: {style="text-align: right; margin-top: 50px; margin-right: 0px; font-size: 0.9em; color: #666;"}
+Implemented in R with [vitals](https://vitals.tidyverse.org).
+:::

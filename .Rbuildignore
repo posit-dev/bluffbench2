@@ -1,3 +1,7 @@
 ^bluffbench2\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
+^docs$
+^index\.qmd$
+^_quarto\.yml$
+^robots\.txt$
