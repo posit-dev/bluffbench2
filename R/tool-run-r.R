@@ -192,7 +192,7 @@ resolve_cr <- function(text) {
     function(x) {
       x <- gsub("\r\n", "\n", x, fixed = TRUE)
       x <- gsub("[^\n\r]*\r", "", x, perl = TRUE)
-      x <- gsub("(^|\n)ℹ (Solving|Scoring)(?=\n|$)", "\\1", x, perl = TRUE)
+      x <- gsub("(^|\n)\u2139 (Solving|Scoring)(?=\n|$)", "\\1", x, perl = TRUE)
       gsub("\n{3,}", "\n\n", x)
     },
     character(1),
