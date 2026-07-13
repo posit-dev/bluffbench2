@@ -13,3 +13,5 @@
 \.DS_Store$
 ^\.claude$
 ^\.quarto$
+^CLAUDE\.md$
+^plans$
