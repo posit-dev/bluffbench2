@@ -1,6 +1,6 @@
 id: clinic_systolic_heaping
 data_name: clinic
-data_file: data/clinic.csv
+data_file: csv/clinic.csv
 modes: [csv, rda, env]
 lull_turns:
   - - "{plot|show} the {age distribution|distribution of ages}{ of patients|}"

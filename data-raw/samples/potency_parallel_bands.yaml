@@ -1,6 +1,6 @@
 id: potency_parallel_bands
 data_name: potency
-data_file: data/potency.csv
+data_file: csv/potency.csv
 modes: [csv, rda, env]
 lull_turns:
   - - "{plot|show} the counts by instrument"

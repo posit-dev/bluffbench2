@@ -1,6 +1,6 @@
 id: wellbeing_imputed_stress
 data_name: wellbeing
-data_file: data/wellbeing.csv
+data_file: csv/wellbeing.csv
 modes: [csv, rda, env]
 lull_turns:
   - - "{plot|chart} participant counts by employment{ status|}"

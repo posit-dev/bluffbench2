@@ -1,4 +1,4 @@
-# Generates the synthetic datasets shipped in inst/data/, one section per
+# Generates the synthetic datasets shipped in inst/csv/, one section per
 # dataset. Each dataset contains a couple of unremarkable columns (for the
 # lull plots) and a pair of columns whose joint distribution contains the
 # artifact. Each section sets its own seed so datasets can be re-tuned
@@ -7,7 +7,7 @@
 write_data <- function(df, name) {
   write.csv(
     df,
-    file.path("inst", "data", paste0(name, ".csv")),
+    file.path("inst", "csv", paste0(name, ".csv")),
     row.names = FALSE
   )
 }

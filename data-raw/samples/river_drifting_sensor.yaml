@@ -1,6 +1,6 @@
 id: river_drifting_sensor
 data_name: river
-data_file: data/river.csv
+data_file: csv/river.csv
 modes: [csv, rda, env]
 lull_turns:
   - - "{plot|show} {reading|observation} counts by weekday"

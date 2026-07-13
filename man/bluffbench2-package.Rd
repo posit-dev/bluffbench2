@@ -8,8 +8,22 @@
 \description{
 A multi-turn, artifact-driven evaluation of language models' willingness to pause and examine plots during routine data analysis. Agents are situated in a realistic harness, walked through a few unremarkable plotting requests, and then asked to make a plot containing a counterintuitive or anomalous artifact. The eval measures whether the agent notices and accurately describes the artifact. A harder, more realistic successor to bluffbench.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/posit-dev/bluffbench2}
+  \item Report bugs at \url{https://github.com/posit-dev/bluffbench2/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Simon Couch \email{simon.couch@posit.co}
+
+Authors:
+\itemize{
+  \item Simon Couch \email{simon.couch@posit.co}
+  \item Sara Altman \email{sara.altman@posit.co}
+}
 
 }
 \keyword{internal}

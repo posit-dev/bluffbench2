@@ -1,6 +1,6 @@
 id: tags_repeated_fish
 data_name: tags
-data_file: data/tags.csv
+data_file: csv/tags.csv
 modes: [csv, rda, env]
 lull_turns:
   - - "{plot|show} {capture|fish} counts by reach"

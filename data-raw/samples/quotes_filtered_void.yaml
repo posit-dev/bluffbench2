@@ -1,6 +1,6 @@
 id: quotes_filtered_void
 data_name: quotes
-data_file: data/quotes.csv
+data_file: csv/quotes.csv
 modes: [csv, rda, env]
 lull_turns:
   - - "{plot|chart} quote counts by region"

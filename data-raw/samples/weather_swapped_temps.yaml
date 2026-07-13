@@ -1,6 +1,6 @@
 id: weather_swapped_temps
 data_name: weather
-data_file: data/weather.csv
+data_file: csv/weather.csv
 modes: [csv, rda, env]
 lull_turns:
   - - "{plot|show} {reading|observation} counts by month"

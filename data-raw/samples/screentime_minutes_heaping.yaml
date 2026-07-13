@@ -1,6 +1,6 @@
 id: screentime_minutes_heaping
 data_name: screentime
-data_file: data/screentime.csv
+data_file: csv/screentime.csv
 modes: [csv, rda, env]
 lull_turns:
   - - "{plot|show} respondent counts by region"

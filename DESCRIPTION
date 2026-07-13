@@ -15,7 +15,6 @@ Description: A multi-turn, artifact-driven evaluation of language models'
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 Depends:
     R (>= 4.1)
 Imports:
@@ -42,3 +41,4 @@ Remotes:
     tidyverse/vitals
 URL: https://github.com/posit-dev/bluffbench2
 BugReports: https://github.com/posit-dev/bluffbench2/issues
+Config/roxygen2/version: 8.0.0

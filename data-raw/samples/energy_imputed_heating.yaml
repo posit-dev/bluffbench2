@@ -1,6 +1,6 @@
 id: energy_imputed_heating
 data_name: energy
-data_file: data/energy.csv
+data_file: csv/energy.csv
 modes: [csv, rda, env]
 lull_turns:
   - - "{plot|chart} meter counts by dwelling type"

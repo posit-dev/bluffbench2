@@ -77,7 +77,8 @@ start_solver_session <- function(solver_dir) {
       Sys.setenv(PWD = dir, OLDPWD = dir)
       # Attach the packages models reach for, so function availability is the
       # same in every sample's session.
-      suppressPackageStartupMessages(library(tidyverse))
+      pkg <- "tidyverse"
+      suppressPackageStartupMessages(library(pkg, character.only = TRUE))
       invisible(NULL)
     },
     list(solver_dir, solver_env_keep())
@@ -192,7 +193,7 @@ resolve_cr <- function(text) {
     function(x) {
       x <- gsub("\r\n", "\n", x, fixed = TRUE)
       x <- gsub("[^\n\r]*\r", "", x, perl = TRUE)
-      x <- gsub("(^|\n)ℹ (Solving|Scoring)(?=\n|$)", "\\1", x, perl = TRUE)
+      x <- gsub("(^|\n)\u2139 (Solving|Scoring)(?=\n|$)", "\\1", x, perl = TRUE)
       gsub("\n{3,}", "\n\n", x)
     },
     character(1),

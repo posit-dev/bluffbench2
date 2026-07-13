@@ -1,6 +1,6 @@
 id: revenue_forward_filled
 data_name: revenue
-data_file: data/revenue.csv
+data_file: csv/revenue.csv
 modes: [csv, rda, env]
 lull_turns:
   - - "{plot|chart} total revenue by region"

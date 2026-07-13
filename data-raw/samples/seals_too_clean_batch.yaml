@@ -1,6 +1,6 @@
 id: seals_too_clean_batch
 data_name: seals
-data_file: data/seals.csv
+data_file: csv/seals.csv
 modes: [csv, rda, env]
 lull_turns:
   - - "{plot|chart} {test|measurement} counts by inspector"

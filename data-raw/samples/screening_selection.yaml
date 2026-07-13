@@ -1,6 +1,6 @@
 id: screening_selection
 data_name: screening
-data_file: data/screening.csv
+data_file: csv/screening.csv
 modes: [csv, rda, env]
 lull_turns:
   - - "{plot|show} the counts by site"

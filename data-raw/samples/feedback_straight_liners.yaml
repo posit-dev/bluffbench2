@@ -1,6 +1,6 @@
 id: feedback_straight_liners
 data_name: feedback
-data_file: data/feedback.csv
+data_file: csv/feedback.csv
 modes: [csv, rda, env]
 lull_turns:
   - - "{plot|chart} response counts by course"

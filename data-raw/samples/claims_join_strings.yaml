@@ -1,6 +1,6 @@
 id: claims_join_strings
 data_name: claims
-data_file: data/claims.csv
+data_file: csv/claims.csv
 modes: [csv, rda, env]
 lull_turns:
   - - "{plot|chart} claim counts by {type|claim type}"

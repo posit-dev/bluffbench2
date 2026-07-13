@@ -1,6 +1,6 @@
 id: labs_imputed_cholesterol
 data_name: labs
-data_file: data/labs.csv
+data_file: csv/labs.csv
 modes: [csv, rda, env]
 lull_turns:
   - - "{plot|chart} {specimen counts by fasting status|the fasting/non-fasting split}"
