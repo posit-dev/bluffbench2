@@ -5,3 +5,9 @@
 ^index\.qmd$
 ^_quarto\.yml$
 ^robots\.txt$
+^inst/run/logs$
+^data-raw$
+^README\.Rmd$
+^README_files$
+^\.env$
+\.DS_Store$
