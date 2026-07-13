@@ -1,6 +1,6 @@
 id: field_grid
 data_name: field
-data_file: data/field.csv
+data_file: csv/field.csv
 modes: [csv, rda, env]
 lull_turns:
   - - "{plot|show} the counts by block"

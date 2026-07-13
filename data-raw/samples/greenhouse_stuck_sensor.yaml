@@ -1,6 +1,6 @@
 id: greenhouse_stuck_sensor
 data_name: greenhouse
-data_file: data/greenhouse.csv
+data_file: csv/greenhouse.csv
 modes: [csv, rda, env]
 lull_turns:
   - - "{plot|show} reading counts by bay"

@@ -1,6 +1,6 @@
 id: stores_folded_negatives
 data_name: stores
-data_file: data/stores.csv
+data_file: csv/stores.csv
 modes: [csv, rda, env]
 lull_turns:
   - - "{plot|chart} store counts by region"

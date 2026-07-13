@@ -1,6 +1,6 @@
 id: assay_rerun_specimens
 data_name: assay
-data_file: data/assay.csv
+data_file: csv/assay.csv
 modes: [csv, rda, env]
 lull_turns:
   - - "{plot|chart} run counts by technician"

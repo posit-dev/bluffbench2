@@ -1,6 +1,6 @@
 id: ponds_stuck_probe
 data_name: ponds
-data_file: data/ponds.csv
+data_file: csv/ponds.csv
 modes: [csv, rda, env]
 lull_turns:
   - - "{plot|show} reading counts by pond"

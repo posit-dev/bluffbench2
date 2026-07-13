@@ -1,6 +1,6 @@
 id: trial_locf
 data_name: trial
-data_file: data/trial.csv
+data_file: csv/trial.csv
 modes: [csv, rda, env]
 lull_turns:
   - - "{plot|show} the counts by arm"

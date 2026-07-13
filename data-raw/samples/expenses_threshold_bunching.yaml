@@ -1,6 +1,6 @@
 id: expenses_threshold_bunching
 data_name: expenses
-data_file: data/expenses.csv
+data_file: csv/expenses.csv
 modes: [csv, rda, env]
 lull_turns:
   - - "{plot|chart} {expense|report} counts by department"

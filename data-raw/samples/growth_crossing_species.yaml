@@ -1,6 +1,6 @@
 id: growth_crossing_species
 data_name: growth
-data_file: data/growth.csv
+data_file: csv/growth.csv
 modes: [csv, rda, env]
 lull_turns:
   - - "{plot|chart} seedling counts by tray"

@@ -1,6 +1,6 @@
 id: bridges_repeated_inspections
 data_name: bridges
-data_file: data/bridges.csv
+data_file: csv/bridges.csv
 modes: [csv, rda, env]
 lull_turns:
   - - "{plot|chart} inspection counts by district"

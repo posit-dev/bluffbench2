@@ -1,6 +1,6 @@
 id: rentals_crossing_bands
 data_name: rentals
-data_file: data/rentals.csv
+data_file: csv/rentals.csv
 modes: [csv, rda, env]
 lull_turns:
   - - "{plot|chart} listing counts by bedrooms"

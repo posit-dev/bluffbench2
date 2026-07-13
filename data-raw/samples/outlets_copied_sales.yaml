@@ -1,6 +1,6 @@
 id: outlets_copied_sales
 data_name: outlets
-data_file: data/outlets.csv
+data_file: csv/outlets.csv
 modes: [csv, rda, env]
 lull_turns:
   - - "{plot|chart} {total transactions|transaction counts} by outlet"
