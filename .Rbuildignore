@@ -11,3 +11,5 @@
 ^README_files$
 ^\.env$
 \.DS_Store$
+^\.claude$
+^\.quarto$
