@@ -77,7 +77,8 @@ start_solver_session <- function(solver_dir) {
       Sys.setenv(PWD = dir, OLDPWD = dir)
       # Attach the packages models reach for, so function availability is the
       # same in every sample's session.
-      suppressPackageStartupMessages(library(tidyverse))
+      pkg <- "tidyverse"
+      suppressPackageStartupMessages(library(pkg, character.only = TRUE))
       invisible(NULL)
     },
     list(solver_dir, solver_env_keep())
