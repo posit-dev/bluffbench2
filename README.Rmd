@@ -6,7 +6,24 @@ output: github_document
 
 Among other things, data science is a practice of noticing and caring about subtle data quality issues. bluffbench2 is an LLM evaluation that measures how effectively AI agents raise data quality concerns when faced with minor artifacts in data visualizations.
 
-The eval harness is a relatively generic coding agent harness with some prompting related to data analysis. The agent carries out a few "lull" turns, making a couple plots and tables unrelated to the eval. Then, at some point, it will be asked to produce a data visualization that produces a subtle visual artifact (that could feasibly result from a real data generating process):
+bluffbench2 is the successor to [bluffbench](https://github.com/posit-dev/bluffbench). It is implemented in R with [vitals](https://vitals.tidyverse.org/).
+
+## Installation
+
+The evaluation can be installed as an R package with:
+
+```r
+# install.packages("pak")
+pak::pak("posit-dev/bluffbench2")
+```
+
+## How it works
+
+The eval harness is a relatively generic coding agent harness with some prompting related to data analysis. The agent carries out a few "lull" turns, making a couple plots and tables unrelated to the eval, simulating a realistic conversation. Then, at some point, the agent is asked to produce a data visualization that includes a subtle visual artifact that could feasibly result from a real data generating process.
+
+The artifacts span a range of realistic data quality issues: stuck sensors, bad joins, points imputed onto a line, swapped columns, pseudoreplication, differing units, etc. 
+
+For example, one plot has a cluster of points that appear to follow the “fitted” line suspiciously tightly:
 
 ```{r}
 #| echo: false
@@ -20,47 +37,95 @@ ggplot(labs, aes(bmi, cholesterol)) +
   theme_minimal()
 ```
 
-In this example, the agent is then graded on whether it mentions the fact that there is a cluster of points that appear to follow the "fitted" line suspiciously tightly. Across samples, most artifacts get missed:
+## Results
+
+The agent is graded on whether it mentions the subtle quality concern in a data visualization. Across samples (`r nrow(bluffbench2::bluff2_dataset)` distinct samples, each run over two epochs per model), most artifacts get missed:
 
 ```{r}
 #| fig-alt: "A bar plot showing scores for several frontier models. The two leaders, Gemini 3.5 Flash and Claude Fable 5, score in the mid-high teens. Models from OpenAI cluster at the bottom, never eclipsing 10%."
 #| echo: false
 library(bluffbench2)
 
-bluff2_summary <- 
+bluff2_summary <-
   bluff2_results %>%
   summarize(
-    cost = sum(cost), 
-    score = (sum(score == "C") + (sum(score == "P") * .5)) / n(), 
+    cost = sum(cost),
+    score = (sum(score == "C") + (sum(score == "P") * .5)) / n(),
     n = n(),
     .by = c(model, lab)
   ) %>%
   mutate(model = gsub(" (medium)", "", model, fixed = TRUE))
 
 bluff2_summary %>%
-  mutate(model = fct_reorder(model, score), lab = fct_relevel(lab, c("Google", "Anthropic", "OpenAI"))) %>%
+  mutate(
+    model = fct_reorder(model, score),
+    lab = fct_relevel(lab, c("Google", "Anthropic", "OpenAI"))
+  ) %>%
   ggplot() +
   aes(x = score, y = model, fill = lab) +
   geom_col() +
   scale_fill_discrete(palette = c("#21bc38", "#dd9c1a", "#2c84e1")) +
   theme_minimal() +
   labs(
-    x = "Score", y = "Model", fill = "Lab", 
+    x = "Score",
+    y = "Model",
+    fill = "Lab",
     title = "Frontier models still struggle to notice subtle data quality issues",
     subtitle = "*All runs use medium thinking* — posit-dev/bluffbench2"
   ) +
   scale_x_continuous(labels = label_percent(), limits = c(0, 1)) +
   theme(
-    legend.location = "plot", legend.position = "inside", legend.position.inside = c(.84, .28),
-    plot.title.position = "plot", plot.subtitle = ggtext::element_markdown()
+    legend.location = "plot",
+    legend.position = "inside",
+    legend.position.inside = c(.84, .28),
+    plot.title.position = "plot",
+    plot.subtitle = ggtext::element_markdown()
   )
 ```
 
-The evaluation can be installed as an R package with:
+Each run is scored **C** (flagged the artifact on its own), **P** (only after a follow-up nudge), or **I** (never noticed). The plot shows the share of runs that scored C, counting each P as half. 
 
-```r
-# install.packages("pak")
-pak::pak("posit-dev/bluffbench2")
+
+## Usage
+
+bluffbench2 contains two datasets: `bluff2_dataset` and `bluff2_results`. 
+
+`bluff2_dataset` contains the samples used in the eval. Each sample defines the multi-turn conversation and the target answer. 
+
+```{r}
+bluffbench2::bluff2_dataset
 ```
 
-bluffbench is the successor to [bluffbench](https://github.com/posit-dev/bluffbench). It is implemented in R with [vitals](https://vitals.tidyverse.org/).
+`bluff2_results` contains the results of the eval, by model, sample id, and epoch. 
+
+```{r}
+bluffbench2::bluff2_results |>
+  select(model, id, epoch, score, cost)
+```
+
+## Run your own eval
+
+To run bluffbench2 on additional models, first create a [`vitals::Task`](https://vitals.tidyverse.org/reference/Task.html) with `bluff2_task()`.
+
+```{r}
+#| eval: false
+tsk <- bluff2_task()
+```
+
+Then, use the [`$eval()`](https://vitals.tidyverse.org/reference/Task.html#method-Task-eval) method to evaluate the task. Pass an [ellmer `Chat`](https://ellmer.tidyverse.org/reference/chat-any.html) with the model of your choice to the `solver_chat` argument.  
+
+```{r}
+#| eval: false
+tsk$eval(
+  solver_chat = ellmer::chat("anthropic/claude-opus-4-7")
+)
+```
+
+
+
+
+
+
+
+
+
