@@ -28,5 +28,7 @@ unremarkable "lull" plots, the plot containing the artifact, and a final
 "what do you see in the plot?" follow-up.
 
 Phrasings are sampled and interpolated at solve time so that no two runs
-see identical prompts, file names, or harnesses.
+see identical prompts, file names, or harnesses. User turns are also
+decorated with the ephemeral, unrelated context that real agent harnesses
+interleave into conversations (see \code{new_noise_profile()}).
 }
