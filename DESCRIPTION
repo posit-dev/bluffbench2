@@ -1,6 +1,6 @@
 Package: bluffbench2
 Title: An Eval Measuring Whether Agents Notice What's Actually in a Plot
-Version: 0.1.0
+Version: 0.1.0.9000
 Authors@R: c(
     person("Simon", "Couch", , "simon.couch@posit.co", role = c("aut", "cre")),
     person("Sara", "Altman", , "sara.altman@posit.co", role = "aut")
