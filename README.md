@@ -43,28 +43,6 @@ The agent is graded on whether it mentions the subtle quality concern in
 a data visualization. Across samples (26 distinct samples, each run over
 two epochs per model), most artifacts get missed:
 
-    ## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-    ## ✔ dplyr     1.2.1     ✔ readr     2.2.0
-    ## ✔ forcats   1.0.1     ✔ stringr   1.6.0
-    ## ✔ lubridate 1.9.5     ✔ tibble    3.3.1
-    ## ✔ purrr     1.2.2     ✔ tidyr     1.3.2
-    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-    ## ✖ dplyr::filter() masks stats::filter()
-    ## ✖ dplyr::lag()    masks stats::lag()
-    ## ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
-    ## 
-    ## Attaching package: 'scales'
-    ## 
-    ## 
-    ## The following object is masked from 'package:purrr':
-    ## 
-    ##     discard
-    ## 
-    ## 
-    ## The following object is masked from 'package:readr':
-    ## 
-    ##     col_factor
-
 <img src="README_files/figure-gfm/unnamed-chunk-2-1.png" alt="A bar plot showing scores for several frontier models. The two leaders, Gemini 3.5 Flash and Claude Fable 5, score in the mid-high teens. Models from OpenAI cluster at the bottom, never eclipsing 10%."  />
 
 Each run is scored **C** (flagged the artifact on its own), **P** (only
