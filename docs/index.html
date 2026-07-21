@@ -111,7 +111,7 @@ body { background-color: #fbfbfb; }
 <div style="text-align: center; margin: 20px 0;">
 <p><a href="https://github.com/posit-dev/bluffbench2" style="display: inline-block; background-color: black; color: white; padding: 10px 20px; margin: 0 15px; text-decoration: none; border-radius: 5px;"> <i class="fab fa-github"></i> Source </a> <a href="logs/index.html" style="display: inline-block; background-color: black; color: white; padding: 10px 20px; margin: 0 15px; text-decoration: none; border-radius: 5px;"> <i class="fas fa-file-alt"></i> Logs </a></p>
 </div>
-<p>Among other things, data science is a practice of noticing and caring about subtle data quality issues. bluffbench2 is an LLM evaluation that measures how effectively AI agents raise data quality concerns when faced with minor artifacts in data visualizations.</p>
+<p>Among other things, data science is a practice of noticing and caring about subtle data quality issues. bluffbench2 is an LLM evaluation that measures how effectively AI agents raise data quality concerns when faced with minor visual artifacts in plots.</p>
 <p>The eval harness is a relatively generic coding agent harness with some prompting related to data analysis. The agent carries out a few “lull” turns, making a couple plots and tables unrelated to the eval. Then, at some point, it will be asked to produce a data visualization that produces a subtle visual artifact (that could feasibly result from a real data generating process):</p>
 <div class="cell" data-layout-align="center" style="border-radius: 10px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12); margin-bottom: 20px; padding: 15px 15px 0; background-color: white;">
 <div class="cell-output-display">

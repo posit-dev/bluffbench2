@@ -29,7 +29,7 @@ For example, one plot has a cluster of points that appear to follow the “fitte
 #| echo: false
 library(ggplot2)
 
-labs <- read.csv(system.file("data/labs.csv", package = "bluffbench2"))
+labs <- read.csv(system.file("csv/labs.csv", package = "bluffbench2"))
 
 ggplot(labs, aes(bmi, cholesterol)) +
   geom_point(alpha = 0.8) +
@@ -45,6 +45,8 @@ The agent is graded on whether it mentions the subtle quality concern in a data 
 #| fig-alt: "A bar plot showing scores for several frontier models. The two leaders, Gemini 3.5 Flash and Claude Fable 5, score in the mid-high teens. Models from OpenAI cluster at the bottom, never eclipsing 10%."
 #| echo: false
 library(bluffbench2)
+library(tidyverse)
+library(scales)
 
 bluff2_summary <-
   bluff2_results %>%

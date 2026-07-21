@@ -37,7 +37,7 @@ library(ggtext)
 #| echo: false
 #| fig-align: center
 #| style: "border-radius: 10px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12); margin-bottom: 20px; padding: 15px 15px 0; background-color: white;"
-labs <- read.csv(system.file("data/labs.csv", package = "bluffbench2"))
+labs <- read.csv(system.file("csv/labs.csv", package = "bluffbench2"))
 
 ggplot(labs, aes(bmi, cholesterol)) +
   geom_point(alpha = 0.8) +

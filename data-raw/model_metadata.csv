@@ -38,4 +38,5 @@ gemini_2_5_flash_nonthinking,Google,2025-06-17,https://ai.google.dev/gemini-api/
 gemini_3_flash_medium,Google,2025-12-17,https://ai.google.dev/gemini-api/docs/changelog
 gemini_3_1_pro_medium,Google,2025-11-18,https://ai.google.dev/gemini-api/docs/changelog
 gemini_3_5_flash_medium,Google,2026-05-19,https://ai.google.dev/gemini-api/docs/changelog
+gemini_3_6_flash_medium,Google,2026-07-21,https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-6-flash-3-5-flash-lite-3-5-flash-cyber/
 gemma4_26b_a4b,Google,2026-03-31,https://ai.google.dev/gemma/docs/releases
