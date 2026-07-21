@@ -36,6 +36,7 @@ manual_prices <- tribble(
   "fable_5_medium"          , 10              , 1                , 50               ,
   "sonnet_5_medium"         , 3               , 0.30             , 15               ,
   "gemini_3_5_flash_medium" , 1.50            , 0.15             , 9                ,
+  "gemini_3_6_flash_medium" , 1.50            , 0.15             , 7.50             ,
   "gpt_5_5_medium"          , 5               , 0.50             , 30               ,
   "gpt_5_6_terra_medium"    , 2.50            , 0.25             , 15               ,
   "gpt_5_6_sol_medium"      , 5               , 0.50             , 30               ,
@@ -81,6 +82,7 @@ bluff2_results <-
       model == "fable_5_medium" ~ "Claude Fable 5 (medium)",
       model == "sonnet_5_medium" ~ "Claude Sonnet 5 (medium)",
       model == "gemini_3_5_flash_medium" ~ "Gemini 3.5 Flash (medium)",
+      model == "gemini_3_6_flash_medium" ~ "Gemini 3.6 Flash (medium)",
       model == "gpt_5_5_medium" ~ "GPT-5.5 (medium)",
       model == "gpt_5_6_terra_medium" ~ "GPT-5.6 Terra (medium)",
       model == "gpt_5_6_sol_medium" ~ "GPT-5.6 Sol (medium)"

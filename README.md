@@ -84,7 +84,7 @@ bluffbench2::bluff2_results |>
   select(model, id, epoch, score, cost)
 ```
 
-    ## # A tibble: 364 × 5
+    ## # A tibble: 416 × 5
     ##    model                   id                           epoch score  cost
     ##    <chr>                   <chr>                        <int> <ord> <dbl>
     ##  1 Claude Fable 5 (medium) assay_rerun_specimens            1 I     0.263
@@ -97,7 +97,7 @@ bluffbench2::bluff2_results |>
     ##  8 Claude Fable 5 (medium) clinic_systolic_heaping          2 I     0.195
     ##  9 Claude Fable 5 (medium) energy_imputed_heating           1 I     0.195
     ## 10 Claude Fable 5 (medium) energy_imputed_heating           2 I     0.189
-    ## # ℹ 354 more rows
+    ## # ℹ 406 more rows
 
 ## Run your own eval
 

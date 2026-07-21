@@ -109,7 +109,18 @@ To add a model:
 5. Run the new line(s), then source `data-raw/bluff2_results.R` to regenerate 
    the package data (`process_results()` reads every log, keeping the most 
    recent per slug). For ease of running the new lines in a self-contained way,
-   you might write a temp file with the lines of interest.
+   you might write a temp file with the lines of interest. Note that a global
+   `~/.Rprofile` may set `VITALS_LOG_DIR` to `inst/log_dump`, which vitals
+   captures when `bluff2_task()` builds the task — before `run()`'s
+   `withr::local_envvar` can redirect it. If the log lands in `inst/log_dump`,
+   move it into `inst/run/logs` before regenerating.
+6. Regenerate the site and README. Both render the results plot from the
+   *installed* package data, so `devtools::install(quick = TRUE)` first (or the
+   new model won't appear), then:
+   - `quarto render index.qmd` (writes `docs/`);
+   - `Rscript inst/bundle.R` to re-bundle the vitals log viewer into
+     `docs/logs`;
+   - `Rscript -e 'devtools::build_readme()'` to rebuild `README.md`.
 
 ### Reading a trajectory from a log
 

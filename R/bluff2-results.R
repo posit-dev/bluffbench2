@@ -42,7 +42,8 @@ run_names <- c(
   "gpt-5.5" = "gpt_5_5_medium",
   "gpt-5.6-terra" = "gpt_5_6_terra_medium",
   "gpt-5.6-sol" = "gpt_5_6_sol_medium",
-  "gemini-3.5-flash" = "gemini_3_5_flash_medium"
+  "gemini-3.5-flash" = "gemini_3_5_flash_medium",
+  "gemini-3.6-flash" = "gemini_3_6_flash_medium"
 )
 
 process_results <- function() {
