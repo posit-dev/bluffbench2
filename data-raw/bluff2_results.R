@@ -20,6 +20,7 @@ sample_costs <- bluff2_results_raw |>
       solver_chat,
       ~ sum(.x$get_tokens()$cached_input)
     ),
+    solver_cache_write_tokens,
     solver_output_tokens = purrr::map_dbl(
       solver_chat,
       ~ sum(.x$get_tokens()$output)
@@ -31,24 +32,27 @@ sample_costs <- bluff2_results_raw |>
 # estimate below. `input` counts uncached input; cached reads are billed
 # separately at the cached rate.
 manual_prices <- tribble(
-  ~task_name                , ~input_per_mtok , ~cached_per_mtok , ~output_per_mtok ,
-  "opus_4_8_medium"         , 5               , 0.50             , 25               ,
-  "fable_5_medium"          , 10              , 1                , 50               ,
-  "sonnet_5_medium"         , 3               , 0.30             , 15               ,
-  "gemini_3_5_flash_medium" , 1.50            , 0.15             , 9                ,
-  "gemini_3_6_flash_medium" , 1.50            , 0.15             , 7.50             ,
-  "gpt_5_5_medium"          , 5               , 0.50             , 30               ,
-  "gpt_5_6_terra_medium"    , 2.50            , 0.25             , 15               ,
-  "gpt_5_6_sol_medium"      , 5               , 0.50             , 30               ,
+  ~task_name                , ~input_per_mtok , ~cached_per_mtok , ~cache_write_per_mtok , ~output_per_mtok ,
+  "opus_4_8_medium"         , 5               , 0.50             , 5                     , 25               ,
+  "fable_5_medium"          , 10              , 1                , 10                    , 50               ,
+  "sonnet_5_medium"         , 3               , 0.30             , 3                     , 15               ,
+  "gemini_3_5_flash_medium" , 1.50            , 0.15             , 1.50                  , 9                ,
+  "gemini_3_6_flash_medium" , 1.50            , 0.15             , 1.50                  , 7.50             ,
+  "gpt_5_5_medium"          , 5               , 0.50             , 5                     , 30               ,
+  "gpt_5_6_terra_medium"    , 2.50            , 0.25             , 2.50                  , 15               ,
+  "gpt_5_6_sol_medium"      , 5               , 0.50             , 5                     , 30               ,
+  "gpt_6_astra_medium"      , 10              , 1                , 12.50                 , 50               ,
+  "gemini_3_8_flash_medium" , 0.75            , 0.075            , 0.75                  , 3.75             ,
 )
 
 sample_costs <- sample_costs |>
   left_join(manual_prices, by = "task_name") |>
   mutate(
     cost = if_else(
-      is.na(cost),
-      (solver_input_tokens * input_per_mtok +
+      is.na(cost) | task_name == "gemini_3_8_flash_medium",
+      ((solver_input_tokens - solver_cache_write_tokens) * input_per_mtok +
         solver_cached_tokens * cached_per_mtok +
+        solver_cache_write_tokens * cache_write_per_mtok +
         solver_output_tokens * output_per_mtok) /
         1e6,
       cost
@@ -83,9 +87,11 @@ bluff2_results <-
       model == "sonnet_5_medium" ~ "Claude Sonnet 5 (medium)",
       model == "gemini_3_5_flash_medium" ~ "Gemini 3.5 Flash (medium)",
       model == "gemini_3_6_flash_medium" ~ "Gemini 3.6 Flash (medium)",
+      model == "gemini_3_8_flash_medium" ~ "Gemini 3.8 Flash (medium)",
       model == "gpt_5_5_medium" ~ "GPT-5.5 (medium)",
       model == "gpt_5_6_terra_medium" ~ "GPT-5.6 Terra (medium)",
-      model == "gpt_5_6_sol_medium" ~ "GPT-5.6 Sol (medium)"
+      model == "gpt_5_6_sol_medium" ~ "GPT-5.6 Sol (medium)",
+      model == "gpt_6_astra_medium" ~ "GPT-6 Astra (medium)"
     ),
     thinking = stringr::str_detect(model, "\\(medium\\)")
   )
