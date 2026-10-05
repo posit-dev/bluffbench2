@@ -42,3 +42,11 @@ gemini_3_5_flash_medium,Google,2026-05-19,https://ai.google.dev/gemini-api/docs/
 gemini_3_6_flash_medium,Google,2026-07-21,https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-6-flash-3-5-flash-lite-3-5-flash-cyber/
 gemini_3_8_flash_medium,Google,2026-09-02,https://ai.google.dev/gemini-api/docs/changelog
 gemma4_26b_a4b,Google,2026-03-31,https://ai.google.dev/gemma/docs/releases
+gemini_3_7_flash_medium,Google,2026-08-13,https://ai.google.dev/gemini-api/docs/changelog
+opus_5_medium,Anthropic,2026-07-24,https://platform.claude.com/docs/en/release-notes/overview
+fable_5_1_medium,Anthropic,2026-09-01,https://platform.claude.com/docs/en/release-notes/overview
+opus_5_5_medium,Anthropic,2026-09-22,https://platform.claude.com/docs/en/release-notes/overview
+sonnet_5_5_medium,Anthropic,2026-09-28,https://platform.claude.com/docs/en/release-notes/overview
+gpt_6_sol_medium,OpenAI,2026-09-22,https://developers.openai.com/api/docs/changelog
+gpt_6_luna_medium,OpenAI,2026-09-22,https://developers.openai.com/api/docs/changelog
+gpt_6_1_sol_medium,OpenAI,2026-09-29,https://developers.openai.com/api/docs/changelog

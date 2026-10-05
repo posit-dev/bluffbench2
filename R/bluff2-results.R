@@ -39,12 +39,20 @@ run_names <- c(
   "claude-opus-4-8" = "opus_4_8_medium",
   "claude-fable-5" = "fable_5_medium",
   "claude-sonnet-5" = "sonnet_5_medium",
+  "claude-opus-5" = "opus_5_medium",
+  "claude-fable-5-1" = "fable_5_1_medium",
+  "claude-opus-5-5" = "opus_5_5_medium",
+  "claude-sonnet-5-5" = "sonnet_5_5_medium",
   "gpt-5.5" = "gpt_5_5_medium",
   "gpt-5.6-terra" = "gpt_5_6_terra_medium",
   "gpt-5.6-sol" = "gpt_5_6_sol_medium",
   "gpt-6-astra" = "gpt_6_astra_medium",
+  "gpt-6-sol" = "gpt_6_sol_medium",
+  "gpt-6-luna" = "gpt_6_luna_medium",
+  "gpt-6.1-sol" = "gpt_6_1_sol_medium",
   "gemini-3.5-flash" = "gemini_3_5_flash_medium",
   "gemini-3.6-flash" = "gemini_3_6_flash_medium",
+  "gemini-3.7-flash" = "gemini_3_7_flash_medium",
   "gemini-3.8-flash" = "gemini_3_8_flash_medium"
 )
 
