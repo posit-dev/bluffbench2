@@ -45,7 +45,7 @@ manual_prices <- tribble(
   "gemini_3_8_flash_medium" , 0.75            , 0.075            , 0.75                  , 3.75             ,
   "opus_5_5_medium"         , 4               , 0.20             , 5                     , 20               ,
   "sonnet_5_5_medium"       , 2               , 0.20             , 2.50                  , 10               ,
-  "gpt_6_sol_medium"        , 2               , 0.20             , 2                     , 10               ,
+  "gpt_6_sol_medium"        , 2               , 0.20             , 2.50                  , 10               ,
   "gpt_6_luna_medium"       , 0.10            , 0.01             , 0.125                 , 0.50             ,
   "gpt_6_1_sol_medium"      , 2               , 0.10             , 2.50                  , 10               ,
 )
