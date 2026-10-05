@@ -35,7 +35,7 @@ manual_prices <- tribble(
   ~task_name                , ~input_per_mtok , ~cached_per_mtok , ~cache_write_per_mtok , ~output_per_mtok ,
   "opus_4_8_medium"         , 5               , 0.50             , 5                     , 25               ,
   "fable_5_medium"          , 10              , 1                , 10                    , 50               ,
-  "sonnet_5_medium"         , 3               , 0.30             , 3                     , 15               ,
+  "sonnet_5_medium"         , 2               , 0.20             , 2.50                  , 10               ,
   "gemini_3_5_flash_medium" , 1.50            , 0.15             , 1.50                  , 9                ,
   "gemini_3_6_flash_medium" , 1.50            , 0.15             , 1.50                  , 7.50             ,
   "gpt_5_5_medium"          , 5               , 0.50             , 5                     , 30               ,
@@ -43,6 +43,14 @@ manual_prices <- tribble(
   "gpt_5_6_sol_medium"      , 5               , 0.50             , 5                     , 30               ,
   "gpt_6_astra_medium"      , 10              , 1                , 12.50                 , 50               ,
   "gemini_3_8_flash_medium" , 0.75            , 0.075            , 0.75                  , 3.75             ,
+  "gemini_3_7_flash_medium" , 0.75            , 0.075            , 0.75                  , 3.75             ,
+  "opus_5_medium"           , 5               , 0.50             , 6.25                  , 25               ,
+  "fable_5_1_medium"        , 10              , 0.25             , 12.50                 , 50               ,
+  "opus_5_5_medium"         , 4             , 0.20             , 5                     , 20               ,
+  "sonnet_5_5_medium"       , 2               , 0.20             , 2.50                  , 10               ,
+  "gpt_6_sol_medium"        , 2               , 0.20             , 2.50                  , 10               ,
+  "gpt_6_luna_medium"       , 0.10            , 0.01             , 0.125                 , 0.50             ,
+  "gpt_6_1_sol_medium"      , 2               , 0.10             , 2.50                  , 10               ,
 )
 
 sample_costs <- sample_costs |>
@@ -85,13 +93,21 @@ bluff2_results <-
       model == "opus_4_8_medium" ~ "Claude Opus 4.8 (medium)",
       model == "fable_5_medium" ~ "Claude Fable 5 (medium)",
       model == "sonnet_5_medium" ~ "Claude Sonnet 5 (medium)",
+      model == "opus_5_medium" ~ "Claude Opus 5 (medium)",
+      model == "fable_5_1_medium" ~ "Claude Fable 5.1 (medium)",
+      model == "opus_5_5_medium" ~ "Claude Opus 5.5 (medium)",
+      model == "sonnet_5_5_medium" ~ "Claude Sonnet 5.5 (medium)",
       model == "gemini_3_5_flash_medium" ~ "Gemini 3.5 Flash (medium)",
       model == "gemini_3_6_flash_medium" ~ "Gemini 3.6 Flash (medium)",
+      model == "gemini_3_7_flash_medium" ~ "Gemini 3.7 Flash (medium)",
       model == "gemini_3_8_flash_medium" ~ "Gemini 3.8 Flash (medium)",
       model == "gpt_5_5_medium" ~ "GPT-5.5 (medium)",
       model == "gpt_5_6_terra_medium" ~ "GPT-5.6 Terra (medium)",
       model == "gpt_5_6_sol_medium" ~ "GPT-5.6 Sol (medium)",
-      model == "gpt_6_astra_medium" ~ "GPT-6 Astra (medium)"
+      model == "gpt_6_astra_medium" ~ "GPT-6 Astra (medium)",
+      model == "gpt_6_sol_medium" ~ "GPT-6 Sol (medium)",
+      model == "gpt_6_luna_medium" ~ "GPT-6 Luna (medium)",
+      model == "gpt_6_1_sol_medium" ~ "GPT-6.1 Sol (medium)"
     ),
     thinking = stringr::str_detect(model, "\\(medium\\)")
   )

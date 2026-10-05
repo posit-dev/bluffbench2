@@ -188,5 +188,138 @@
         "1": "numeric_scores"
       }
     }
+  },
+  "2026-10-05T15-11-46-05-00_bluffbench2-gpt-6-sol-14b317d862643afc0b12ea.json": {
+    "eval_id": {},
+    "run_id": "39x4ot6PJhmDtjpGk25GT8",
+    "task": "bluffbench2/gpt-6-sol/14b317d862643afc0b12ea",
+    "task_id": "bluffbench2/gpt-6-sol/14b317d862643afc0b12ea",
+    "task_version": 0,
+    "version": 2,
+    "status": "success",
+    "model": "openai/gpt-6-sol",
+    "started_at": "2026-10-05T15:11:46-05:00",
+    "completed_at": "2026-10-05T15:11:46-05:00",
+    "primary_metric": {
+      "name": "accuracy",
+      "value": 3.8462,
+      "params": {
+        "1": "numeric_scores"
+      }
+    }
+  },
+  "2026-10-05T15-15-30-05-00_bluffbench2-gpt-6-luna-14b317d862643afc0b12ea.json": {
+    "eval_id": {},
+    "run_id": "Kkh4vsIhvP6TZWKpyhjXzT",
+    "task": "bluffbench2/gpt-6-luna/14b317d862643afc0b12ea",
+    "task_id": "bluffbench2/gpt-6-luna/14b317d862643afc0b12ea",
+    "task_version": 0,
+    "version": 2,
+    "status": "success",
+    "model": "openai/gpt-6-luna",
+    "started_at": "2026-10-05T15:15:30-05:00",
+    "completed_at": "2026-10-05T15:15:30-05:00",
+    "primary_metric": {
+      "name": "accuracy",
+      "value": 3.8462,
+      "params": {
+        "1": "numeric_scores"
+      }
+    }
+  },
+  "2026-10-05T15-18-16-05-00_bluffbench2-gemini-3.7-flash-14b317d862643afc0b12ea.json": {
+    "eval_id": {},
+    "run_id": "Mee44rwNX2qhGYW0TEY2oC",
+    "task": "bluffbench2/gemini-3.7-flash/14b317d862643afc0b12ea",
+    "task_id": "bluffbench2/gemini-3.7-flash/14b317d862643afc0b12ea",
+    "task_version": 0,
+    "version": 2,
+    "status": "success",
+    "model": "google_gemini/gemini-3.7-flash",
+    "started_at": "2026-10-05T15:18:16-05:00",
+    "completed_at": "2026-10-05T15:18:16-05:00",
+    "primary_metric": {
+      "name": "accuracy",
+      "value": 18.2692,
+      "params": {
+        "1": "numeric_scores"
+      }
+    }
+  },
+  "2026-10-05T15-24-06-05-00_bluffbench2-claude-opus-5-5-14b317d862643afc0b12ea.json": {
+    "eval_id": {},
+    "run_id": "DhcsXUICxYss9MXTnX6Uzf",
+    "task": "bluffbench2/claude-opus-5-5/14b317d862643afc0b12ea",
+    "task_id": "bluffbench2/claude-opus-5-5/14b317d862643afc0b12ea",
+    "task_version": 0,
+    "version": 2,
+    "status": "success",
+    "model": "anthropic/claude-opus-5-5",
+    "started_at": "2026-10-05T15:24:06-05:00",
+    "completed_at": "2026-10-05T15:24:06-05:00",
+    "primary_metric": {
+      "name": "accuracy",
+      "value": 57.6923,
+      "params": {
+        "1": "numeric_scores"
+      }
+    }
+  },
+  "2026-10-05T15-31-50-05-00_bluffbench2-claude-opus-5-14b317d862643afc0b12ea.json": {
+    "eval_id": {},
+    "run_id": "hou4sotpPAbPyTUboNRnVR",
+    "task": "bluffbench2/claude-opus-5/14b317d862643afc0b12ea",
+    "task_id": "bluffbench2/claude-opus-5/14b317d862643afc0b12ea",
+    "task_version": 0,
+    "version": 2,
+    "status": "success",
+    "model": "anthropic/claude-opus-5",
+    "started_at": "2026-10-05T15:31:50-05:00",
+    "completed_at": "2026-10-05T15:31:50-05:00",
+    "primary_metric": {
+      "name": "accuracy",
+      "value": 35.5769,
+      "params": {
+        "1": "numeric_scores"
+      }
+    }
+  },
+  "2026-10-05T15-51-35-05-00_bluffbench2-gpt-6.1-sol-14b317d862643afc0b12ea.json": {
+    "eval_id": {},
+    "run_id": "iIm17bEKMb22OfaeDq4ufv",
+    "task": "bluffbench2/gpt-6.1-sol/14b317d862643afc0b12ea",
+    "task_id": "bluffbench2/gpt-6.1-sol/14b317d862643afc0b12ea",
+    "task_version": 0,
+    "version": 2,
+    "status": "success",
+    "model": "openai/gpt-6.1-sol",
+    "started_at": "2026-10-05T15:51:35-05:00",
+    "completed_at": "2026-10-05T15:51:35-05:00",
+    "primary_metric": {
+      "name": "accuracy",
+      "value": 11.5385,
+      "params": {
+        "1": "numeric_scores"
+      }
+    }
+  },
+  "2026-10-05T15-56-08-05-00_bluffbench2-claude-sonnet-5-5-14b317d862643afc0b12ea.json": {
+    "eval_id": {},
+    "run_id": "4Ol5hFqv0nqd4Q2GAAajVw",
+    "task": "bluffbench2/claude-sonnet-5-5/14b317d862643afc0b12ea",
+    "task_id": "bluffbench2/claude-sonnet-5-5/14b317d862643afc0b12ea",
+    "task_version": 0,
+    "version": 2,
+    "status": "success",
+    "model": "anthropic/claude-sonnet-5-5",
+    "started_at": "2026-10-05T15:56:08-05:00",
+    "completed_at": "2026-10-05T15:56:08-05:00",
+    "primary_metric": {
+      "name": "accuracy",
+      "value": 45.1923,
+      "params": {
+        "1": "numeric_scores"
+      }
+    }
   }
 }
