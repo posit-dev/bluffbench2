@@ -150,5 +150,43 @@
         "1": "numeric_scores"
       }
     }
+  },
+  "2026-09-10T21-26-06-05-00_bluffbench2-gemini-3.8-flash-14b317d862643afc0b12ea.json": {
+    "eval_id": {},
+    "run_id": "U8GRBpL3OcGlGfOODo8Q1Q",
+    "task": "bluffbench2/gemini-3.8-flash/14b317d862643afc0b12ea",
+    "task_id": "bluffbench2/gemini-3.8-flash/14b317d862643afc0b12ea",
+    "task_version": 0,
+    "version": 2,
+    "status": "success",
+    "model": "google_gemini/gemini-3.8-flash",
+    "started_at": "2026-09-10T21:26:06-05:00",
+    "completed_at": "2026-09-10T21:26:06-05:00",
+    "primary_metric": {
+      "name": "accuracy",
+      "value": 23.0769,
+      "params": {
+        "1": "numeric_scores"
+      }
+    }
+  },
+  "2026-09-10T21-32-58-05-00_bluffbench2-gpt-6-astra-14b317d862643afc0b12ea.json": {
+    "eval_id": {},
+    "run_id": "6kqrLLbJIMInbm5Yzcwbdv",
+    "task": "bluffbench2/gpt-6-astra/14b317d862643afc0b12ea",
+    "task_id": "bluffbench2/gpt-6-astra/14b317d862643afc0b12ea",
+    "task_version": 0,
+    "version": 2,
+    "status": "success",
+    "model": "openai/gpt-6-astra",
+    "started_at": "2026-09-10T21:32:58-05:00",
+    "completed_at": "2026-09-10T21:32:58-05:00",
+    "primary_metric": {
+      "name": "accuracy",
+      "value": 14.4231,
+      "params": {
+        "1": "numeric_scores"
+      }
+    }
   }
 }

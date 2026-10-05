@@ -7,7 +7,12 @@ local({
   vt <- getNamespace("ellmer")$value_turn
   provider <- getNamespace("ellmer")$ProviderAnthropic
   orig <- S7::method(vt, provider)
-  S7::method(vt, provider) <- function(provider, result, has_type = FALSE) {
+  S7::method(vt, provider) <- function(
+    provider,
+    model,
+    result,
+    has_type = FALSE
+  ) {
     if (!is.null(result$content)) {
       keep <- vapply(
         result$content,
@@ -16,7 +21,7 @@ local({
       )
       result$content <- result$content[keep]
     }
-    orig(provider, result, has_type)
+    orig(provider, model, result, has_type)
   }
 })
 
@@ -105,5 +110,7 @@ run("sonnet_5_medium", anthropic_adaptive("claude-sonnet-5"))
 run("gpt_5_5_medium", openai_adaptive("gpt-5.5"))
 run("gpt_5_6_terra_medium", openai_adaptive("gpt-5.6-terra"))
 run("gpt_5_6_sol_medium", openai_adaptive("gpt-5.6-sol"))
+run("gpt_6_astra_medium", openai_adaptive("gpt-6-astra"))
 run("gemini_3_5_flash_medium", gemini_adaptive("gemini-3.5-flash"))
 run("gemini_3_6_flash_medium", gemini_adaptive("gemini-3.6-flash"))
+run("gemini_3_8_flash_medium", gemini_adaptive("gemini-3.8-flash"))

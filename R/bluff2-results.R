@@ -42,8 +42,10 @@ run_names <- c(
   "gpt-5.5" = "gpt_5_5_medium",
   "gpt-5.6-terra" = "gpt_5_6_terra_medium",
   "gpt-5.6-sol" = "gpt_5_6_sol_medium",
+  "gpt-6-astra" = "gpt_6_astra_medium",
   "gemini-3.5-flash" = "gemini_3_5_flash_medium",
-  "gemini-3.6-flash" = "gemini_3_6_flash_medium"
+  "gemini-3.6-flash" = "gemini_3_6_flash_medium",
+  "gemini-3.8-flash" = "gemini_3_8_flash_medium"
 )
 
 process_results <- function() {
@@ -61,11 +63,30 @@ process_results <- function() {
 
   results <- purrr::imap(latest, function(file, slug) {
     res <- vitals::vitals_log_read(file)
+    raw <- jsonlite::read_json(file, simplifyVector = FALSE)
+    res$solver_cache_write_tokens <- vapply(raw$samples, function(sample) {
+      model <- grep(
+        paste0("/", slug, "$"),
+        names(sample$model_usage),
+        value = TRUE
+      )
+      if (length(model) == 0) {
+        return(0)
+      }
+      sample$model_usage[[model[[1]]]]$input_tokens_cache_write
+    }, numeric(1))
     res$task <- run_names[[slug]]
     res
   })
 
   results <- purrr::list_rbind(unname(results))
   results$score <- factor(results$score, levels = c("I", "P", "C"), ordered = TRUE)
-  results[c("task", "id", "epoch", "score", "solver_chat")]
+  results[c(
+    "task",
+    "id",
+    "epoch",
+    "score",
+    "solver_chat",
+    "solver_cache_write_tokens"
+  )]
 }
