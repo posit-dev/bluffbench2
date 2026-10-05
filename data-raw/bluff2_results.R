@@ -35,7 +35,7 @@ manual_prices <- tribble(
   ~task_name                , ~input_per_mtok , ~cached_per_mtok , ~cache_write_per_mtok , ~output_per_mtok ,
   "opus_4_8_medium"         , 5               , 0.50             , 5                     , 25               ,
   "fable_5_medium"          , 10              , 1                , 10                    , 50               ,
-  "sonnet_5_medium"         , 3               , 0.30             , 3                     , 15               ,
+  "sonnet_5_medium"         , 2               , 0.20             , 2.50                  , 10               ,
   "gemini_3_5_flash_medium" , 1.50            , 0.15             , 1.50                  , 9                ,
   "gemini_3_6_flash_medium" , 1.50            , 0.15             , 1.50                  , 7.50             ,
   "gpt_5_5_medium"          , 5               , 0.50             , 5                     , 30               ,
